@@ -1,5 +1,3 @@
 export default function Home() {
-  return (
-    <h1 className='text-3xl font-bold underline'>English Learning Site</h1>
-  );
+  return <h1>English Learning Site</h1>;
 }
