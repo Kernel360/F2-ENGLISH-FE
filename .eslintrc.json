@@ -55,12 +55,24 @@
 
   "overrides": [
     {
-      "files": ["*.test.js", "*.test.ts", "*.test.tsx", "*.stories.ts"],
+      "files": [
+        "*.test.ts",
+        "*.stories.ts",
+        // shadcn 컴포넌트 경로
+        "src/components/ui/**/*.tsx"
+      ],
       "rules": {
         // import/no-extraneous-dependencies 규칙
         // 프로덕션 코드에서 필요한 패키지는 dependencies에 있어야 한다고 강제함
         // 테스트 파일에 대해서는 no-extraneous-dependencies 규칙을 비활성화함
         "import/no-extraneous-dependencies": "off"
+      }
+    },
+    {
+      "files": ["src/components/ui/**/*.tsx"],
+      "rules": {
+        // shadcn 컴포넌트 파일에 대해서는 jsx-props-no-spreading 규칙 비활성화
+        "react/jsx-props-no-spreading": "off"
       }
     }
   ]
