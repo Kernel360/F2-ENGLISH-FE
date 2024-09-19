@@ -1,5 +1,5 @@
 import Cards from '@/components/Cards';
 
-export default function learnTestPage() {
+export default function learnPage() {
   return <Cards />;
 }
