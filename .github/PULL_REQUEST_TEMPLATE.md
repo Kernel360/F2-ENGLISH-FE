@@ -15,7 +15,7 @@
 
 ## Precaution
 
-<!-- 1. 주의사항, 미처 구현하지 못한 부분, 해결되지 않은 문제가 있다면 작성해주세요.>
+<!-- 1. 주의사항, 미처 구현하지 못한 부분, 해결되지 않은 문제가 있다면 작성해주세요.-->
 <!-- ## 2. ✔️ Please check if the PR fulfills these requirements.
 
 - [ ] It's submitted to the correct branch, not the `develop` branch unconditionally?
