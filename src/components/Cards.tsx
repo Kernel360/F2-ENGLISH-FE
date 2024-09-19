@@ -1,5 +1,3 @@
-'use client';
-
 import { Card, CardDescription, CardTitle } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import Image from 'next/image';
@@ -19,10 +17,6 @@ function Cards() {
                 alt={card.title}
                 className="rounded-md object-cover"
                 fill
-                // Add a placeholder or error handling for missing images
-                onError={() =>
-                  console.warn(`Failed to load image for ${card.title}`)
-                }
                 priority // Ensures fast loading for the first card
               />
             </AspectRatio>
@@ -31,7 +25,6 @@ function Cards() {
               {card.title}
             </CardTitle>
             {/* 2줄 이상 ...필요 */}
-            {/* <CardDescription>`조회수 ${card.content}회`</CardDescription> */}
             <CardDescription>{formatViewCount(card.count)}</CardDescription>
           </Card>
         ))}
