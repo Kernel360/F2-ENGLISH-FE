@@ -61,6 +61,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground max-w-[1440px] h-16 px-6 mx-auto;
   }
 }

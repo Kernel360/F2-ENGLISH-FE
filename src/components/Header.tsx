@@ -25,7 +25,7 @@ export function Header() {
 
   return (
     <div className="z-50 bg-white border-b">
-      <header className="flex items-center max-w-[1440px] h-16 px-6 mx-auto">
+      <header className="flex items-center max-w-[1440px] h-16 mx-auto ">
         <Link href="/" className="text-xl font-bold mr-6">
           English
         </Link>
