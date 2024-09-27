@@ -10,7 +10,10 @@ function Cards() {
     <main className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 m">
         {cardData.map((card) => (
-          <Card className="p-4" key={card.id}>
+          <Card
+            className="p-4 transform transition-transform duration-300 hover:scale-105"
+            key={card.id}
+          >
             <AspectRatio ratio={16 / 9}>
               <Image
                 src={card.imageUrl}
@@ -21,10 +24,9 @@ function Cards() {
               />
             </AspectRatio>
             <Badge className="m-4 ml-0 mb-0">{card.category}</Badge>
-            <CardTitle className="mt-4 p-0 truncate ...">
+            <CardTitle className="mt-4 p-0 line-clamp-2">
               {card.title}
             </CardTitle>
-            {/* 2줄 이상 ...필요 */}
             <CardDescription>{formatViewCount(card.count)}</CardDescription>
           </Card>
         ))}
