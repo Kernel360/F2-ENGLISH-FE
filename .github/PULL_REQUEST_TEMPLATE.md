@@ -1,23 +1,16 @@
-- Close #ISSUE_NUMBER
+### 📄 Description of the PR
 
-## What is this PR? 🔍
+- 기능 설명 :
+- Close # (이슈 번호)
 
-- 기능 :
-- issue : #
-
-## Changes 📝
+### 🔧 What has been changed?
 
 <!-- 이번 PR에서의 변경점 (- 코드 변경, 기능 추가, 버그 수정 등.)-->
 
-## ScreenShot 📷
+### 📸 Screenshots / GIFs (if applicable)
 
-<!-- 개발 기능을 보여줄 수 있는 이미지, GIF -->
+<!-- 가능하다면 스크린샷이나 GIF를 첨부해주세요 -->
 
-## Precaution
+### ⚠️ Precaution & Known issues
 
-<!-- 1. 주의사항, 미처 구현하지 못한 부분, 해결되지 않은 문제가 있다면 작성해주세요.-->
-<!-- ## 2. ✔️ Please check if the PR fulfills these requirements.
-
-- [ ] It's submitted to the correct branch, not the `develop` branch unconditionally?
-- [ ] If on a hotfix branch, ensure it targets `main`?
-- [ ] There are no warning message when you run `yarn lint` -->
+<!-- 리뷰할 때 고려해야 할 부분, 수정이 필요한 부분, 아직 해결되지 않는 문제, 개선해야 할 사항 -->
