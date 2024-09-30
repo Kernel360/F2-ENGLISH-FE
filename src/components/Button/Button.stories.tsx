@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { Button } from '@/components/ui/button';
+// todo @godhyzzang
+// 1. 추후에 @/components/ui/button이 아닌 components/Button/Button로 변경해야함
 
 const meta: Meta<typeof Button> = {
   title: 'Component/shdcnui/Button',
