@@ -1,6 +1,2 @@
-# Git이 줄바꿈 방식을 자동으로 처리하게 해줌
-# Windows에서 체크아웃할 때 CRLF로 변환
-# Linux/macOS에서 체크아웃할 때 LF로 변환
-# 커밋할 때는 모두 LF로 저장하여, 운영체제에 상관없이 일관된 줄바꿈을 유지
-
-* text=auto
+# 모든 파일에 대해 LF 사용
+* text=auto eol=lf
