@@ -21,9 +21,9 @@ export default function DetailReadingPage() {
   //   // params: { id: string };
   // },
 
-  const [isTranslateButtonClicked, setTranslateButtonClicked] = useState(true);
+  const [showTranslate, toggleShowTranlation] = useState(true);
   const toggleTranslation = () => {
-    setTranslateButtonClicked(!isTranslateButtonClicked);
+    toggleShowTranlation(!showTranslate);
   };
 
   return (
@@ -50,18 +50,12 @@ export default function DetailReadingPage() {
         <ul className="overflow-auto mb-8 w-[600px] tracking-normal leading-loose">
           {Data.scripts.map((script, index) => (
             <>
-              {/* Q. 아래 Lint에러에 해당하는 index로 배열 key를 사용하지 않는 방법 외에 무엇이 있을까요? */}
               {/* eslint-disable-next-line react/no-array-index-key */}
               <li key={index} className=" bg-white rounded shadow-mille">
-                {script.enScript}
+                <p>{script.enScript}</p>
+                {/* 번역버튼 눌렸을때만 한글 자막 보여줌 */}
+                {showTranslate && <p>{script.koScript}</p>}
               </li>
-              {/* 번역버튼 눌렸을때만 한글 자막 보여줌 */}
-              {isTranslateButtonClicked && (
-                // eslint-disable-next-line react/no-array-index-key
-                <li key={index} className="  bg-white rounded shadow-mille">
-                  {script.koScript}
-                </li>
-              )}
               {/* 문장 사이 줄바꿈 */}
               <br />
             </>
@@ -72,10 +66,10 @@ export default function DetailReadingPage() {
           <Button
             onClick={toggleTranslation}
             variant="default"
-            className={`rounded-full p-3 shadow-lg ${isTranslateButtonClicked ? 'bg-blue-500 hover:bg-blue-500/90' : ''}`}
+            className={`rounded-full p-3 shadow-lg ${showTranslate ? 'bg-blue-500 hover:bg-blue-500/90' : ''}`}
           >
             <Languages className="w-5 h-5" />
-            {`번역${isTranslateButtonClicked ? 'ON' : 'OFF'}`}
+            {`번역${showTranslate ? 'ON' : 'OFF'}`}
           </Button>
         </div>
         <div className="fixed right-[16px] bottom-[76px] md:bottom-[16px]">
