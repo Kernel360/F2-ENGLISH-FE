@@ -9,6 +9,11 @@ const nextConfig = {
         source: '/api/:path*',
         destination: 'http://13.238.253.88:8080/api/:path*',
       },
+      {
+        source: '/oauth2/:path*',
+        destination: 'http://13.238.253.88:8080/oauth2/:path*',
+        // http://13.238.253.88:8080/oauth2/authorization/naver
+      },
     ];
   },
 };
