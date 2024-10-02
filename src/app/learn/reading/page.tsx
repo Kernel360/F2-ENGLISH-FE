@@ -1,11 +1,11 @@
 import ReadingPreview from '@/components/ReadingPreview';
-import readingContentData from '@/mock/readingContentData.json';
+import readingList from '@/mock/readingList.json';
 
 export default function ReadingPage() {
   return (
-    <div className="max-w-3xl mx-auto pt-4 pb-24 px-4">
+    <div className="max-w-[1440px] mx-auto px-6">
       <ul className="flex flex-col gap-4">
-        {readingContentData.map((item) => (
+        {readingList.map((item) => (
           <li key={item.id}>
             <ReadingPreview readingPreviewContent={item} />
           </li>

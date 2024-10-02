@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['media.cnn.com'], // 외부 이미지 도메인 추가
+    domains: ['media.cnn.com', 'images.unsplash.com'], // 외부 이미지 도메인 추가
   },
   rewrites: async () => {
     return [

@@ -9,24 +9,28 @@ interface CardDataProps {
   imageUrl: string;
   category: string;
   title: string;
-  count: number;
+  views: number;
 }
 
 function ContentsCard({ card }: { card: CardDataProps }) {
   return (
-    <Card className="p-4 transform transition-transform duration-300 hover:scale-105">
+    <Card className="rounded-xl overflow-hidden shadow-mille">
       <AspectRatio ratio={16 / 9}>
         <Image
           src={card.imageUrl}
           alt={card.title}
-          className="rounded-md object-cover"
+          className="object-cover"
           fill
           priority // Ensures fast loading for the first card
         />
       </AspectRatio>
-      <Badge className="m-4 ml-0 mb-0">{card.category}</Badge>
-      <CardTitle className="mt-4 p-0 line-clamp-2">{card.title}</CardTitle>
-      <CardDescription>{formatViewCount(card.count)}</CardDescription>
+      <div className="p-4">
+        <Badge className="rounded">{card.category}</Badge>
+        <CardDescription className="mt-1 text-xs">
+          {formatViewCount(card.views)}
+        </CardDescription>
+        <CardTitle className="line-clamp-2 mt-1">{card.title}</CardTitle>
+      </div>
     </Card>
   );
 }
