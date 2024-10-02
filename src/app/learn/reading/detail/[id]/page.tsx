@@ -18,9 +18,9 @@ export default function DetailReadingPage({
 }: {
   params: { id: string };
 }) {
-  const [isButtonClicked, setButtonClicked] = useState(true);
+  const [isTranslateButtonClicked, setTranslateButtonClicked] = useState(true);
   const toggleTranslation = () => {
-    setButtonClicked(!isButtonClicked);
+    setTranslateButtonClicked(!isTranslateButtonClicked);
   };
 
   return (
@@ -52,7 +52,7 @@ export default function DetailReadingPage({
                 {script.enScript}
               </li>
               {/* 번역버튼 눌렸을때만 한글 자막 보여줌 */}
-              {isButtonClicked && (
+              {isTranslateButtonClicked && (
                 <li key={index} className="  bg-white rounded shadow-mille">
                   {script.koScript}
                 </li>
@@ -67,10 +67,10 @@ export default function DetailReadingPage({
           <Button
             onClick={toggleTranslation}
             variant="default"
-            className={`rounded-full p-3 shadow-lg ${isButtonClicked ? 'bg-blue-500 hover:bg-blue-500/90' : ''}`}
+            className={`rounded-full p-3 shadow-lg ${isTranslateButtonClicked ? 'bg-blue-500 hover:bg-blue-500/90' : ''}`}
           >
             <Languages className="w-5 h-5" />
-            {`번역${isButtonClicked ? 'ON' : 'OFF'}`}
+            {`번역${isTranslateButtonClicked ? 'ON' : 'OFF'}`}
           </Button>
         </div>
         <div className="fixed right-[16px] bottom-[76px] md:bottom-[16px]">
