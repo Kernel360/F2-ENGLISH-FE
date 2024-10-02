@@ -7,11 +7,11 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'https://biengaul.store/api/:path*',
+        destination: 'https://biengual.store/api/:path*',
       },
       {
         source: '/oauth2/:path*',
-        destination: 'https://biengaul.store/oauth2/:path*',
+        destination: 'https://biengual.store/oauth2/:path*',
         // http://13.238.253.88:8080/oauth2/authorization/naver
       },
     ];
