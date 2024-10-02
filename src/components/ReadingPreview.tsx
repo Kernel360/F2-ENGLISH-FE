@@ -18,7 +18,7 @@ export default function ReadingPreview({
 
   return (
     <Link
-      href={`/english/learn/reading/detail/${id}`}
+      href={`/learn/reading/detail/${id}`}
       className="block bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200"
     >
       <div className="flex justify-between items-center p-4">
