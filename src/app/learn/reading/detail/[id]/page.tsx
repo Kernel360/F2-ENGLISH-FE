@@ -13,11 +13,14 @@ import { Button } from '@/components/ui/button';
 import { ArrowUp, Languages } from 'lucide-react';
 import { useState } from 'react';
 
-export default function DetailReadingPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default function DetailReadingPage() {
+  // {
+  //   // params,
+  //   // 이전 페이지에서 Link로 넘어온 params를 받아오는 부분인데 이 페이지에서 어떻게 사용해야 할지 모르겠음
+  // }: {
+  //   // params: { id: string };
+  // },
+
   const [isTranslateButtonClicked, setTranslateButtonClicked] = useState(true);
   const toggleTranslation = () => {
     setTranslateButtonClicked(!isTranslateButtonClicked);
@@ -47,12 +50,14 @@ export default function DetailReadingPage({
         <ul className="overflow-auto mb-8 w-[600px] tracking-normal leading-loose">
           {Data.scripts.map((script, index) => (
             <>
+              {/* Q. 아래 Lint에러에 해당하는 index로 배열 key를 사용하지 않는 방법 외에 무엇이 있을까요? */}
               {/* eslint-disable-next-line react/no-array-index-key */}
               <li key={index} className=" bg-white rounded shadow-mille">
                 {script.enScript}
               </li>
               {/* 번역버튼 눌렸을때만 한글 자막 보여줌 */}
               {isTranslateButtonClicked && (
+                // eslint-disable-next-line react/no-array-index-key
                 <li key={index} className="  bg-white rounded shadow-mille">
                   {script.koScript}
                 </li>
