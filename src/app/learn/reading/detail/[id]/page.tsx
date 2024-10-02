@@ -3,6 +3,11 @@
 //   Response.json();
 // };
 
+// todo
+// 1. script받아서 보여주는 부분 ui 디벨롭 필요
+// 2. script받아서 보여주는 부분 한 문장으로 할지, 문단으로 할지
+// 3. 한글 자막 보여줄 때 hover로 할지 그냥 button만 누르면 보이게 할지
+
 'use client';
 
 import Data from '@/mock/readingDetailData.json';
