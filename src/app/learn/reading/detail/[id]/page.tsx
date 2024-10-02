@@ -15,8 +15,9 @@ import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { ArrowUp, Languages } from 'lucide-react';
+import { ArrowUp, Bookmark, Languages } from 'lucide-react';
 import { useState } from 'react';
+import BookmarkSidebar from '@/components/BookmarkSidebar';
 
 export default function DetailReadingPage() {
   // {
@@ -32,41 +33,53 @@ export default function DetailReadingPage() {
   };
 
   return (
-    <>
-      {/* MobileNav가 생겼을 때 일관성을 유지하기 위해 MobileNav 높이 60px만큼 pb-[60-px]설정 */}
-      <div className="flex flex-col items-center px-[10%] py-[10%] max-w-[1024px] pb-[60px] md:pb-[0px]">
-        <div className="flex flex-col gap-2 my-3 justify-between items-start w-full">
-          <Badge>카테고리</Badge>
-          <div className="font-bold text-3xl  mt-2 mb-4">{Data.title}</div>
-          <div className="flex justify-end w-full">조회수</div>
-        </div>
+    <div className="flex flex-row ">
+      <div className="w-[1080px] flex">
+        {/* MobileNav가 생겼을 때 일관성을 유지하기 위해 MobileNav 높이 60px만큼 pb-[60-px]설정 */}
+        <div className="w-full  md:w-[800px] flex flex-col mx-6 pb-[60px] md:pb-[0px] ">
+          {/* content 부분 */}
 
-        <Separator className="" />
-        <div className="my-3">
-          <Image
-            src={Data.thumbnail}
-            width={600}
-            height={400}
-            alt="이미지"
-            className="rounded-lg"
-          />
+          <div className=" flex flex-col gap-2 my-3 justify-between items-start">
+            <Badge>카테고리</Badge>
+            <div className="font-bold text-3xl mt-2 mb-4">{Data.title}</div>
+            <div className="flex justify-end w-full">조회수</div>
+          </div>
+          {/* 구분선 */}
+          <Separator className="" />
+          {/* 이미지 */}
+          <div className="flex flex-col items-center">
+            <div className="my-3">
+              <Image
+                src={Data.thumbnail}
+                width={600}
+                height={400}
+                alt="이미지"
+                className="rounded-lg"
+              />
+            </div>
+            {/* 1문장씩 영/한 보여줌 */}
+            <ul className="overflow-auto mb-8 tracking-normal leading-loose ">
+              {Data.scripts.map((script, index) => (
+                <>
+                  {/* eslint-disable-next-line react/no-array-index-key */}
+                  <li key={index} className=" bg-white rounded shadow-mille">
+                    <p>{script.enScript}</p>
+                    {/* 번역버튼 눌렸을때만 한글 자막 보여줌 */}
+                    {showTranslate && <p>{script.koScript}</p>}
+                  </li>
+                  {/* 문장 사이 줄바꿈 */}
+                  <br />
+                </>
+              ))}
+            </ul>
+          </div>
         </div>
-        {/* 1문장씩 영/한 보여줌 */}
-        <ul className="overflow-auto mb-8 w-[600px] tracking-normal leading-loose">
-          {Data.scripts.map((script, index) => (
-            <>
-              {/* eslint-disable-next-line react/no-array-index-key */}
-              <li key={index} className=" bg-white rounded shadow-mille">
-                <p>{script.enScript}</p>
-                {/* 번역버튼 눌렸을때만 한글 자막 보여줌 */}
-                {showTranslate && <p>{script.koScript}</p>}
-              </li>
-              {/* 문장 사이 줄바꿈 */}
-              <br />
-            </>
-          ))}
-        </ul>
-
+        {/* sidebar */}
+        <div className=" hidden md:block">
+          {/* bookmark에 pconly media query만들 수 있음 */}
+          <BookmarkSidebar className="" />
+        </div>
+        {/* floating 버튼 */}
         <div className="fixed right-[60px] bottom-[76px] md:bottom-[16px]">
           <Button
             onClick={toggleTranslation}
@@ -88,6 +101,6 @@ export default function DetailReadingPage() {
           {/* todo : 북마크 버튼도 필요  */}
         </div>
       </div>
-    </>
+    </div>
   );
 }
