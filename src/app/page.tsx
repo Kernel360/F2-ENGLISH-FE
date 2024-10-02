@@ -4,20 +4,20 @@ import listeningList from '../mock/listeningList.json';
 
 export default function HomePage() {
   return (
-    <div className="max-w-[1440px] mx-auto flex flex-col gap-12">
+    <div className="max-w-[1440px] mx-auto mt-8 mb-24 flex flex-col gap-12">
       {/* 인기 리스닝 컨텐츠 캐러셀 */}
       <Carousel
         title="인기 리딩 컨텐츠"
-        data={readingList}
-        type="reading"
+        previewDatas={readingList}
+        contentType="reading"
         itemWidth={320}
         itemsPerPage={3}
       />
       {/* 인기 리딩 컨텐츠 캐러셀 */}
       <Carousel
         title="인기 리스닝 컨텐츠"
-        data={listeningList}
-        type="listening"
+        previewDatas={listeningList}
+        contentType="listening"
         itemWidth={320}
         itemsPerPage={3}
       />

@@ -6,24 +6,18 @@ import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Clock } from 'lucide-react';
+import { ListeningPreview } from '@/types';
 
-interface ListeningCarouselItemProps {
-  item: {
-    id: number;
-    imageUrl: string;
-    title: string;
-    category: string;
-  };
-}
-
-export default function ListeningCarouselItem({
-  item: { id, imageUrl, title, category },
-}: ListeningCarouselItemProps) {
+export default function ListeningPreviewCard({
+  data: { id, imageUrl, title, category },
+}: {
+  data: ListeningPreview;
+}) {
   return (
-    <Link href={`/learn/listening/detail/${id}`} className="mr-4">
-      <Card className="w-80 max-w-sm overflow-hidden">
+    <Link href={`/learn/listening/detail/${id}`} className="mr-3">
+      <Card className="w-80 h-46 max-w-sm overflow-hidden rounded-lg">
         <CardContent className="p-0">
-          <div className="relative w-80 h-44 rounded-lg overflow-hidden">
+          <div className="relative w-80 h-44">
             <Image src={imageUrl} alt={title} fill className="object-cover" />
             <Badge className="absolute bottom-2 right-2 flex items-center gap-1">
               <Clock className="w-3 h-3" />

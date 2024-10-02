@@ -2,14 +2,15 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { ListeningPreview, ReadingPreview } from '@/types';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import ReadingCarouselItem from './ReadingCarouselItem';
-import ListeningCarouselItem from './ListeningCarouselItem';
+import Link from 'next/link';
+import ReadingPreviewCard from './ReadingPreviewCard';
+import ListeningPreviewCard from './ListeningPreviewCard';
 
 interface CarouselProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any[]; // TODO(@smosco): data 타입 정의
-  type: 'reading' | 'listening';
+  previewDatas: ReadingPreview[] | ListeningPreview[]; // TODO(@smosco): data 타입 정의
+  contentType: 'reading' | 'listening';
   itemWidth?: number;
   itemsPerPage?: number;
   title?: string;
@@ -19,8 +20,8 @@ const DEFAULT_ITEM_WIDTH = 320;
 const DEFAULT_ITEMS_PER_PAGE = 3;
 
 export default function Carousel({
-  data,
-  type,
+  previewDatas,
+  contentType,
   itemWidth = DEFAULT_ITEM_WIDTH,
   itemsPerPage = DEFAULT_ITEMS_PER_PAGE,
   title,
@@ -29,7 +30,7 @@ export default function Carousel({
   const [showButtons, setShowButtons] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  const totalItems = data.length;
+  const totalItems = previewDatas.length;
   const maxIndex = totalItems - itemsPerPage;
 
   const nextSlide = () =>
@@ -44,11 +45,14 @@ export default function Carousel({
   }, [currentIndex, itemWidth]);
 
   return (
-    <div className="relative max-w-[1440px] mx-auto px-4">
+    <div className="relative max-w-[1440px] w-full mx-auto px-4">
       {/* Carousel Header */}
       {title && (
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-bold">{title}</h3>
+          <Link href={`/learn/${contentType}`}>
+            <ChevronRight size={24} color="#6F6F6F" />
+          </Link>
         </div>
       )}
 
@@ -64,12 +68,23 @@ export default function Carousel({
           className="flex transition-transform duration-300 ease-in-out"
           style={{ width: `${totalItems * itemWidth}px` }}
         >
-          {data.map((item) => {
-            if (type === 'reading') {
-              return <ReadingCarouselItem key={item.id} item={item} />;
+          {/* TODO(@smosco): 유니언 타입으로 인한 타입 단언 수정 */}
+          {previewDatas.map((data) => {
+            if (contentType === 'reading') {
+              return (
+                <ReadingPreviewCard
+                  key={data.id}
+                  data={data as ReadingPreview}
+                />
+              );
             }
-            if (type === 'listening') {
-              return <ListeningCarouselItem key={item.id} item={item} />;
+            if (contentType === 'listening') {
+              return (
+                <ListeningPreviewCard
+                  key={data.id}
+                  data={data as ListeningPreview}
+                />
+              );
             }
             return null;
           })}
