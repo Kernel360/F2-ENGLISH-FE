@@ -33,31 +33,23 @@ export default function DetailReadingPage({
           className="rounded-lg"
         />
       </div>
-      {/* 한글 있는 버전도 만들어 넣기 */}
-      <ul className="overflow-auto mb-8 w-[800px]  tracking-normal leading-loose">
-        {/* 5문장 기준으로 한 문단으로 묶어서 보여주기 */}
-        {Data.scripts.map((script, index) =>
-          // 한 문단의 첫 번째 문장에 indentation 주기
-          // eslint-disable-next-line no-nested-ternary
-          (index + 1) % 5 === 1 ? (
-            <li key={index} className="inline">
-              &nbsp;&nbsp;&nbsp;&nbsp;{script.enScript}
-            </li>
-          ) : // 한 문단의 마지막 문장에 줄바꿈 추가
-          (index + 1) % 5 === 0 ? (
-            <li key={index} className="inline">
+      <ul className="overflow-auto mb-8 w-[800px] tracking-normal leading-loose">
+        {/* 1문장씩 영/한 보여줌 */}
+        {Data.scripts.map((script, index) => (
+          <>
+            <li key={index} className="relative group">
               {script.enScript}
-
-              <br />
-              <br />
+              <div
+                key={index}
+                className="absolute opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 bg-white rounded shadow-lg"
+              >
+                {script.koScript}
+              </div>
             </li>
-          ) : (
-            // 아무것도 적용되지 않는 문장
-            <li key={index} className="inline">
-              {script.enScript}
-            </li>
-          ),
-        )}
+            <br />
+            <br />
+          </>
+        ))}
       </ul>
       <div>플로팅 북마크 버튼</div>
       <div>플로팅 위로 올리기 버튼</div>
