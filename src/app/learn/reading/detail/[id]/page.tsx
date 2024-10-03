@@ -15,7 +15,7 @@ import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { ArrowUp, Languages } from 'lucide-react';
+import { ArrowUp, Languages, Plus } from 'lucide-react';
 import { useState } from 'react';
 import ResponsiveSidebar from '@/components/ResponsiveSidebar';
 
@@ -57,16 +57,19 @@ export default function DetailReadingPage() {
           </div>
           <div>
             {/* 1문장씩 영/한 보여줌 */}
-            <ul className="overflow-auto mb-8 tracking-normal leading-loose">
+            <ul className="overflow-auto tracking-normal leading-loose">
               {Data.scripts.map((script, index) => (
-                <>
-                  {/* eslint-disable-next-line react/no-array-index-key */}
-                  <li key={index} className="bg-white rounded shadow-mille">
-                    <p>{script.enScript}</p>
-                    {showTranslate && <p>{script.koScript}</p>}
-                  </li>
+                <li
+                  key={index}
+                  className="bg-white rounded shadow-mille relative group"
+                >
+                  <p>{script.enScript}</p>
+                  {showTranslate && <p>{script.koScript}</p>}
+                  <Button className="absolute left-0 -bottom-4 transform -translate-y-1/2 bg-blue-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity w-8 h-8 flex items-center justify-center">
+                    <Plus className="w-4 h-4" />
+                  </Button>
                   <br />
-                </>
+                </li>
               ))}
             </ul>
           </div>
