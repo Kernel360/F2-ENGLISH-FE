@@ -36,17 +36,17 @@ export default function DetailReadingPage() {
     <>
       <div className="flex">
         {/* 부모요소 flex, 자식요소 중 중심이 되고싶은 컨텐츠에 flex-1 넣으면 shirnk 시에 최대한 걔 유지하고 나머지 자식요소가 줄어듦  */}
-        <div className="flex flex-col flex-1 gap-5 mx-auto p-5 pb-[60px] md:pb-[0px] max-w-[800px] ">
+        <div className="flex flex-col flex-1 gap-5 mx-auto p-5 pb-[60px] md:pb-[0px] max-w-[800px]">
           {/* 제목 부분 */}
-          <div className="">
+          <div>
             <Badge>카테고리</Badge>
             <div className="font-bold text-3xl mt-2 mb-4">{Data.title}</div>
             <div className="flex justify-end w-full">조회수</div>
           </div>
           {/* 구분선 */}
-          <Separator className="" />
+          <Separator />
           {/* 이미지 */}
-          <div className="">
+          <div className="flex justify-center">
             <Image
               src={Data.thumbnail}
               width={600}
@@ -54,6 +54,8 @@ export default function DetailReadingPage() {
               alt="이미지"
               className="rounded-lg"
             />
+          </div>
+          <div>
             {/* 1문장씩 영/한 보여줌 */}
             <ul className="overflow-auto mb-8 tracking-normal leading-loose">
               {Data.scripts.map((script, index) => (
