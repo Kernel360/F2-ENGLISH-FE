@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { ArrowUp, Languages, Plus, Minus } from 'lucide-react';
 import { useState } from 'react';
 import ResponsiveSidebar from '@/components/ResponsiveSidebar';
+import Quiz from '@/components/quiz/Quiz';
+import quizData from '@/mock/quizData.json';
 
 export default function DetailReadingPage() {
   const [showTranslate, toggleShowTranlation] = useState(true);
@@ -76,6 +78,7 @@ export default function DetailReadingPage() {
               ))}
             </ul>
           </div>
+          <Quiz quizData={quizData[0]} />
         </div>
 
         <div className="fixed right-[60px] bottom-[76px] md:bottom-[16px]">

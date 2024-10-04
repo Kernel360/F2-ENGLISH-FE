@@ -32,9 +32,8 @@
     "ecmaFeatures": {
       "jsx": true
     },
-    "ecmaVersion": 12,
-    "sourceType": "module",
-    "project": "./tsconfig.json"
+    "ecmaVersion": 2020,
+    "sourceType": "module"
   },
   "rules": {
     "prettier/prettier": ["error", { "endOfLine": "lf" }],
