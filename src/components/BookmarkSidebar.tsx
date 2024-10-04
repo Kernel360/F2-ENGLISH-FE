@@ -3,14 +3,14 @@ import { Button } from '@/components/ui/button';
 import { PanelRightClose, PanelRightOpen, Minus } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-interface ResponsiveSidebarProps {
+interface BookmarkSidebarProps {
   bookMarkedSentences: string[];
-  toggleBookmarking: (sentence: string) => void;
+  toggleBookmark: (sentence: string) => void;
 }
-export default function ResponsiveSidebar({
+export default function BookmarkSidebar({
   bookMarkedSentences,
-  toggleBookmarking,
-}: ResponsiveSidebarProps) {
+  toggleBookmark,
+}: BookmarkSidebarProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -33,8 +33,8 @@ export default function ResponsiveSidebar({
             // eslint-disable-next-line react/jsx-key
             <div>
               <Button
-                onClick={() => toggleBookmarking(sentence)}
-                className="w-4 h-4 p-1 mr-1"
+                onClick={() => toggleBookmark(sentence)}
+                className="w-4 h-4 p-1 mr-1 bg-red-500"
               >
                 <Minus />
               </Button>
