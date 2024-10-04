@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "question": "한 친구의 조언이 눈에 띄었다.",
+    "words": [
+      { "text": "friend's", "index": 0 },
+      { "text": "stood", "index": 1 },
+      { "text": "out", "index": 2 },
+      { "text": "advice", "index": 3 },
+      { "text": "one", "index": 4 }
+    ],
+    "answer": "one friend's advice stood out"
+  },
+  {
+    "id": 2,
+    "question": "이것은 매우 좋은 제안이었다.",
+    "words": [
+      { "text": "a", "index": 0 },
+      { "text": "It", "index": 1 },
+      { "text": "suggestion", "index": 2 },
+      { "text": "good", "index": 3 },
+      { "text": "was", "index": 4 }
+    ],
+    "answer": "It was a good suggestion"
+  },
+  {
+    "id": 3,
+    "question": "그는 나에게 도움을 제공했다.",
+    "words": [
+      { "text": "He", "index": 0 },
+      { "text": "help", "index": 1 },
+      { "text": "offered", "index": 2 },
+      { "text": "me", "index": 3 }
+    ],
+    "answer": "He offered me help"
+  }
+]
