@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { PanelRightClose, PanelRightOpen, Minus } from 'lucide-react';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface BookmarkSidebarProps {
@@ -21,7 +21,7 @@ export default function BookmarkSidebar({
     <>
       {/* 사이드바 */}
       <div
-        className={`fixed top-20 right-0 h-[30%] w-[30%] transform transition-transform duration-300 ease-in-out z-40 bg-gray-200 rounded-lg
+        className={`fixed top-20 right-0 h-[30%] w-[30%] transform transition-transform duration-300 ease-in-out z-40 bg-gray-50 rounded-lg
       ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}
        xl:w-[300px] `}
       >
@@ -57,12 +57,16 @@ export default function BookmarkSidebar({
                       <Minus />
                     </Button>
                     {/* eslint-disable-next-line react/no-array-index-key */}
-                    <li key={index} className="inline-block line-clamp-2 ">
+                    <li
+                      key={index}
+                      className="inline-block line-clamp-2 rounded-lg"
+                    >
                       {sentence}
                     </li>
                   </div>
                 ))}
               </div>
+              <ScrollBar orientation="vertical" className=" bg-muted " />
             </ScrollArea>
           </TabsContent>
           <TabsContent
