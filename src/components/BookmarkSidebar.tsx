@@ -28,7 +28,10 @@ export default function BookmarkSidebar({
         {/* todo : drag & drop으로 위치 변경 가능하게 만들기? or 배경화면 투명하게 */}
         {/* todo : 모바일 화면이면 30%민 보이도록 */}
         {/* 사이드바 콘텐츠 */}
-        <Tabs defaultValue="sidebar" className="h-full flex flex-col">
+        <Tabs
+          defaultValue="bookMarkedSentences"
+          className="h-full flex flex-col"
+        >
           <TabsList className="w-full flex-shrink-0">
             <TabsTrigger value="bookMarkedSentences" className="w-[50%]">
               문장
@@ -37,7 +40,10 @@ export default function BookmarkSidebar({
               단어
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="sidebar" className="flex-grow overflow-auto">
+          <TabsContent
+            value="bookMarkedSentences"
+            className="flex-grow overflow-auto"
+          >
             <ScrollArea className="h-full">
               <div className="px-4">
                 {/* <h2>저장한 문장</h2> */}
@@ -59,7 +65,10 @@ export default function BookmarkSidebar({
               </div>
             </ScrollArea>
           </TabsContent>
-          <TabsContent value="password" className="flex-grow overflow-auto">
+          <TabsContent
+            value="bookMarkedVoca"
+            className="flex-grow overflow-auto"
+          >
             <ScrollArea className="h-full">
               <div className="px-4">Change your password here.</div>
             </ScrollArea>
