@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { CircleCheck, CircleX } from 'lucide-react';
 
 interface QuizData {
   id: number;
@@ -9,15 +10,19 @@ interface QuizData {
 
 interface QuizProps {
   data: QuizData;
+  onNext?: () => void;
 }
-export default function Quiz({ data }: QuizProps) {
+export default function Quiz({ data, onNext }: QuizProps) {
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [remainingWords, setRemainingWords] = useState<string[]>([]);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
   useEffect(() => {
+    setSelectedWords([]);
     setRemainingWords(
       data.answer.split(' ').sort(() => (Math.random() > 0.5 ? 1 : -1)),
     );
+    setIsCorrect(null);
   }, [data]);
 
   const handleClickSelect = useCallback((word: string) => {
@@ -36,20 +41,20 @@ export default function Quiz({ data }: QuizProps) {
 
   const handleClickSubmit = useCallback(() => {
     const submittedAnswer = selectedWords.join(' ');
-    const isCorrect = submittedAnswer === data.answer;
-    if (isCorrect) {
-      console.log('정답입니다!');
-    } else {
-      console.log('오답입니다');
+    setIsCorrect(submittedAnswer === data.answer);
+
+    if (onNext) {
+      setTimeout(() => {
+        onNext();
+      }, 500);
     }
-    // TODO(@smosco): eslint 룰 체크
-    // react-hooks/exhaustive-deps
-  }, [selectedWords, data.answer]);
+  }, [selectedWords, data.answer, onNext]);
 
   return (
-    <div className="flex flex-col gap-2 w-full p-10 border">
+    <div className="flex flex-col gap-4 w-full p-10 border h-100">
       <p>{data.question}</p>
 
+      {/* 선택된 단어 표시 */}
       <div className="flex flex-wrap gap-2 border-b h-8">
         {selectedWords.map((word, index) => (
           <Button
@@ -64,6 +69,7 @@ export default function Quiz({ data }: QuizProps) {
         ))}
       </div>
 
+      {/* 남은 단어 표시 */}
       <div className="flex flex-wrap gap-2 h-8">
         {remainingWords.map((word, index) => (
           <Button
@@ -78,7 +84,32 @@ export default function Quiz({ data }: QuizProps) {
         ))}
       </div>
 
-      <Button onClick={handleClickSubmit}>제출</Button>
+      {/* 정답/오답 여부 표시 */}
+      <div className="flex h-12">
+        {isCorrect !== null && (
+          <div className={`${isCorrect !== null ? 'visible' : 'hidden'}`}>
+            {isCorrect ? (
+              <div className="flex">
+                <CircleCheck color="green" />
+                <p className="text-green-600 font-bold ml-1">정답입니다!</p>
+              </div>
+            ) : (
+              <div className="flex flex-col">
+                <div className="flex">
+                  <CircleX color="red" />
+                  <p className="text-red-600 font-bold ml-1">오답입니다</p>
+                </div>
+                <p className="text-red-600 font-bold">정답 : {data.answer}</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* 제출 버튼 */}
+      <Button className="mt-auto" onClick={handleClickSubmit}>
+        제출
+      </Button>
     </div>
   );
 }
