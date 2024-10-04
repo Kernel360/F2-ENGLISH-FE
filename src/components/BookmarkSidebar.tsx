@@ -8,6 +8,8 @@ interface BookmarkSidebarProps {
   bookMarkedSentences: string[];
   toggleBookmark: (sentence: string) => void;
 }
+// todo : 색깔 등 ui 디벨롭 필요
+
 export default function BookmarkSidebar({
   bookMarkedSentences,
   toggleBookmark,
@@ -46,7 +48,6 @@ export default function BookmarkSidebar({
           >
             <ScrollArea className="h-full">
               <div className="px-4">
-                {/* <h2>저장한 문장</h2> */}
                 {bookMarkedSentences.map((sentence, index) => (
                   // eslint-disable-next-line react/jsx-key
                   <div>
@@ -56,8 +57,8 @@ export default function BookmarkSidebar({
                     >
                       <Minus />
                     </Button>
-                    {/* eslint-disable-next-line react/no-array-index-key */}
                     <li
+                      // eslint-disable-next-line react/no-array-index-key
                       key={index}
                       className="inline-block line-clamp-2 rounded-lg"
                     >
@@ -79,8 +80,7 @@ export default function BookmarkSidebar({
           </TabsContent>
         </Tabs>
       </div>
-
-      {/* 화면이 작을 때만 버튼이 보임 */}
+      {/* 사이드바 열림 닫힘 조절 버튼 */}
       <div className="fixed top-16 right-0 z-50">
         <Button
           onClick={toggleSidebar}
