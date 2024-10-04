@@ -16,7 +16,7 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { ArrowUp, Languages, Plus, Minus } from 'lucide-react';
 import { useState } from 'react';
-import ResponsiveSidebar from '@/components/BookmarkSidebar'
+import ResponsiveSidebar from '@/components/BookmarkSidebar';
 import quizData from '@/mock/quizData.json';
 import QuizCarousel from '@/components/quiz/QuizCarousel';
 
