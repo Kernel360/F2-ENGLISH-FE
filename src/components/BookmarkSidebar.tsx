@@ -22,10 +22,10 @@ export default function BookmarkSidebar({
       {/* 사이드바 */}
       <div
         className={`fixed top-20 right-0 h-[30%] w-[30%] transform transition-transform duration-300 ease-in-out z-40 bg-gray-200 rounded-lg
-        ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}
+      ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}
        xl:w-[300px] `}
       >
-        <ScrollArea>
+        <ScrollArea className="h-full">
           {/* todo : drag & drop으로 위치 변경 가능하게 만들기? or 배경화면 투명하게 */}
           {/* todo : 모바일 화면이면 30%민 보이도록 */}
           {/* 사이드바 콘텐츠 */}
