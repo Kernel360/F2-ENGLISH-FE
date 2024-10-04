@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { CircleCheck, CircleX } from 'lucide-react';
+import { shuffleArray } from '@/lib/utils';
 
 interface QuizData {
   id: number;
@@ -19,9 +20,7 @@ export default function Quiz({ data, onNext }: QuizProps) {
 
   useEffect(() => {
     setSelectedWords([]);
-    setRemainingWords(
-      data.answer.split(' ').sort(() => (Math.random() > 0.5 ? 1 : -1)),
-    );
+    setRemainingWords(shuffleArray(data.answer.split(' ')));
     setIsCorrect(null);
   }, [data]);
 
