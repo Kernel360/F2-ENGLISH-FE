@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { ArrowUp, Languages, Plus, Minus } from 'lucide-react';
 import { useState } from 'react';
 import ResponsiveSidebar from '@/components/ResponsiveSidebar';
-import Quiz from '@/components/quiz/Quiz';
 import quizData from '@/mock/quizData.json';
 import QuizCarousel from '@/components/quiz/QuizCarousel';
 

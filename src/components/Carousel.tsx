@@ -2,11 +2,7 @@
 
 import React, { useState, useRef, useEffect, ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
-import { ListeningPreview, ReadingPreview } from '@/types';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-
-import ReadingPreviewCard from './ReadingPreviewCard';
-import ListeningPreviewCard from './ListeningPreviewCard';
 
 interface CarouselProps<T> {
   header?: ReactNode;
@@ -14,7 +10,6 @@ interface CarouselProps<T> {
   previewDatas: T[]; // TODO(@smosco): data 타입 정의
   itemWidth?: number;
   itemsPerPage?: number;
-  title?: string;
 }
 
 const DEFAULT_ITEM_WIDTH = 320;
@@ -67,6 +62,7 @@ export default function Carousel<T>({
         >
           {/* TODO(@smosco): 유니언 타입으로 인한 타입 단언 수정 */}
           {previewDatas.map((data, index) => {
+            // eslint-disable-next-line react/no-array-index-key
             return <ItemComponent key={index} data={data} />;
           })}
         </div>

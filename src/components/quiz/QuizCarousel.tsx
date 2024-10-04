@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Quiz from './Quiz';
 import Carousel from '../Carousel';
 
@@ -7,7 +7,7 @@ interface Word {
   index: number;
 }
 
-interface Quiz {
+interface QuizData {
   id: number;
   question: string;
   words: Word[];
@@ -15,12 +15,10 @@ interface Quiz {
 }
 
 interface QuizCarouselProps {
-  quizListData: Quiz[];
+  quizListData: QuizData[];
 }
 
 export default function QuizCarousel({ quizListData }: QuizCarouselProps) {
-  const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
-
   return (
     <div className="w-full p-10 border rounded-lg mb-20">
       <Carousel

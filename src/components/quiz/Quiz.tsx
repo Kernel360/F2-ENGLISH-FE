@@ -1,14 +1,14 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 
-interface Quiz {
+interface QuizData {
   id: number;
   question: string;
   answer: string;
 }
 
 interface QuizProps {
-  data: Quiz;
+  data: QuizData;
 }
 export default function Quiz({ data }: QuizProps) {
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
@@ -38,13 +38,13 @@ export default function Quiz({ data }: QuizProps) {
     const submittedAnswer = selectedWords.join(' ');
     const isCorrect = submittedAnswer === data.answer;
     if (isCorrect) {
-      alert('정답입니다!');
+      console.log('정답입니다!');
     } else {
-      alert('오답입니다');
+      console.log('오답입니다');
     }
     // TODO(@smosco): eslint 룰 체크
     // react-hooks/exhaustive-deps
-  }, [selectedWords]);
+  }, [selectedWords, data.answer]);
 
   return (
     <div className="flex flex-col gap-2 w-full p-10 border">
@@ -53,8 +53,9 @@ export default function Quiz({ data }: QuizProps) {
       <div className="flex flex-wrap gap-2 border-b h-8">
         {selectedWords.map((word, index) => (
           <Button
+            // eslint-disable-next-line react/no-array-index-key
             key={index}
-            variant={'ghost'}
+            variant="ghost"
             size="sm"
             onClick={() => handleClickUnselect(word)}
           >
@@ -66,8 +67,9 @@ export default function Quiz({ data }: QuizProps) {
       <div className="flex flex-wrap gap-2 h-8">
         {remainingWords.map((word, index) => (
           <Button
+            // eslint-disable-next-line react/no-array-index-key
             key={index}
-            variant={'outline'}
+            variant="outline"
             size="sm"
             onClick={() => handleClickSelect(word)}
           >
