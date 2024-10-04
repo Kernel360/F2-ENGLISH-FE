@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { PanelRightClose, PanelRightOpen, Minus } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface BookmarkSidebarProps {
   bookMarkedSentences: string[];
@@ -20,30 +21,47 @@ export default function BookmarkSidebar({
     <>
       {/* 사이드바 */}
       <div
-        className={`fixed top-20 right-0 h-[30%] w-[30%] transform transition-transform duration-300 ease-in-out z-40  bg-gray-200  rounded-lg
+        className={`fixed top-20 right-0 h-[30%] w-[30%] transform transition-transform duration-300 ease-in-out z-40 bg-gray-200 rounded-lg
         ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}
        xl:w-[300px] `}
       >
-        {/* todo : drag & drop으로 위치 변경 가능하게 만들기? or 배경화면 투명하게 */}
-        {/* todo : 모바일 화면이면 30%민 보이도록 */}
-        {/* 사이드바 콘텐츠 */}
-        <ScrollArea className="h-[100%] w-[100%] p-4 scrollbar">
-          <h2>저장한 문장</h2>
-          {bookMarkedSentences.map((sentence, index) => (
-            // eslint-disable-next-line react/jsx-key
-            <div>
-              <Button
-                onClick={() => toggleBookmark(sentence)}
-                className="w-4 h-4 p-1 mr-1 bg-red-500"
-              >
-                <Minus />
-              </Button>
-              {/* eslint-disable-next-line react/no-array-index-key */}
-              <li key={index} className="inline-block line-clamp-2">
-                {sentence}
-              </li>
-            </div>
-          ))}
+        <ScrollArea>
+          {/* todo : drag & drop으로 위치 변경 가능하게 만들기? or 배경화면 투명하게 */}
+          {/* todo : 모바일 화면이면 30%민 보이도록 */}
+          {/* 사이드바 콘텐츠 */}
+          <Tabs defaultValue="sidebar" className="">
+            <TabsList className="w-[100%]">
+              <TabsTrigger value="bookMarkedSentences" className="w-[50%]">
+                문장
+              </TabsTrigger>
+              <TabsTrigger value="bookMarkedVoca" className="w-[50%]">
+                단어
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="sidebar">
+              <div className="px-4">
+                {/* <h2>저장한 문장</h2> */}
+                {bookMarkedSentences.map((sentence, index) => (
+                  // eslint-disable-next-line react/jsx-key
+                  <div>
+                    <Button
+                      onClick={() => toggleBookmark(sentence)}
+                      className="w-4 h-4 p-1 mr-1 bg-red-500"
+                    >
+                      <Minus />
+                    </Button>
+                    {/* eslint-disable-next-line react/no-array-index-key */}
+                    <li key={index} className="inline-block line-clamp-2 ">
+                      {sentence}
+                    </li>
+                  </div>
+                ))}
+              </div>
+            </TabsContent>
+            <TabsContent value="password">
+              Change your password here.
+            </TabsContent>
+          </Tabs>
         </ScrollArea>
       </div>
 
