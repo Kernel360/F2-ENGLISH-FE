@@ -1,6 +1,10 @@
 import Carousel from '@/components/Carousel';
 import readingList from '../mock/readingList.json';
 import listeningList from '../mock/listeningList.json';
+import Link from 'next/link';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import ReadingPreviewCard from '@/components/ReadingPreviewCard';
+import ListeningPreviewCard from '@/components/ListeningPreviewCard';
 
 export default function HomePage() {
   return (
@@ -9,7 +13,15 @@ export default function HomePage() {
       <Carousel
         title="인기 리딩 컨텐츠"
         previewDatas={readingList}
-        contentType="reading"
+        header={
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-bold">인기 리딩 컨텐츠</h3>
+            <Link href={`/learn/reading`}>
+              <ChevronRight size={24} color="#6F6F6F" />
+            </Link>
+          </div>
+        }
+        itemComponent={ReadingPreviewCard}
         itemWidth={320}
         itemsPerPage={3}
       />
@@ -17,7 +29,15 @@ export default function HomePage() {
       <Carousel
         title="인기 리스닝 컨텐츠"
         previewDatas={listeningList}
-        contentType="listening"
+        header={
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-bold">인기 리딩 컨텐츠</h3>
+            <Link href={`/learn/reading`}>
+              <ChevronRight size={24} color="#6F6F6F" />
+            </Link>
+          </div>
+        }
+        itemComponent={ListeningPreviewCard}
         itemWidth={320}
         itemsPerPage={3}
       />
