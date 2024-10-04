@@ -1,31 +1,30 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
-import { ListeningPreview, ReadingPreview } from '@/types';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import Link from 'next/link';
-import ReadingPreviewCard from './ReadingPreviewCard';
-import ListeningPreviewCard from './ListeningPreviewCard';
 
-interface CarouselProps {
-  previewDatas: ReadingPreview[] | ListeningPreview[]; // TODO(@smosco): data 타입 정의
-  contentType: 'reading' | 'listening';
+interface CarouselProps<T> {
+  header?: ReactNode;
+  itemComponent: ({ data }: { data: T }) => JSX.Element;
+  previewDatas: T[]; // TODO(@smosco): data 타입 정의
   itemWidth?: number;
   itemsPerPage?: number;
-  title?: string;
 }
 
 const DEFAULT_ITEM_WIDTH = 320;
 const DEFAULT_ITEMS_PER_PAGE = 3;
 
-export default function Carousel({
+export default function Carousel<T>({
+  header,
+  itemComponent,
   previewDatas,
-  contentType,
   itemWidth = DEFAULT_ITEM_WIDTH,
   itemsPerPage = DEFAULT_ITEMS_PER_PAGE,
-  title,
-}: CarouselProps) {
+}: CarouselProps<T>) {
+  // 리액트가 컴포넌트로 인지하도록 대문자로 시작하도록 변경
+  const ItemComponent = itemComponent;
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showButtons, setShowButtons] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -47,14 +46,7 @@ export default function Carousel({
   return (
     <div className="relative max-w-[1440px] w-full mx-auto px-4">
       {/* Carousel Header */}
-      {title && (
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl font-bold">{title}</h3>
-          <Link href={`/learn/${contentType}`}>
-            <ChevronRight size={24} color="#6F6F6F" />
-          </Link>
-        </div>
-      )}
+      {header && header}
 
       {/* Carousel Container */}
       <div
@@ -69,24 +61,9 @@ export default function Carousel({
           style={{ width: `${totalItems * itemWidth}px` }}
         >
           {/* TODO(@smosco): 유니언 타입으로 인한 타입 단언 수정 */}
-          {previewDatas.map((data) => {
-            if (contentType === 'reading') {
-              return (
-                <ReadingPreviewCard
-                  key={data.id}
-                  data={data as ReadingPreview}
-                />
-              );
-            }
-            if (contentType === 'listening') {
-              return (
-                <ListeningPreviewCard
-                  key={data.id}
-                  data={data as ListeningPreview}
-                />
-              );
-            }
-            return null;
+          {previewDatas.map((data, index) => {
+            // eslint-disable-next-line react/no-array-index-key
+            return <ItemComponent key={index} data={data} />;
           })}
         </div>
 

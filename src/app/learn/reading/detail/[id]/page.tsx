@@ -16,7 +16,9 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { ArrowUp, Languages, Plus, Minus } from 'lucide-react';
 import { useState } from 'react';
-import ResponsiveSidebar from '@/components/BookmarkSidebar';
+import ResponsiveSidebar from '@/components/BookmarkSidebar'
+import quizData from '@/mock/quizData.json';
+import QuizCarousel from '@/components/quiz/QuizCarousel';
 
 export default function DetailReadingPage() {
   const [showTranslate, toggleShowTranlation] = useState(true);
@@ -90,6 +92,7 @@ export default function DetailReadingPage() {
               ))}
             </ul>
           </div>
+          <QuizCarousel quizListData={quizData} />
         </div>
       </div>
       {/* 2. 북마크사이드바 */}
