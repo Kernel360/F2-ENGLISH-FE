@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 
 interface Quiz {
@@ -8,13 +8,17 @@ interface Quiz {
 }
 
 interface QuizProps {
-  quizData: Quiz;
+  data: Quiz;
 }
-export default function Quiz({ quizData }: QuizProps) {
+export default function Quiz({ data }: QuizProps) {
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
-  const [remainingWords, setRemainingWords] = useState(
-    quizData.answer.split(' '),
-  );
+  const [remainingWords, setRemainingWords] = useState<string[]>([]);
+
+  useEffect(() => {
+    setRemainingWords(
+      data.answer.split(' ').sort(() => (Math.random() > 0.5 ? 1 : -1)),
+    );
+  }, [data]);
 
   const handleClickSelect = useCallback((word: string) => {
     setSelectedWords((prev) => [...prev, word]);
@@ -32,7 +36,7 @@ export default function Quiz({ quizData }: QuizProps) {
 
   const handleClickSubmit = useCallback(() => {
     const submittedAnswer = selectedWords.join(' ');
-    const isCorrect = submittedAnswer === quizData.answer;
+    const isCorrect = submittedAnswer === data.answer;
     if (isCorrect) {
       alert('정답입니다!');
     } else {
@@ -44,7 +48,7 @@ export default function Quiz({ quizData }: QuizProps) {
 
   return (
     <div className="flex flex-col gap-2 w-full p-10 border">
-      <p>{quizData.question}</p>
+      <p>{data.question}</p>
 
       <div className="flex flex-wrap gap-2 border-b h-8">
         {selectedWords.map((word, index) => (
