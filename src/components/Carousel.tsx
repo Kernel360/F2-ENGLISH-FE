@@ -6,7 +6,13 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface CarouselProps<T> {
   header?: ReactNode;
-  itemComponent: ({ data }: { data: T }) => JSX.Element;
+  itemComponent: ({
+    data,
+    onNext,
+  }: {
+    data: T;
+    onNext?: () => void;
+  }) => JSX.Element;
   previewDatas: T[]; // TODO(@smosco): data 타입 정의
   itemWidth?: number;
   itemsPerPage?: number;
@@ -62,8 +68,14 @@ export default function Carousel<T>({
         >
           {/* TODO(@smosco): 유니언 타입으로 인한 타입 단언 수정 */}
           {previewDatas.map((data, index) => {
-            // eslint-disable-next-line react/no-array-index-key
-            return <ItemComponent key={index} data={data} />;
+            return (
+              <ItemComponent
+                // eslint-disable-next-line react/no-array-index-key
+                key={index}
+                data={data}
+                onNext={nextSlide}
+              />
+            );
           })}
         </div>
 
