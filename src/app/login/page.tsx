@@ -8,7 +8,8 @@ export default function Page() {
   const handleGoogleLogin = async () => {
     try {
       console.log('login');
-      router.push(`https://biengual.store/oauth2/authorization/naver`);
+      // TODO(@smosco): 개발서버 dev, 운영서버 api next.config에서 설정?
+      router.push(`https://dev.biengual.store/oauth2/authorization/kakao`);
     } catch (error) {
       console.error('Naver login failed:', error);
     }
