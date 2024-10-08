@@ -12,6 +12,8 @@ const config: Config = {
       boxShadow: {
         mille:
           '2px 2px 20px rgba(0, 0, 0, .06), 2px 2px 10px rgba(0, 0, 0, .04)',
+        card: 'var(--base-card-box-shadow)',
+        'card-hover': 'var(--base-card-hover-box-shadow)',
       },
       borderRadius: {
         lg: 'var(--radius)',
