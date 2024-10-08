@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import ReadingPreviewCard from '@/components/ReadingPreviewCard';
 import ListeningPreviewCard from '@/components/ListeningPreviewCard';
+import { Button } from '@/components/ui/button';
 
 export default function HomePage() {
   return (
@@ -16,7 +17,9 @@ export default function HomePage() {
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-bold">인기 리딩 컨텐츠</h3>
             <Link href="/learn/reading">
-              <ChevronRight size={24} color="#6F6F6F" />
+              <Button variant="ghost">
+                <ChevronRight size={24} color="#6B6B6B" />
+              </Button>
             </Link>
           </div>
         }
@@ -29,9 +32,11 @@ export default function HomePage() {
         previewDatas={listeningList}
         header={
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-bold">인기 리딩 컨텐츠</h3>
-            <Link href="/learn/reading">
-              <ChevronRight size={24} color="#6F6F6F" />
+            <h3 className="text-xl font-bold">인기 리스닝 컨텐츠</h3>
+            <Link href="/learn/listening">
+              <Button variant="ghost">
+                <ChevronRight size={24} color="#6B6B6B" />
+              </Button>
             </Link>
           </div>
         }

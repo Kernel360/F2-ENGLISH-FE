@@ -8,12 +8,12 @@ import { ReadingPreview } from '@/types';
 import { Badge } from './ui/badge';
 
 export default function ReadingPreviewCard({
-  data: { thumbnail, title, category, description },
+  data: { id, thumbnail, title, category, description },
 }: {
   data: ReadingPreview;
 }) {
   return (
-    <Link href="/learn">
+    <Link href={`/learn/reading/detail/${id}`}>
       <Card className="overflow-hidden shadow-card hover:shadow-card-hover hover:border-border w-80 h-80 mr-3">
         <CardContent className="p-0 h-full">
           <div className="relative w-full h-40 rounded-t-lg overflow-hidden">
