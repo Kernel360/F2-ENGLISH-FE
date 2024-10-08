@@ -21,7 +21,9 @@ export default function ReadingPreviewCard({
           </div>
           <div className="p-4 space-y-2 h-40">
             <Badge>{category}</Badge>
-            <strong className="line-clamp-2">{title}</strong>
+            <strong className="line-clamp-2 hover:underline underline-offset-2">
+              {title}
+            </strong>
             <p className="text-sm text-gray-500 text-muted-foreground line-clamp-2">
               {description}
             </p>

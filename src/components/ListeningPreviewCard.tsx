@@ -28,7 +28,9 @@ export default function ListeningPreviewCard({
       </Card>
       <div className="mt-2">
         <Badge>{category}</Badge>
-        <h3 className="font-bold line-clamp-2 break-words">{title}</h3>
+        <h3 className="font-bold line-clamp-2 break-words hover:underline underline-offset-2">
+          {title}
+        </h3>
       </div>
     </Link>
   );
