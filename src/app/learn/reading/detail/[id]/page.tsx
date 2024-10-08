@@ -47,8 +47,8 @@ export default function DetailReadingPage() {
           {/* 글머리 */}
           <div>
             <Badge>카테고리</Badge>
-            <div className="font-bold text-3xl mt-2 mb-4">{Data.title}</div>
-            <div className="flex justify-end w-full">조회수</div>
+            <div className="font-bold text-2xl mt-2 mb-4">{Data.title}</div>
+            <div className="text-sm flex justify-end w-full">조회수</div>
           </div>
           {/* 구분선 */}
           <Separator />
@@ -64,12 +64,12 @@ export default function DetailReadingPage() {
           </div>
           {/* 본문 */}
           <div>
-            <ul className="overflow-auto tracking-normal leading-loose">
+            <ul className="overflow-auto tracking-normal text-[##313131]">
               {Data.scripts.map((script, index) => (
                 <li
                   // eslint-disable-next-line react/no-array-index-key
                   key={index}
-                  className="bg-white rounded shadow-mille relative group"
+                  className="bg-white rounded relative group leading-loose"
                 >
                   <p>{script.enScript}</p>
                   {showTranslate && <p>{script.koScript}</p>}

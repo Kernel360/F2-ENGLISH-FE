@@ -82,9 +82,9 @@ export default function Carousel<T>({
         {/* Previous Button */}
         {showButtons && currentIndex > 0 && (
           <Button
-            variant="secondary"
+            variant="outline"
             size="icon"
-            className="absolute top-1/2 transform -translate-y-1/2 opacity-100 transition-opacity duration-300"
+            className="absolute top-1/2 transform -translate-y-1/2"
             onClick={prevSlide}
           >
             <ChevronLeft className="h-6 w-6" />
@@ -94,9 +94,9 @@ export default function Carousel<T>({
         {/* Next Button */}
         {showButtons && currentIndex < maxIndex && (
           <Button
-            variant="secondary"
+            variant="outline"
             size="icon"
-            className="absolute top-1/2 right-0 transform -translate-y-1/2 opacity-100 transition-opacity duration-300"
+            className="absolute top-1/2 right-0 transform -translate-y-1/2"
             onClick={nextSlide}
           >
             <ChevronRight className="h-6 w-6" />
