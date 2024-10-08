@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:https": "next dev -H local.biengual.store -p 3000 --experimental-https",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
