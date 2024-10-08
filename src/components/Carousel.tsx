@@ -56,7 +56,7 @@ export default function Carousel<T>({
 
       {/* Carousel Container */}
       <div
-        className="relative overflow-hidden"
+        className="relative overflow-hidden py-2"
         onMouseEnter={() => setShowButtons(true)}
         onMouseLeave={() => setShowButtons(false)}
       >
