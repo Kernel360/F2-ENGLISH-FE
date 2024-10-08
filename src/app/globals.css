@@ -56,8 +56,8 @@
     --secondary-foreground: var(--gray-12);
     --muted: var(--gray-4);
     --muted-foreground: var(--gray-9);
-    --accent: var(--violet-4);
-    --accent-foreground: var(--violet-11);
+    --accent: var(--gray-3);
+    --accent-foreground: var(--gray-12);
     --destructive: 0 100% 67%;
     --destructive-foreground: 0 0% 100%;
     --border: var(--gray-7);
