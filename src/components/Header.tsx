@@ -22,17 +22,17 @@ export function Header() {
   const pathname = usePathname();
 
   return (
-    <div className="z-50 bg-white border-b">
+    <div className="sticky top-0 z-50 bg-[rgba(255,255,255,0.95)] border-b">
       <header className="flex items-center max-w-[1440px] h-16 mx-auto px-6">
-        <Link href="/" className="text-xl font-bold mr-6">
-          English
+        <Link href="/" className="text-lg font-semibold mr-6">
+          Byengual
         </Link>
         <nav className="hidden md:flex md:items-center">
           {navItems.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className={`py-3 px-6 text-lg flex-shrink-0 ${
+              className={`py-3 px-6 flex-shrink-0 font-semibold hover:text-primary ${
                 pathname === item.href || pathname.startsWith(item.href)
                   ? 'font-bold'
                   : ''
