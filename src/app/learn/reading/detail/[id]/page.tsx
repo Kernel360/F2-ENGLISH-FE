@@ -9,7 +9,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
@@ -42,6 +42,13 @@ export default function DetailReadingPage() {
   const [memoPosition, setMemoPosition] = useState({ top: 0, left: 0 });
 
   const toggleTranslation = () => setShowTranslate((prev) => !prev);
+
+  useEffect(() => {
+    if (!tooltipVisible && !showMemo) {
+      // 툴팁이 닫히고 메모도 클릭하지 않았다면 선택된 문장 초기화
+      setSelectedSentenceIndex(null);
+    }
+  }, [tooltipVisible, showMemo]);
 
   // 문장 클릭 시 툴팁 표시 및 선택된 문장 설정
   const handleSentenceClick = (
