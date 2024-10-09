@@ -1,58 +1,106 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer base {
+  /* 기본 테마: 라이트 모드 */
   :root {
+    /* Accent (Violet 계열) */
+    --violet-1: 240 100% 99%;
+    --violet-2: 240 100% 98%;
+    --violet-3: 240 100% 94%;
+    --violet-4: 240 100% 91%;
+    --violet-5: 240 100% 87%;
+    --violet-6: 240 100% 82%;
+    --violet-7: 240 100% 80%;
+    --violet-8: 240 100% 72%;
+    --violet-9: 260 84% 53%;
+    --violet-10: 260 100% 43%;
+    --violet-11: 264 65% 58%;
+    --violet-12: 264 70% 27%;
+
+    --violet-contrast: 0 0% 100%;
+    --violet-surface: 240 100% 97%;
+    --violet-indicator: 260 84% 53%;
+    --violet-track: 260 84% 53%;
+
+    /* Gray Scale */
+    --gray-1: 240 100% 99%;
+    --gray-2: 240 100% 98%;
+    --gray-3: 240 5% 96%;
+    --gray-4: 240 8% 94%;
+    --gray-5: 240 7% 92%;
+    --gray-6: 240 10% 89%;
+    --gray-7: 240 10% 84%;
+    --gray-8: 240 10% 78%;
+    --gray-9: 240 5% 60%;
+    --gray-10: 240 5% 53%;
+    --gray-11: 240 8% 43%;
+    --gray-12: 240 10% 14%;
+
+    --gray-contrast: 0 0% 100%;
+    --gray-surface: 0 0% 100%;
+    --gray-indicator: 240 5% 60%;
+    --gray-track: 240 5% 60%;
+
+    /* 기본 테마 색상 (Primary, Secondary 등) */
     --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --foreground: var(--gray-12);
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: var(--gray-12);
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 10% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --popover-foreground: var(--gray-12);
+    --primary: var(--violet-9);
+    --primary-foreground: 0 0% 100%;
+    --secondary: var(--gray-8);
+    --secondary-foreground: var(--gray-12);
+    --muted: var(--gray-4);
+    --muted-foreground: var(--gray-9);
+    --accent: var(--gray-3);
+    --accent-foreground: var(--gray-12);
+    --destructive: 0 100% 67%;
+    --destructive-foreground: 0 0% 100%;
+    --border: var(--gray-7);
+    --input: var(--gray-6);
+    --ring: var(--violet-8);
+    --chart-1: var(--violet-4);
+    --chart-2: var(--violet-5);
+    --chart-3: var(--gray-3);
+    --chart-4: var(--gray-4);
+    --chart-5: var(--gray-5);
     --radius: 0.5rem;
+
+    --base-card-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05),
+      0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    --base-card-hover-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
+      0 2px 4px rgba(0, 0, 0, 0.15);
   }
+
+  /* 다크 모드 */
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --background: var(--gray-12);
+    --foreground: 0 0% 100%;
+    --card: 240 10% 17%;
+    --card-foreground: 0 0% 100%;
+    --popover: 240 10% 17%;
+    --popover-foreground: 0 0% 100%;
+    --primary: var(--violet-10);
+    --primary-foreground: 0 0% 100%;
+    --secondary: var(--gray-9);
+    --secondary-foreground: var(--gray-2);
+    --muted: var(--gray-8);
+    --muted-foreground: var(--gray-5);
+    --accent: var(--violet-5);
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 100% 72%;
+    --destructive-foreground: 0 0% 100%;
+    --border: var(--gray-8);
+    --input: var(--gray-7);
+    --ring: var(--violet-11);
+    --chart-1: var(--violet-6);
+    --chart-2: var(--violet-7);
+    --chart-3: var(--gray-7);
+    --chart-4: var(--gray-8);
+    --chart-5: var(--gray-9);
   }
 }

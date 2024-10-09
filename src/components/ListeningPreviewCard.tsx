@@ -15,7 +15,7 @@ export default function ListeningPreviewCard({
 }) {
   return (
     <Link href={`/learn/listening/detail/${id}`} className="mr-3">
-      <Card className="w-80 h-46 max-w-sm overflow-hidden rounded-lg">
+      <Card className="w-80 h-46 max-w-sm overflow-hidden rounded-lg hover:shadow-card-hover">
         <CardContent className="p-0">
           <div className="relative w-80 h-44">
             <Image src={imageUrl} alt={title} fill className="object-cover" />
@@ -27,10 +27,10 @@ export default function ListeningPreviewCard({
         </CardContent>
       </Card>
       <div className="mt-2">
-        <p className="w-fit bg-gray-200 text-xs font-bold px-2 py-0.5 rounded">
-          {category}
-        </p>
-        <h3 className="font-bold line-clamp-2 break-words">{title}</h3>
+        <Badge>{category}</Badge>
+        <h3 className="font-bold line-clamp-2 break-words hover:underline underline-offset-2">
+          {title}
+        </h3>
       </div>
     </Link>
   );
