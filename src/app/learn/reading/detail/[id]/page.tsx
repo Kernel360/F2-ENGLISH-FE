@@ -20,6 +20,7 @@ import QuizCarousel from '@/components/quiz/QuizCarousel';
 import Data from '@/mock/readingDetailData.json';
 import Tooltip from '@/components/Tooltip';
 import MemoInput from '@/components/MemoInput';
+import Modal from '@/components/Modal';
 
 type BookmarkMemoType = {
   script_index: string; // 콘텐츠의 id
@@ -41,14 +42,16 @@ export default function DetailReadingPage() {
   const [memoText, setMemoText] = useState<string>('');
   const [memoPosition, setMemoPosition] = useState({ top: 0, left: 0 });
 
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false); // 삭제 확인 모달 상태 추가
+
   const toggleTranslation = () => setShowTranslate((prev) => !prev);
 
   useEffect(() => {
-    if (!tooltipVisible && !showMemo) {
-      // 툴팁이 닫히고 메모도 클릭하지 않았다면 선택된 문장 초기화
+    if (!tooltipVisible && !showMemo && !showDeleteModal) {
+      // 툴팁이 닫히고 메모도 클릭하지 않고 삭제도 클릭하지 않았을 때만 선택된 문장 초기화
       setSelectedSentenceIndex(null);
     }
-  }, [tooltipVisible, showMemo]);
+  }, [tooltipVisible, showMemo, showDeleteModal]);
 
   // 문장 클릭 시 툴팁 표시 및 선택된 문장 설정
   const handleSentenceClick = (
@@ -65,30 +68,41 @@ export default function DetailReadingPage() {
     setShowMemo(false);
   };
 
-  // 형광펜 버튼 클릭 시 북마크 추가 및 툴팁 숨기기
+  // 북마크 추가 및 삭제 모달 표시 처리 함수
   const handleAddBookmark = () => {
     if (selectedSentenceIndex !== null) {
-      setBookmarkMemos((prev) => {
-        const existingBookmarkIndex = prev.findIndex(
-          (item) => item.sentence_index === selectedSentenceIndex,
-        );
-        if (existingBookmarkIndex >= 0) {
-          // 이미 북마크가 있는 경우 제거
-          return prev.filter(
-            (item) => item.sentence_index !== selectedSentenceIndex,
-          );
-        }
+      const existingBookmark = bookmarkMemos.some(
+        (item) => item.sentence_index === selectedSentenceIndex,
+      );
+
+      if (existingBookmark) {
+        // 이미 북마크가 있는 경우, 삭제 확인 모달 표시
+        setShowDeleteModal(true);
+      } else {
         // 새로운 북마크 추가
-        return [
+        setBookmarkMemos((prev) => [
           ...prev,
           {
             // eslint-disable-next-line no-underscore-dangle
             script_index: Data._id.$oid,
             sentence_index: selectedSentenceIndex,
           },
-        ];
-      });
+        ]);
+      }
       setTooltipVisible(false);
+      setShowMemo(false); // 메모가 열려있을 때도 닫기(todo: 화인)
+    }
+  };
+
+  // 삭제 확인 시 실행
+  const handleDeleteBookmark = () => {
+    if (selectedSentenceIndex !== null) {
+      setBookmarkMemos((prev) =>
+        prev.filter((item) => item.sentence_index !== selectedSentenceIndex),
+      );
+      setTooltipVisible(false);
+      setShowMemo(false);
+      setShowDeleteModal(false); // 모달 닫기
     }
   };
 
@@ -209,7 +223,7 @@ export default function DetailReadingPage() {
                       tabIndex={0}
                       className={`w-fit cursor-pointer px-2 transition-colors duration-300 ${
                         bookmarkMemo ? 'bg-yellow-200' : ''
-                      } ${selectedSentenceIndex === index ? 'bg-gray-100' : ''} ${!bookmarkMemo && 'hover:bg-gray-100'}`}
+                      } ${selectedSentenceIndex === index ? 'bg-gray-200' : ''} ${!bookmarkMemo && 'hover:bg-gray-200'}`}
                     >
                       {script.enScript}
                       {bookmarkMemo?.description && (
@@ -238,6 +252,9 @@ export default function DetailReadingPage() {
                 onAddBookmark={handleAddBookmark}
                 onAddMemo={handleMemoClick}
                 onClose={() => setTooltipVisible(false)}
+                isBookmarked={bookmarkMemos.some(
+                  (item) => item.sentence_index === selectedSentenceIndex,
+                )}
               />
             )}
             {showMemo && (
@@ -253,6 +270,28 @@ export default function DetailReadingPage() {
           <QuizCarousel quizListData={quizData} />
         </div>
       </div>
+
+      {/* 삭제 확인 모달 */}
+      {showDeleteModal && (
+        <Modal
+          isOpen={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          title="삭제 확인"
+          description="형광펜이랑 메모 다 사라져요. 그래도 삭제할까요?"
+        >
+          <div className="flex justify-end gap-4 mt-4">
+            <Button
+              variant="secondary"
+              onClick={() => setShowDeleteModal(false)}
+            >
+              취소
+            </Button>
+            <Button variant="destructive" onClick={handleDeleteBookmark}>
+              삭제
+            </Button>
+          </div>
+        </Modal>
+      )}
 
       <div className="fixed right-16 bottom-20 md:bottom-4">
         <Button

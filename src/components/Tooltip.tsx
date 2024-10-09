@@ -3,13 +3,14 @@
 // components/Tooltip.tsx
 // components/Tooltip.tsx
 import React, { useEffect, useRef } from 'react';
-import { HighlighterIcon, MessageCircleMoreIcon } from 'lucide-react';
+import { HighlighterIcon, MessageCircleMoreIcon, Trash2 } from 'lucide-react';
 
 type TooltipProps = {
   position: { top: number; left: number };
   onAddBookmark: () => void;
   onAddMemo: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onClose: () => void;
+  isBookmarked: boolean;
 };
 
 export default function Tooltip({
@@ -17,6 +18,7 @@ export default function Tooltip({
   onAddBookmark,
   onAddMemo,
   onClose,
+  isBookmarked,
 }: TooltipProps) {
   const tooltipRef = useRef<HTMLDivElement>(null);
 
@@ -56,8 +58,12 @@ export default function Tooltip({
         className="flex items-center p-2 text-gray-600 hover:bg-gray-100 rounded cursor-pointer"
         onClick={() => onAddBookmark()} // 불필요한 e.stopPropagation() 제거
       >
-        <HighlighterIcon size="16px" />
-        <span>형광펜</span>
+        {isBookmarked ? (
+          <Trash2 size="16px" />
+        ) : (
+          <HighlighterIcon size="16px" />
+        )}
+        <span>{isBookmarked ? '삭제' : '형광펜'}</span>
       </button>
       <button
         type="button"
