@@ -21,21 +21,22 @@ import Data from '@/mock/readingDetailData.json';
 import Tooltip from '@/components/Tooltip';
 import MemoInput from '@/components/MemoInput';
 
-type MemoType = {
-  index: number;
-  text: string;
+type BookmarkMemoType = {
+  script_index: string; // 콘텐츠의 id
+  sentence_index: number; // 문장의 index
+  word_index?: number; // 단어의 index (필요한 경우 사용)
+  description?: string; // 메모 내용
 };
 
 export default function DetailReadingPage() {
   const [showTranslate, setShowTranslate] = useState(true);
-  const [sentenceBookmarks, setSentenceBookmarks] = useState<number[]>([]);
   const [selectedSentenceIndex, setSelectedSentenceIndex] = useState<
     number | null
   >(null);
   const [tooltipVisible, setTooltipVisible] = useState<boolean>(false);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
 
-  const [memos, setMemos] = useState<MemoType[]>([]);
+  const [bookmarkMemos, setBookmarkMemos] = useState<BookmarkMemoType[]>([]);
   const [showMemo, setShowMemo] = useState<boolean>(false);
   const [memoText, setMemoText] = useState<string>('');
   const [memoPosition, setMemoPosition] = useState({ top: 0, left: 0 });
@@ -45,14 +46,14 @@ export default function DetailReadingPage() {
   // 문장 클릭 시 툴팁 표시 및 선택된 문장 설정
   const handleSentenceClick = (
     e: React.MouseEvent<HTMLDivElement>,
-    index: number,
+    sentenceIndex: number,
   ) => {
     const rect = e.currentTarget.getBoundingClientRect();
     setTooltipPosition({
       top: rect.top + window.scrollY - 40,
       left: rect.left + window.scrollX + rect.width / 2,
     });
-    setSelectedSentenceIndex(index);
+    setSelectedSentenceIndex(sentenceIndex);
     setTooltipVisible(true);
     setShowMemo(false);
   };
@@ -60,11 +61,26 @@ export default function DetailReadingPage() {
   // 형광펜 버튼 클릭 시 북마크 추가 및 툴팁 숨기기
   const handleAddBookmark = () => {
     if (selectedSentenceIndex !== null) {
-      setSentenceBookmarks((prev) =>
-        prev.includes(selectedSentenceIndex)
-          ? prev.filter((i) => i !== selectedSentenceIndex)
-          : [...prev, selectedSentenceIndex],
-      );
+      setBookmarkMemos((prev) => {
+        const existingBookmarkIndex = prev.findIndex(
+          (item) => item.sentence_index === selectedSentenceIndex,
+        );
+        if (existingBookmarkIndex >= 0) {
+          // 이미 북마크가 있는 경우 제거
+          return prev.filter(
+            (item) => item.sentence_index !== selectedSentenceIndex,
+          );
+        }
+        // 새로운 북마크 추가
+        return [
+          ...prev,
+          {
+            // eslint-disable-next-line no-underscore-dangle
+            script_index: Data._id.$oid,
+            sentence_index: selectedSentenceIndex,
+          },
+        ];
+      });
       setTooltipVisible(false);
     }
   };
@@ -82,23 +98,23 @@ export default function DetailReadingPage() {
       });
     }
 
-    const existingMemo = memos.find(
-      (memo) => memo.index === selectedSentenceIndex,
+    const existingMemo = bookmarkMemos.find(
+      (item) => item.sentence_index === selectedSentenceIndex,
     );
-    setMemoText(existingMemo ? existingMemo.text : ''); // 기존 메모 내용이 있다면 로드, 없으면 빈 문자열
+    setMemoText(existingMemo ? (existingMemo.description ?? '') : ''); // 기존 메모 내용이 있다면 로드, 없으면 빈 문자열
     setShowMemo(true);
     setTooltipVisible(false);
   };
 
   // 메모 아이콘 클릭 시 메모 보여주기
   const handleMemoIconClick = (
-    index: number,
-    text: string,
+    sentenceIndex: number,
+    description: string,
     e: React.MouseEvent<HTMLSpanElement>,
   ) => {
     e.stopPropagation(); // 이벤트 전파 방지
     const sentenceElement = document.querySelector(
-      `li[data-index="${index}"] div`,
+      `li[data-index="${sentenceIndex}"] div`,
     );
     if (sentenceElement) {
       const rect = sentenceElement.getBoundingClientRect();
@@ -108,8 +124,8 @@ export default function DetailReadingPage() {
       });
     }
 
-    setMemoText(text);
-    setSelectedSentenceIndex(index);
+    setMemoText(description);
+    setSelectedSentenceIndex(sentenceIndex);
     setShowMemo(true);
     setTooltipVisible(false);
   };
@@ -117,27 +133,31 @@ export default function DetailReadingPage() {
   // 메모 저장 함수
   const handleSaveMemo = () => {
     if (selectedSentenceIndex !== null) {
-      setMemos((prev) => {
-        const existingMemoIndex = prev.findIndex(
-          (memo) => memo.index === selectedSentenceIndex,
+      setBookmarkMemos((prev) => {
+        const updatedBookmarkMemos = [...prev];
+        const memoIndex = updatedBookmarkMemos.findIndex(
+          (item) => item.sentence_index === selectedSentenceIndex,
         );
+
         if (memoText.trim() === '') {
-          // 빈 메모일 경우 삭제
-          if (existingMemoIndex >= 0) {
-            const updatedMemos = [...prev];
-            updatedMemos.splice(existingMemoIndex, 1);
-            return updatedMemos;
-          }
-          return prev;
+          // 빈 메모일 경우 제거
+          if (memoIndex >= 0) updatedBookmarkMemos.splice(memoIndex, 1);
+          return updatedBookmarkMemos;
         }
 
-        if (existingMemoIndex >= 0) {
-          const updatedMemos = [...prev];
-          updatedMemos[existingMemoIndex].text = memoText;
-          return updatedMemos;
+        if (memoIndex >= 0) {
+          // 기존 메모 수정
+          updatedBookmarkMemos[memoIndex].description = memoText;
+        } else {
+          // 새 메모 추가
+          updatedBookmarkMemos.push({
+            // eslint-disable-next-line no-underscore-dangle
+            script_index: Data._id.$oid,
+            sentence_index: selectedSentenceIndex,
+            description: memoText,
+          });
         }
-
-        return [...prev, { index: selectedSentenceIndex, text: memoText }];
+        return updatedBookmarkMemos;
       });
 
       setMemoText(''); // 메모 저장 후 초기화
@@ -148,17 +168,13 @@ export default function DetailReadingPage() {
   return (
     <>
       <div className="flex">
-        {/* 아티클 컨텐츠 */}
         <div className="flex flex-col flex-1 gap-5 mx-auto p-5 pb-16 max-w-[800px]">
-          {/* 글머리 */}
           <div>
             <Badge>카테고리</Badge>
             <div className="font-bold text-2xl mt-2 mb-4">{Data.title}</div>
             <div className="text-sm flex justify-end w-full">조회수</div>
           </div>
-          {/* 구분선 */}
           <Separator />
-          {/* 이미지 */}
           <div className="flex justify-center">
             <Image
               src={Data.thumbnail}
@@ -168,11 +184,12 @@ export default function DetailReadingPage() {
               className="rounded-lg"
             />
           </div>
-          {/* 본문 */}
           <div>
             <ul className="flex flex-col gap-4 text-[#313131]">
               {Data.scripts.map((script, index) => {
-                const memo = memos.find((m) => m.index === index);
+                const bookmarkMemo = bookmarkMemos.find(
+                  (item) => item.sentence_index === index,
+                );
                 return (
                   <li
                     key={index}
@@ -183,20 +200,20 @@ export default function DetailReadingPage() {
                       onClick={(e) => handleSentenceClick(e, index)}
                       role="button"
                       tabIndex={0}
-                      className={`w-fit cursor-pointer px-2 transition-colors duration-300 ${sentenceBookmarks.includes(index) || memo ? 'bg-yellow-200' : ''} ${
-                        selectedSentenceIndex === index &&
-                        !sentenceBookmarks.includes(index)
-                          ? 'bg-gray-100'
-                          : ''
-                      } ${!sentenceBookmarks.includes(index) && !memo ? 'hover:bg-gray-100' : ''}`}
+                      className={`w-fit cursor-pointer px-2 transition-colors duration-300 ${
+                        bookmarkMemo ? 'bg-yellow-200' : ''
+                      } ${selectedSentenceIndex === index ? 'bg-gray-100' : ''} ${!bookmarkMemo && 'hover:bg-gray-100'}`}
                     >
                       {script.enScript}
-                      {/* 메모가 있는 문장에 메모 아이콘 추가 */}
-                      {memo && (
+                      {bookmarkMemo?.description && (
                         <span
                           className="cursor-pointer ml-2 inline-flex"
                           onClick={(e) =>
-                            handleMemoIconClick(index, memo.text, e)
+                            handleMemoIconClick(
+                              index,
+                              bookmarkMemo.description ?? '',
+                              e,
+                            )
                           }
                         >
                           <MessageCircleMoreIcon size="16px" color="purple" />
@@ -208,7 +225,6 @@ export default function DetailReadingPage() {
                 );
               })}
             </ul>
-            {/* 툴팁 */}
             {tooltipVisible && (
               <Tooltip
                 position={tooltipPosition}
@@ -217,7 +233,6 @@ export default function DetailReadingPage() {
                 onClose={() => setTooltipVisible(false)}
               />
             )}
-            {/* 메모 입력창 */}
             {showMemo && (
               <MemoInput
                 position={memoPosition}
@@ -232,7 +247,6 @@ export default function DetailReadingPage() {
         </div>
       </div>
 
-      {/* 번역 floating 버튼 */}
       <div className="fixed right-16 bottom-20 md:bottom-4">
         <Button
           onClick={toggleTranslation}
@@ -243,7 +257,6 @@ export default function DetailReadingPage() {
           {`번역${showTranslate ? 'ON' : 'OFF'}`}
         </Button>
       </div>
-      {/* scroll-top floating 버튼 */}
       <div className="fixed right-4 bottom-20 md:bottom-4">
         <Button
           variant="default"
