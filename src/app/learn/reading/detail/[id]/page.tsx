@@ -22,12 +22,12 @@ import Tooltip from '@/components/Tooltip';
 import MemoInput from '@/components/MemoInput';
 import Modal from '@/components/Modal';
 
-type BookmarkMemoType = {
+interface BookmarkMemoType {
   script_index: string; // 콘텐츠의 id
   sentence_index: number; // 문장의 index
   word_index?: number; // 단어의 index (필요한 경우 사용)
   description?: string; // 메모 내용
-};
+}
 
 export default function DetailReadingPage() {
   const [showTranslate, setShowTranslate] = useState(true);
