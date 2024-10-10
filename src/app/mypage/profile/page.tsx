@@ -74,7 +74,7 @@ export default function UserProfile() {
               닉네임 *
             </label>
             <div className="flex gap-2">
-              <Input id="name" placeholder="숙리더" className="flex-1" />
+              <Input id="name" placeholder="홍길동" className="flex-1" />
               <Button variant="outline" size="sm">
                 변경하기
               </Button>
