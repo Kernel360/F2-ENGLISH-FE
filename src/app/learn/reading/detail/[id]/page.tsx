@@ -135,6 +135,7 @@ export default function DetailReadingPage() {
   ) => {
     e.stopPropagation(); // 이벤트 전파 방지
     const sentenceElement = document.querySelector(
+      // TODO(@smosco): DOM 직업 접근하지 않고 useRef 사용하는 방식으로 변경
       `li[data-index="${sentenceIndex}"] div`,
     );
     if (sentenceElement) {
