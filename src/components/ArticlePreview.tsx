@@ -38,8 +38,8 @@ export default function ArticlePreview({ articlePreviewContent }: ContentItem) {
               <Image
                 src={thumbnail}
                 alt=""
-                width={108}
-                height={108}
+                fill
+                sizes="100%"
                 className="rounded-md object-cover aspect-square"
               />
             </div>
