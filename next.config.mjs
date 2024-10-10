@@ -1,7 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['media.cnn.com', 'images.unsplash.com', 'avatar.iran.liara.run'], // 외부 이미지 도메인 추가
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'media.cnn.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'avatar.iran.liara.run',
+      },
+    ],
   },
   rewrites: async () => {
     return [
