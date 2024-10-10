@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import scriptsMockData from '@/mock/subtitleMockData';
 import { mockUrl } from '../mock/mockUrl';
@@ -19,6 +19,11 @@ function VideoPlayer() {
   const [selectedLanguages, setSelectedLanguages] =
     useState<LanguageCode[]>(availableLanguages);
   const [currentTime, setCurrentTime] = useState(0);
+  const [mounted, setMounted] = useState(false); // 추가: 마운트 상태 확인
+
+  useEffect(() => {
+    setMounted(true); // 컴포넌트가 클라이언트에서 마운트되었음을 표시
+  }, []);
 
   const handleProgress = (state: { playedSeconds: number }) => {
     setCurrentTime(state.playedSeconds);
@@ -61,6 +66,9 @@ function VideoPlayer() {
     volume,
     setPlayBackRate,
   };
+
+  // 클라이언트에서만 렌더링되도록 조건부 렌더링
+  if (!mounted) return null;
 
   return (
     <div className="flex flex-col gap-4 w-full h-full max-w-[640px] rounded-[20px] ">
