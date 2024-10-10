@@ -1,4 +1,4 @@
-import { Subtitle } from '../core/interfaces/Scripts';
+import { Subtitle } from '@/types/Scripts';
 
 const subtitles: Subtitle[] = [
   {
