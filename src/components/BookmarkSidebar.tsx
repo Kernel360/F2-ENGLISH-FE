@@ -23,9 +23,9 @@ export default function BookmarkSidebar({
     <>
       {/* 사이드바 */}
       <div
-        className={`fixed top-20 right-0 h-[30%] w-[30%] transform transition-transform duration-300 ease-in-out z-40 bg-gray-50 rounded-lg
+        className={`fixed top-20 right-0 h-[30%] w-[30%] transform transition-transform duration-300 ease-in-out z-40 bg-gray-50 bg-opacity-70 backdrop-blur-lg rounded-lg
       ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}
-       xl:w-[300px] `}
+       xl:w-[300px] drop-shadow-xl `}
       >
         {/* todo : drag & drop으로 위치 변경 가능하게 만들기? or 배경화면 투명하게 */}
         {/* todo : 모바일 화면이면 30%민 보이도록 */}
