@@ -1,10 +1,9 @@
 /* eslint-disable react/button-has-type */
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { LanguageCode, Subtitle } from '../interfaces/Scripts';
+import { LanguageCode, Subtitle } from '../../types/Scripts';
 // import { useState } from 'react';
 import { TextDisplay } from './TextDisplay';
-import styles from './ReactScriptPlayer.module.scss';
 
 interface LineViewProps {
   subtitles: Subtitle[];
@@ -39,12 +38,12 @@ export function LineView({
   };
 
   return (
-    <div className={styles.lineViewContainer}>
-      <div className={styles.skipButtonContainer}>
-        <button onClick={handlePrevious}>
+    <div className="flex flex-col gap-8">
+      <div className="self-end">
+        <button onClick={handlePrevious} className="cursor-pointer">
           <ChevronLeft />
         </button>
-        <button onClick={handleNext}>
+        <button onClick={handleNext} className="cursor-pointer">
           <ChevronRight />
         </button>
       </div>

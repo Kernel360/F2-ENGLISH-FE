@@ -1,8 +1,5 @@
-import React from 'react';
-import { Dispatch, SetStateAction } from 'react';
-
-import styles from './SubtitleOption.module.scss';
-import { LanguageCode } from './core/interfaces/Scripts';
+import React, { Dispatch, SetStateAction } from 'react';
+import { LanguageCode } from '../types/Scripts';
 
 type Mode = 'line' | 'block';
 
@@ -32,14 +29,16 @@ export default function SubtitleOption({
   };
 
   return (
-    <div className={styles.optionContainer}>
+    <div className="flex flex-col gap-2">
       {/* 모드 선택 버튼 */}
-      <div className={styles.displayModeToggleContainer}>
+      <div className="flex w-48 p-1 bg-gray-300 rounded">
         {['line', 'block'].map((item) => (
-          // eslint-disable-next-line react/button-has-type
           <button
+            type="button"
             key={item}
-            className={`${mode === item ? styles.active : ''}`}
+            className={`w-1/2 border-none cursor-pointer bg-transparent py-2 text-sm transition-colors duration-300 ease-out ${
+              mode === item ? 'bg-white rounded' : ''
+            }`}
             onClick={() => setMode(item as Mode)}
           >
             {item === 'line' ? '한 줄씩 보기' : '전체 보기'}
@@ -48,10 +47,10 @@ export default function SubtitleOption({
       </div>
 
       {/* 언어 선택 */}
-      <div className={styles.languageCheckboxContainer}>
+      <div className="flex flex-wrap gap-2">
         {availableLanguages.map((item) => (
           // eslint-disable-next-line jsx-a11y/label-has-associated-control
-          <label key={item} className={styles.languageOption}>
+          <label key={item} className="flex items-center gap-2 text-sm">
             <input
               type="checkbox"
               value={item}

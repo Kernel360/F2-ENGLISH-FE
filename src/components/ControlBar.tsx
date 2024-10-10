@@ -3,8 +3,7 @@
 import React, { RefObject, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { Volume2, Play, Rewind, FastForward, Pause, Gauge } from 'lucide-react';
-import S from './VideoPlayer.module.scss';
-import formatTime from './utils/formatTime';
+import formatTime from '@/lib/formatTime';
 
 interface BasicControlBarProps {
   handlePlayPause: () => void;
@@ -60,12 +59,12 @@ export default function ControlBar({
   };
 
   return (
-    <div className={S.controlBarWrapper}>
-      <div className={S.controlBar}>
-        <div className={S.leftControlBar}>
+    <div className="absolute w-full bottom-[-5px] bg-gradient-to-b from-transparent to-black">
+      <div className="w-full h-[50px] flex justify-between items-center px-[30px] text-white box-border">
+        <div className="flex flex-row items-center gap-2 ">
           {/* 볼륨 슬라이더 */}
-          <div className={S.volumeSlideBar}>
-            <Volume2 fill="white" />
+          <div className="flex items-center mr-2">
+            <Volume2 className="text-white" />
             <input
               type="range"
               min="0"
@@ -74,37 +73,44 @@ export default function ControlBar({
               value={volume}
               onChange={handleVolumeChange}
               aria-label="Volume"
+              className="w-[60px] h-[5px] rounded-[15px] cursor-pointer accent-white"
             />
           </div>
           {/* 진행시간 박스 */}
-          <span className={S.timeViewBox}>
+          <span className="text-sm">
             {`${formatTime(playerRef.current?.getCurrentTime() ?? 0)} / ${formatTime(playerRef.current?.getDuration() ?? 0)}`}
           </span>
         </div>
+
         {/* 재생 조절 버튼 */}
-        <div className={S.centerControlBar}>
-          <Rewind fill="white" onClick={handleSeekBackward} />
+        <div className="absolute right-[50%] transform translate-x-[50%] flex gap-[10px] cursor-pointer">
+          <Rewind className="text-white" onClick={handleSeekBackward} />
           {isPlaying ? (
-            <Pause fill="white" onClick={handlePlayPause} />
+            <Pause className="text-white" onClick={handlePlayPause} />
           ) : (
-            <Play fill="white" onClick={handlePlayPause} />
+            <Play className="text-white" onClick={handlePlayPause} />
           )}
-          <FastForward fill="white" onClick={handleSeekForward} />
+          <FastForward className="text-white" onClick={handleSeekForward} />
         </div>
 
-        <div className={S.rightControlBar}>
-          {/* 배속조절버튼 */}
-          <Gauge onClick={handleShowPlaybackRate} />
+        {/* 우측 컨트롤바 */}
+        <div className="flex flex-row items-center relative cursor-pointer">
+          {/* 배속 조절 버튼 */}
+          <Gauge className="text-white" onClick={handleShowPlaybackRate} />
           {showPlaybackRate && (
-            <div className={S.playbackRateButton}>
+            <div className="absolute bottom-full bg-[rgba(0,0,0,0.5)] text-white rounded-[4px]">
               {[0.5, 0.75, 1, 1.2, 1.5].map((rate) => (
                 // eslint-disable-next-line jsx-a11y/label-has-associated-control
-                <label key={rate} className={S.playbackRateLabel}>
+                <label
+                  key={rate}
+                  className="block px-[12px] py-[8px] text-sm cursor-pointer transition-colors duration-200 ease-in-out hover:bg-black rounded"
+                >
                   <input
                     type="radio"
                     name="playbackRate"
                     value={rate}
                     onClick={() => setPlayBackRate(rate)}
+                    className="hidden"
                   />
                   {rate}x
                 </label>
@@ -116,7 +122,7 @@ export default function ControlBar({
 
       {/* progressBar */}
       <div
-        className={S.progressBar}
+        className="relative w-full h-[20px] bg-[rgba(255,255,255,0.3)] rounded cursor-pointer"
         onMouseDown={(e) => handleMouseEvent(e, 'down')}
         onMouseMove={(e) => isDragging && handleMouseEvent(e, 'move')}
         onMouseUp={(e) => handleMouseEvent(e, 'up')}
@@ -125,10 +131,17 @@ export default function ControlBar({
         aria-label="Progress"
       >
         <div
-          className={S.progressFill}
+          className="h-full bg-[rgb(186,133,186)] rounded-l transition-all duration-200 ease"
           style={{
-            // eslint-disable-next-line no-unsafe-optional-chaining
-            width: `${playerRef.current?.getCurrentTime() && playerRef.current?.getDuration() ? (playerRef.current?.getCurrentTime() / playerRef.current.getDuration()) * 100 : 0}%`,
+            width: `${
+              playerRef.current?.getCurrentTime() &&
+              playerRef.current?.getDuration()
+                ? // eslint-disable-next-line no-unsafe-optional-chaining
+                  (playerRef.current?.getCurrentTime() /
+                    playerRef.current.getDuration()) *
+                  100
+                : 0
+            }%`,
           }}
         ></div>
       </div>

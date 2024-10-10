@@ -10,12 +10,13 @@ export default function DetailListeningPage() {
     <div className="flex">
       <div className="flex flex-col flex-1 gap-5 mx-auto p-5 pb-16 max-w-[800px]">
         <div>
+          <h1>타이틀</h1>
           <Badge>카테고리</Badge>
-          {/* <div className="font-bold text-2xl mt-2 mb-4">{Data.title}</div> */}
           <div className="text-sm flex justify-end w-full">조회수</div>
         </div>
         <Separator />
-        <VideoPlayer />;
+
+        <VideoPlayer />
       </div>
     </div>
   );

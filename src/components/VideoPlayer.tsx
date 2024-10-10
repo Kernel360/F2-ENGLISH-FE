@@ -2,13 +2,12 @@
 
 import { useState, useRef } from 'react';
 import ReactPlayer from 'react-player';
-import { ReactScriptPlayer } from './core/ReactScriptPlayer';
-import SubtitleOption from './SubtitleOption';
-import { LanguageCode } from './core/interfaces/Scripts';
-import scriptsMockData from './mocks/subtitleMockData';
-import { mockUrl } from './mocks/mockUrl';
+import scriptsMockData from '@/mock/subtitleMockData';
+import { mockUrl } from '../mock/mockUrl';
 import ControlBar from './ControlBar';
-import Style from './VideoPlayer.module.scss';
+import SubtitleOption from './SubtitleOption';
+import { ReactScriptPlayer } from './ReactScriptPlayer';
+import { LanguageCode } from '../types/Scripts';
 
 type Mode = 'line' | 'block';
 
@@ -16,21 +15,16 @@ function VideoPlayer() {
   const playerRef = useRef<ReactPlayer | null>(null);
 
   const [mode, setMode] = useState<Mode>('line');
-
   const availableLanguages: LanguageCode[] = ['en', 'ko', 'fr'];
-
   const [selectedLanguages, setSelectedLanguages] =
     useState<LanguageCode[]>(availableLanguages);
-  // 쓸모없다고 생각한 reactPlayer의 onProgress 구문을 삭제하면 controlbar의 progressbar업데이트가 느려지는 문제 발생.따라서 onProgress에 쓰이는 currentTime을 삭제하지 않음
   const [currentTime, setCurrentTime] = useState(0);
 
-  const seekTo = (timeInSeconds: number) => {
-    if (playerRef.current) {
-      playerRef.current.seekTo(timeInSeconds, 'seconds');
-    }
+  const handleProgress = (state: { playedSeconds: number }) => {
+    setCurrentTime(state.playedSeconds);
   };
 
-  // --- todo : ControlBar에서만 쓰이는 속성 ControlBar로 내부로 이동
+  // TODO(@godhyzaang):ControlBar에서만 쓰이는 속성 ControlBar로 내부로 이동
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const [playbackRate, setPlayBackRate] = useState(1);
@@ -52,6 +46,12 @@ function VideoPlayer() {
     }
   };
 
+  const seekTo = (timeInSeconds: number) => {
+    if (playerRef.current) {
+      playerRef.current.seekTo(timeInSeconds, 'seconds');
+    }
+  };
+
   const BasicControlBarProps = {
     handlePlayPause,
     handleVolumeChange,
@@ -61,11 +61,10 @@ function VideoPlayer() {
     volume,
     setPlayBackRate,
   };
-  // ---
 
   return (
-    <>
-      <div className={Style.video}>
+    <div className="flex flex-col gap-4 w-full h-full max-w-[640px] rounded-[20px] ">
+      <div className="relative overflow-hidden">
         <ReactPlayer
           ref={playerRef}
           url={mockUrl}
@@ -74,9 +73,9 @@ function VideoPlayer() {
           onPlay={() => setIsPlaying(true)}
           onStart={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
-          onProgress={({ playedSeconds }) => setCurrentTime(playedSeconds)} // 쓸모없다고 생각한 이 onProgress 구문을 삭제하면 controlbar의 progressbar업데이트가 느려지는 문제 발생.따라서 안 지움.
+          onProgress={handleProgress}
           volume={volume}
-          controls={false} // 유튜브 자체 컨트롤러 안 뜨게
+          controls={false} // 유튜브 자체 컨트롤러 제거
           playbackRate={playbackRate}
           progressInterval={100} // 기존 progress 업데이트 1초에서 0.1초로 변경 -> controlBar 클릭반응 느린문제 개선
         />
@@ -85,7 +84,7 @@ function VideoPlayer() {
           BasicControlBarProps={BasicControlBarProps}
         />
       </div>
-      {/* 아래 부분은 npm배포 후 가져와야함 */}
+
       <SubtitleOption
         mode={mode}
         selectedLanguages={selectedLanguages}
@@ -107,7 +106,7 @@ function VideoPlayer() {
           console.log(word, subtitle, index);
         }}
       />
-    </>
+    </div>
   );
 }
 
