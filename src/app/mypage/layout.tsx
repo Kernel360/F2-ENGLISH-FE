@@ -7,7 +7,7 @@ import Link from 'next/link';
 type Tab = 'profile' | 'learn' | 'challenges';
 
 const tabs: { key: Tab; label: string; href: string }[] = [
-  { key: 'profile', label: '프로필', href: '/mypage' },
+  { key: 'profile', label: '프로필', href: '/mypage/profile' },
   { key: 'learn', label: '나의 학습', href: '/mypage/learn' },
   { key: 'challenges', label: '나의 챌린지', href: '/mypage/challenges' },
 ];
