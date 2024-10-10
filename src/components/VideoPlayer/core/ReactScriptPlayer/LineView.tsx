@@ -1,10 +1,8 @@
 /* eslint-disable react/button-has-type */
 import React from 'react';
-import Image from 'next/image';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { LanguageCode, Subtitle } from '../interfaces/Scripts';
 // import { useState } from 'react';
-import arrow_back from '../assets/icons/arrow_back.svg';
-import arrow_forward from '../assets/icons/arrow_forward.svg';
 import { TextDisplay } from './TextDisplay';
 import styles from './ReactScriptPlayer.module.scss';
 
@@ -44,10 +42,10 @@ export function LineView({
     <div className={styles.lineViewContainer}>
       <div className={styles.skipButtonContainer}>
         <button onClick={handlePrevious}>
-          <Image src={arrow_back} alt="Back Arrow" />
+          <ChevronLeft />
         </button>
         <button onClick={handleNext}>
-          <Image src={arrow_forward} alt="Forward Arrow" />
+          <ChevronRight />
         </button>
       </div>
 
