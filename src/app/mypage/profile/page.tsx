@@ -1,7 +1,7 @@
 'use client';
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { ArrowLeft, Camera, X } from 'lucide-react';
+import { Camera, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Img from 'next/image';
