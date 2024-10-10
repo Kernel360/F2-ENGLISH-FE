@@ -4,7 +4,8 @@
 import { Camera, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import Img from 'next/image';
+import Image from 'next/image';
+
 import { useState } from 'react';
 
 export default function UserProfile() {
@@ -44,7 +45,7 @@ export default function UserProfile() {
       <div className="p-4 max-w-xl flex flex-col justify-center items-center mx-auto">
         <div className="flex justify-center mb-6">
           <div className="relative">
-            <Img
+            <Image
               src="https://avatar.iran.liara.run/public/girl"
               alt="Profile"
               className="w-20 h-20 rounded-full"

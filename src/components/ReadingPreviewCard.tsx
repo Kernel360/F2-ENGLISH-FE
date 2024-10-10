@@ -17,7 +17,13 @@ export default function ReadingPreviewCard({
       <Card className="overflow-hidden shadow-card hover:shadow-card-hover hover:border-border w-80 h-80 mr-3">
         <CardContent className="p-0 h-full">
           <div className="relative w-full h-40 rounded-t-lg overflow-hidden">
-            <Image src={thumbnail} alt={title} fill className="object-cover" />
+            <Image
+              src={thumbnail}
+              alt={title}
+              fill
+              sizes="100%"
+              className="object-cover"
+            />
           </div>
           <div className="p-4 space-y-2 h-40">
             <Badge>{category}</Badge>
