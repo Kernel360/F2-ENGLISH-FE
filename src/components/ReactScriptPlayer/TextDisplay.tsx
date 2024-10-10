@@ -1,7 +1,8 @@
+'use client';
+
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
-import { Subtitle, LanguageCode } from '../interfaces/Scripts';
-import styles from './ReactScriptPlayer.module.scss';
+import { Subtitle, LanguageCode } from '../../types/Scripts';
 
 export function TextDisplay({
   subtitle,
@@ -13,11 +14,10 @@ export function TextDisplay({
   onSelectWord: (word: string, subtitle: Subtitle, index: number) => void;
 }) {
   return (
-    <div className={styles.textView}>
+    <div>
       {selectedLanguages.map((language) => (
         <p
           key={language}
-          className={styles[`text${language.toUpperCase()}`]}
           onMouseUp={() => {
             const selection = window.getSelection();
             if (selection && selection.toString()) {

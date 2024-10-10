@@ -1,10 +1,11 @@
+'use client';
+
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useRef, useEffect } from 'react';
-import { LanguageCode, Subtitle } from '../interfaces/Scripts';
-import styles from './ReactScriptPlayer.module.scss';
-import { convertTime } from '../utils/convertTime';
+import { LanguageCode, Subtitle } from '../../types/Scripts';
+import { convertTime } from '../../lib/convertTime';
 import { TextDisplay } from './TextDisplay';
 
 interface BlockViewProps {
@@ -39,10 +40,12 @@ export function BlockView({
   }, [currentSubtitleIndex]);
 
   return (
-    <div ref={containerRef} className={styles.blockViewContainer}>
+    <div ref={containerRef} className="flex flex-col gap-8">
       {subtitles.map((subtitle, index) => (
         <div
-          className={`${styles.subtitleItem} ${index === currentSubtitleIndex ? styles.active : ''}`}
+          className={`p-4 rounded-lg transition-colors duration-500 ease-in-out ${
+            index === currentSubtitleIndex ? 'bg-gray-300' : ''
+          }`}
           // eslint-disable-next-line react/no-array-index-key
           key={index}
           onClick={() => {
@@ -51,7 +54,9 @@ export function BlockView({
             onClickSubtitle(subtitle, index);
           }}
         >
-          <button>{convertTime(subtitle.startTimeInSecond)}</button>
+          <button className="w-20 px-3 py-2 border-none rounded-full bg-[#ececec] cursor-pointer text-sm text-[#5a5a5a]">
+            {convertTime(subtitle.startTimeInSecond)}
+          </button>
 
           <TextDisplay
             subtitle={subtitles[index]}
