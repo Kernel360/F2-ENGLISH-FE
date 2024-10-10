@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useMemo } from 'react';
 import { LanguageCode, Subtitle } from '../../types/Scripts';
 import { LineView } from './LineView';

@@ -1,3 +1,5 @@
+'use client';
+
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import React, { RefObject, useState } from 'react';
