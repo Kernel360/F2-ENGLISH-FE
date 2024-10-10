@@ -1,6 +1,7 @@
+'use client';
+
 import React, { useMemo } from 'react';
-import styles from './ReactScriptPlayer.module.scss';
-import { LanguageCode, Subtitle } from '../interfaces/Scripts';
+import { LanguageCode, Subtitle } from '../../types/Scripts';
 import { LineView } from './LineView';
 import { BlockView } from './BlockView';
 
@@ -36,8 +37,8 @@ export function ReactScriptPlayer({
   }, [reversedSubtitles, currentTime]);
 
   return (
-    <div className={styles.subtitleContainer}>
-      <div className={styles.displayContainer}>
+    <div className="flex flex-col gap-8 w-[90%] max-w-[590px] h-[16rem] p-6 border-2 border-[#e3e3e3] rounded-md overflow-y-auto">
+      <div>
         {/* TODO(@smosco): line, block 뷰 props가 거의 동일하기 때문에 공통 props로 추출해서 관리 */}
         {mode === 'line' && (
           <LineView
