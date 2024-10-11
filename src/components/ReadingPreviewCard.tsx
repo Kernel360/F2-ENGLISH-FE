@@ -8,7 +8,7 @@ import { ReadingPreview } from '@/types/Preview';
 import { Badge } from './ui/badge';
 
 export default function ReadingPreviewCard({
-  data: { id, thumbnail, title, category, description },
+  data: { id, thumbnailUrl, title, category, description },
 }: {
   data: ReadingPreview;
 }) {
@@ -18,7 +18,7 @@ export default function ReadingPreviewCard({
         <CardContent className="p-0 h-full">
           <div className="relative w-full h-40 rounded-t-lg overflow-hidden">
             <Image
-              src={thumbnail}
+              src={thumbnailUrl}
               alt={title}
               fill
               sizes="100%"
