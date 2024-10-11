@@ -5,30 +5,54 @@ import { Camera, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
+import { useEffect, useState, useMemo } from 'react';
+import { useUserInfo } from '@/api/hooks/useUserInfo';
+import { updateUserInfo } from '@/api/queries/userQueries';
 
-import { useState } from 'react';
+const categories = [
+  'IT',
+  'Health',
+  'Business',
+  'Sports',
+  'Science',
+  'Language',
+  'Design',
+
+  'Music',
+  'Life',
+  'Fashion',
+  'Food',
+
+  'Finance',
+  'Movie',
+  'Art',
+];
 
 export default function UserProfile() {
+  const [nickname, setNickname] = useState('');
+  const [phone, setPhone] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-  const categories = [
-    'IT',
-    'Health',
-    'Business',
-    'Sports',
-    'Science',
-    'Language',
-    'Design',
+  const { data: userData } = useUserInfo();
+  // const { mutate: updateUserInfo } = useUpdateUserInfo();
 
-    'Music',
-    'Life',
-    'Fashion',
-    'Food',
+  useEffect(() => {
+    if (userData) {
+      setNickname(userData.data.nickname || '');
+      if (userData.data.phoneNumber) {
+        setPhone(userData.data.phoneNumber || '');
+      }
+    }
+  }, [userData]);
 
-    'Finance',
-    'Movie',
-    'Art',
-  ];
+  const isNicknameChanged = useMemo(() => {
+    return nickname !== userData?.data.nickname;
+  }, [nickname, userData?.data.nickname]);
+
+  const handleNicknameChange = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    updateUserInfo({ nickname });
+  };
 
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
@@ -37,6 +61,7 @@ export default function UserProfile() {
         : [...prev, category],
     );
   };
+
   return (
     <div className="  bg-white min-h-screen">
       <header className="flex items-center p-4 border-b ">
@@ -52,6 +77,8 @@ export default function UserProfile() {
               width={80}
               height={80}
             />
+            {/* todo : 사진 버튼 눌렀을 때 마이페이지 추가 */}
+            {/* <input type="file" /> */}
             <button
               type="button"
               className="absolute bottom-0 right-0 bg-gray-100 rounded-full p-1"
@@ -66,17 +93,30 @@ export default function UserProfile() {
             </button>
           </div>
         </div>
-        <form className="space-y-4 w-full">
+        <form className="space-y-4 w-full " name="userInfo">
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-700 mb-1 "
             >
               닉네임 *
             </label>
             <div className="flex gap-2">
-              <Input id="name" placeholder="홍길동" className="flex-1" />
-              <Button variant="outline" size="sm">
+              <Input
+                id="name"
+                placeholder="닉네임"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                className="flex-1"
+                autoComplete="on"
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={!isNicknameChanged}
+                onClick={handleNicknameChange}
+                // type="submit"
+              >
                 변경하기
               </Button>
             </div>
@@ -91,13 +131,12 @@ export default function UserProfile() {
             <div className="flex gap-2">
               <Input
                 id="email"
-                value="holgild***@gmail.com"
                 readOnly
+                disabled
+                value={userData?.data.email || ''}
                 className="flex-1"
+                autoComplete="on"
               />
-              <Button variant="outline" size="sm">
-                변경하기
-              </Button>
             </div>
           </div>
 
@@ -112,9 +151,10 @@ export default function UserProfile() {
               <Input
                 id="password"
                 type="password"
-                value="••••••"
+                value="12345678"
                 readOnly
                 className="flex-1"
+                autoComplete="on"
               />
               <Button variant="outline" size="sm">
                 변경하기
@@ -126,14 +166,17 @@ export default function UserProfile() {
               htmlFor="phone"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
-              휴대폰 번호 *
+              휴대폰 번호
             </label>
             <div className="flex gap-2">
               <Input
                 id="phone"
-                value="010****1234"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 readOnly
+                disabled
                 className="flex-1"
+                autoComplete="on"
               />
               <Button variant="outline" size="sm">
                 변경하기
