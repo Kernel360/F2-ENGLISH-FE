@@ -4,7 +4,6 @@
 import { Camera, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import Image from 'next/image';
 import { useEffect, useState, useMemo } from 'react';
 import { useUserInfo } from '@/api/hooks/useUserInfo';
 import { updateUserInfo } from '@/api/queries/userQueries';

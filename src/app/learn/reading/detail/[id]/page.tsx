@@ -9,7 +9,6 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { ArrowUp, Languages, MessageCircleMoreIcon } from 'lucide-react';
-import Image from 'next/image';
 import quizData from '@/mock/quizData.json';
 import QuizCarousel from '@/components/quiz/QuizCarousel';
 import Tooltip from '@/components/Tooltip';

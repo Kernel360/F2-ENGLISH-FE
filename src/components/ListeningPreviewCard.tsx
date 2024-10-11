@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
@@ -9,7 +8,7 @@ import { Clock } from 'lucide-react';
 import { ListeningPreview } from '@/types/Preview';
 
 export default function ListeningPreviewCard({
-  data: { id, thumbnailUrl, title, category },
+  data: { id, imageUrl, title, category },
 }: {
   data: ListeningPreview;
 }) {
@@ -18,7 +17,7 @@ export default function ListeningPreviewCard({
       <Card className="w-80 h-46 max-w-sm overflow-hidden rounded-lg hover:shadow-card-hover">
         <CardContent className="p-0">
           <div className="relative w-80 h-44">
-            <img src={thumbnailUrl} alt={title} className="object-cover" />
+            <img src={imageUrl} alt={title} className="object-cover" />
             <Badge className="absolute bottom-2 right-2 flex items-center gap-1">
               <Clock className="w-3 h-3" />
               <span>24:00</span>
