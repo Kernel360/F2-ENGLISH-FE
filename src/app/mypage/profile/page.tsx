@@ -49,7 +49,7 @@ export default function UserProfile() {
     return nickname !== userData?.data.nickname;
   }, [nickname, userData?.data.nickname]);
 
-  const handleNicknameChange = (event) => {
+  const handleNicknameChange = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     updateUserInfo({ nickname });
   };
