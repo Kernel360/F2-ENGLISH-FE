@@ -6,7 +6,7 @@ import {
   createBookmark,
   updateBookmark,
   deleteBookmark,
-} from '../queries/bookmarkQuries';
+} from '../queries/bookmarkQueries';
 
 // 북마크 조회 훅
 export const useFetchBookmarks = (contentId: number) => {
