@@ -16,13 +16,7 @@ function ContentsCard({ card }: { card: CardDataProps }) {
   return (
     <Card className="rounded-xl overflow-hidden shadow-mille">
       <AspectRatio ratio={16 / 9}>
-        <Image
-          src={card.imageUrl}
-          alt={card.title}
-          className="object-cover"
-          fill
-          priority // Ensures fast loading for the first card
-        />
+        <img src={card.imageUrl} alt={card.title} className="object-cover" />
       </AspectRatio>
       <div className="p-4">
         <Badge className="rounded">{card.category}</Badge>

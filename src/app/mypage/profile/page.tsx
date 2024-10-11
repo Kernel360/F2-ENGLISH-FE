@@ -70,12 +70,10 @@ export default function UserProfile() {
       <div className="p-4 max-w-xl flex flex-col justify-center items-center mx-auto">
         <div className="flex justify-center mb-6">
           <div className="relative">
-            <Image
+            <img
               src="https://avatar.iran.liara.run/public/girl"
               alt="Profile"
               className="w-20 h-20 rounded-full"
-              width={80}
-              height={80}
             />
             {/* todo : 사진 버튼 눌렀을 때 마이페이지 추가 */}
             {/* <input type="file" /> */}

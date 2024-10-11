@@ -240,7 +240,7 @@ export default function DetailReadingPage() {
   return (
     <>
       <div className="flex">
-        <div className="flex flex-col flex-1 gap-5 mx-auto p-5 pb-16 max-w-[800px]">
+        <div className="flex flex-col flex-1 gap-5 mx-auto p-5 pb-16 max-w-[800px] h-auto">
           <div>
             <Badge>{contentData.category}</Badge>
             <div className="font-bold text-2xl mt-2 mb-4">
@@ -250,10 +250,8 @@ export default function DetailReadingPage() {
           </div>
           <Separator />
           <div className="flex justify-center">
-            <Image
+            <img
               src={contentData.thumbnailUrl}
-              width={600}
-              height={400}
               alt="이미지"
               className="rounded-lg"
             />

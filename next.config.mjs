@@ -14,6 +14,8 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'avatar.iran.liara.run',
       },
+      { protocol: 'https', hostname: 'i.ytimg.com' }, // api로 받아오는 데이터 img주소 무조건 추가해줘야함
+      { protocol: 'https', hostname: 'yozm.wishket.com' }, // api로 받아오는 데이터 img주소 무조건 추가해줘야함
     ],
   },
   rewrites: async () => {

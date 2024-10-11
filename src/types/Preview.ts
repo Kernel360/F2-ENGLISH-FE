@@ -2,7 +2,7 @@ export interface ListeningPreview {
   id: number;
   title: string;
   category: string;
-  imageUrl: string;
+  thumbnailUrl: string;
 }
 
 export interface ReadingPreview {

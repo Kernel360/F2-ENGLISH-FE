@@ -35,11 +35,9 @@ export default function ArticlePreview({ articlePreviewContent }: ContentItem) {
           </div>
           {thumbnail && (
             <div className="flex-shrink-0">
-              <Image
+              <img
                 src={thumbnail}
-                alt=""
-                fill
-                sizes="100%"
+                alt="scrapThumbnail"
                 className="rounded-md object-cover aspect-square"
               />
             </div>
