@@ -1,11 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-// const fetchDataByPageId = () => {
-// todo : detailPage에서는 해당 페이지의 contentId로 데이터를 fetch하여 보여준다
-// useparams로 받은 id로 fetch
-//   Response.json();
-// };
 
 'use client';
 
@@ -17,19 +12,28 @@ import { ArrowUp, Languages, MessageCircleMoreIcon } from 'lucide-react';
 import Image from 'next/image';
 import quizData from '@/mock/quizData.json';
 import QuizCarousel from '@/components/quiz/QuizCarousel';
-import Data from '@/mock/readingDetailData.json';
 import Tooltip from '@/components/Tooltip';
 import MemoInput from '@/components/MemoInput';
 import Modal from '@/components/Modal';
-
-interface BookmarkMemoType {
-  script_index: string; // 콘텐츠의 id
-  sentence_index: number; // 문장의 index
-  word_index?: number; // 단어의 index (필요한 경우 사용)
-  description?: string; // 메모 내용
-}
+import { useContentDetail } from '@/api/hooks/useContentDetail';
+import {
+  useFetchBookmarks,
+  useCreateBookmark,
+  useUpdateBookmark,
+  useDeleteBookmark,
+} from '@/api/hooks/useBookmarks';
 
 export default function DetailReadingPage() {
+  const contentId = 1;
+  const { data, isLoading, isError, error } = useContentDetail(contentId);
+
+  // 북마크 데이터 훅
+  const { data: bookmarkData, refetch: refetchBookmarks } =
+    useFetchBookmarks(contentId);
+  const createBookmarkMutation = useCreateBookmark(contentId);
+  const updateBookmarkMutation = useUpdateBookmark(contentId);
+  const deleteBookmarkMutation = useDeleteBookmark(contentId);
+
   const [showTranslate, setShowTranslate] = useState(true);
   const [selectedSentenceIndex, setSelectedSentenceIndex] = useState<
     number | null
@@ -37,7 +41,6 @@ export default function DetailReadingPage() {
   const [tooltipVisible, setTooltipVisible] = useState<boolean>(false);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
 
-  const [bookmarkMemos, setBookmarkMemos] = useState<BookmarkMemoType[]>([]);
   const [showMemo, setShowMemo] = useState<boolean>(false);
   const [memoText, setMemoText] = useState<string>('');
   const [memoPosition, setMemoPosition] = useState({ top: 0, left: 0 });
@@ -71,23 +74,26 @@ export default function DetailReadingPage() {
   // 북마크 추가 및 삭제 모달 표시 처리 함수
   const handleAddBookmark = () => {
     if (selectedSentenceIndex !== null) {
-      const existingBookmark = bookmarkMemos.some(
-        (item) => item.sentence_index === selectedSentenceIndex,
+      const existingBookmark = bookmarkData?.data.some(
+        (item) => item.sentenceIndex === selectedSentenceIndex,
       );
 
       if (existingBookmark) {
         // 이미 북마크가 있는 경우, 삭제 확인 모달 표시
         setShowDeleteModal(true);
       } else {
-        // 새로운 북마크 추가
-        setBookmarkMemos((prev) => [
-          ...prev,
+        createBookmarkMutation.mutate(
           {
-            // eslint-disable-next-line no-underscore-dangle
-            script_index: Data._id.$oid,
-            sentence_index: selectedSentenceIndex,
+            sentenceIndex: selectedSentenceIndex,
+            wordIndex: 0,
+            // description: '',
           },
-        ]);
+          {
+            onSuccess: () => {
+              refetchBookmarks(); // 북마크 추가 후 데이터 갱신
+            },
+          },
+        );
       }
       setTooltipVisible(false);
       setShowMemo(false); // 메모가 열려있을 때도 닫기(todo: 화인)
@@ -97,9 +103,17 @@ export default function DetailReadingPage() {
   // 삭제 확인 시 실행
   const handleDeleteBookmark = () => {
     if (selectedSentenceIndex !== null) {
-      setBookmarkMemos((prev) =>
-        prev.filter((item) => item.sentence_index !== selectedSentenceIndex),
+      const bookmarkToDelete = bookmarkData?.data.find(
+        (item) => item.sentenceIndex === selectedSentenceIndex,
       );
+
+      if (bookmarkToDelete) {
+        deleteBookmarkMutation.mutate(bookmarkToDelete.bookmarkId, {
+          onSuccess: () => {
+            refetchBookmarks(); // 북마크 삭제 후 데이터 갱신
+          },
+        });
+      }
       setTooltipVisible(false);
       setShowMemo(false);
       setShowDeleteModal(false); // 모달 닫기
@@ -108,9 +122,14 @@ export default function DetailReadingPage() {
 
   // 메모 버튼 클릭 시 메모 input 위치 조정 및 상태 업데이트
   const handleMemoClick = () => {
+    if (selectedSentenceIndex === null) return;
+
+    // 선택된 문장의 DOM 엘리먼트를 찾음
     const sentenceElement = document.querySelector(
       `li[data-index="${selectedSentenceIndex}"] div`,
     );
+
+    // 선택된 문장의 위치에 따라 메모 input 위치 설정
     if (sentenceElement) {
       const rect = sentenceElement.getBoundingClientRect();
       setMemoPosition({
@@ -119,11 +138,18 @@ export default function DetailReadingPage() {
       });
     }
 
-    const existingMemo = bookmarkMemos.find(
-      (item) => item.sentence_index === selectedSentenceIndex,
+    // React Query 캐시에서 기존 메모 데이터를 가져옴
+    const existingMemo = bookmarkData?.data.find(
+      (item) => item.sentenceIndex === selectedSentenceIndex,
     );
-    setMemoText(existingMemo ? (existingMemo.description ?? '') : ''); // 기존 메모 내용이 있다면 로드, 없으면 빈 문자열
+
+    // 기존 메모가 있으면 메모 내용을 설정하고, 없으면 빈 문자열을 설정
+    setMemoText(existingMemo ? (existingMemo.description ?? '') : '');
+
+    // 메모 입력창 표시
     setShowMemo(true);
+
+    // 툴팁 숨기기
     setTooltipVisible(false);
   };
 
@@ -153,53 +179,79 @@ export default function DetailReadingPage() {
   };
 
   // 메모 저장 함수
+  // 메모 저장 함수 - 메모가 존재하면 수정, 존재하지 않으면 생성
   const handleSaveMemo = () => {
-    if (selectedSentenceIndex !== null) {
-      setBookmarkMemos((prev) => {
-        const updatedBookmarkMemos = [...prev];
-        const memoIndex = updatedBookmarkMemos.findIndex(
-          (item) => item.sentence_index === selectedSentenceIndex,
-        );
+    if (selectedSentenceIndex === null) return;
 
-        if (memoText.trim() === '') {
-          // 빈 메모일 경우 제거
-          if (memoIndex >= 0) updatedBookmarkMemos.splice(memoIndex, 1);
-          return updatedBookmarkMemos;
-        }
+    const existingMemo = bookmarkData?.data.find(
+      (item) => item.sentenceIndex === selectedSentenceIndex,
+    );
+    const memoTextTrimmed = memoText.trim();
 
-        if (memoIndex >= 0) {
-          // 기존 메모 수정
-          updatedBookmarkMemos[memoIndex].description = memoText;
-        } else {
-          // 새 메모 추가
-          updatedBookmarkMemos.push({
-            // eslint-disable-next-line no-underscore-dangle
-            script_index: Data._id.$oid,
-            sentence_index: selectedSentenceIndex,
-            description: memoText,
-          });
-        }
-        return updatedBookmarkMemos;
-      });
-
-      setMemoText(''); // 메모 저장 후 초기화
-      setShowMemo(false); // 메모 입력창 닫기
+    if (memoTextTrimmed === '') {
+      // 메모 삭제
+      if (existingMemo) {
+        deleteBookmarkMutation.mutate(existingMemo.bookmarkId, {
+          onSuccess: () => {
+            refetchBookmarks(); // 북마크 삭제 후 목록 갱신
+          },
+        });
+      }
+      return;
     }
+
+    if (existingMemo) {
+      // 메모 수정 (기존 메모가 있는 경우)
+      updateBookmarkMutation.mutate(
+        { bookmarkId: existingMemo.bookmarkId, description: memoTextTrimmed },
+        {
+          onSuccess: () => {
+            refetchBookmarks(); // 메모 수정 후 목록 갱신
+          },
+        },
+      );
+    } else {
+      // 메모 생성 (기존 메모가 없는 경우)
+      createBookmarkMutation.mutate(
+        {
+          sentenceIndex: selectedSentenceIndex,
+          wordIndex: 0,
+          description: memoTextTrimmed,
+        },
+        {
+          onSuccess: () => {
+            refetchBookmarks(); // 메모 생성 후 목록 갱신
+          },
+        },
+      );
+    }
+
+    setMemoText(''); // 메모 저장 후 초기화
+    setShowMemo(false); // 메모 입력창 닫기
   };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error?.message}</div>;
+
+  const contentData = data?.data;
+
+  if (!contentData) return <div>No Content Data Available</div>;
 
   return (
     <>
       <div className="flex">
         <div className="flex flex-col flex-1 gap-5 mx-auto p-5 pb-16 max-w-[800px]">
           <div>
-            <Badge>카테고리</Badge>
-            <div className="font-bold text-2xl mt-2 mb-4">{Data.title}</div>
+            <Badge>{contentData.category}</Badge>
+            <div className="font-bold text-2xl mt-2 mb-4">
+              {contentData.title}
+            </div>
             <div className="text-sm flex justify-end w-full">조회수</div>
           </div>
           <Separator />
           <div className="flex justify-center">
             <Image
-              src={Data.thumbnail}
+              src={contentData.thumbnailUrl}
               width={600}
               height={400}
               alt="이미지"
@@ -208,9 +260,9 @@ export default function DetailReadingPage() {
           </div>
           <div>
             <ul className="flex flex-col gap-4 text-[#313131]">
-              {Data.scripts.map((script, index) => {
-                const bookmarkMemo = bookmarkMemos.find(
-                  (item) => item.sentence_index === index,
+              {contentData.scriptList.map((script, index) => {
+                const bookmarkMemo = bookmarkData?.data.find(
+                  (item) => item.sentenceIndex === index,
                 );
                 return (
                   <li
@@ -253,8 +305,8 @@ export default function DetailReadingPage() {
                 onAddBookmark={handleAddBookmark}
                 onAddMemo={handleMemoClick}
                 onClose={() => setTooltipVisible(false)}
-                isBookmarked={bookmarkMemos.some(
-                  (item) => item.sentence_index === selectedSentenceIndex,
+                isBookmarked={bookmarkData?.data.some(
+                  (item) => item.sentenceIndex === selectedSentenceIndex, // sentenceIndex로 비교
                 )}
               />
             )}

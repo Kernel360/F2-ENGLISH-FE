@@ -10,7 +10,7 @@ type TooltipProps = {
   onAddBookmark: () => void;
   onAddMemo: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onClose: () => void;
-  isBookmarked: boolean;
+  isBookmarked: boolean | undefined;
 };
 
 export default function Tooltip({
