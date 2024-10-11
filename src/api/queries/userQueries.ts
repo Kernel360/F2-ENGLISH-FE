@@ -4,7 +4,7 @@ import {
   UserUpdateResponse,
 } from '@/types/User';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api`;
 
 export const fetchUserInfo = async (): Promise<UserResponse> => {
   const response = await fetch(`${BASE_URL}/user/me`, {
