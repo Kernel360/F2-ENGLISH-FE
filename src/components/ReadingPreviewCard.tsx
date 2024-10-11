@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
-import { ReadingPreview } from '@/types';
+import { ReadingPreview } from '@/types/Preview';
 import { Badge } from './ui/badge';
 
 export default function ReadingPreviewCard({

@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Clock } from 'lucide-react';
-import { ListeningPreview } from '@/types';
+import { ListeningPreview } from '@/types/Preview';
 
 export default function ListeningPreviewCard({
   data: { id, imageUrl, title, category },

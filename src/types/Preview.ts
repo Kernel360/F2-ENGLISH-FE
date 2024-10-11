@@ -12,3 +12,15 @@ export interface ReadingPreview {
   thumbnail: string;
   description: string;
 }
+
+export type ListeningPreviewResponse = {
+  code: string;
+  message: string;
+  data: ListeningPreview[];
+};
+
+export type ReadingPreviewResponse = {
+  code: string;
+  message: string;
+  data: ReadingPreview[];
+};
