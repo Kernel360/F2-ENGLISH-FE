@@ -1,18 +1,21 @@
+'use client';
+
 import Carousel from '@/components/Carousel';
-import readingList from '@/mock/readingList.json';
-import listeningList from '@/mock/listeningList.json';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import ReadingPreviewCard from '@/components/ReadingPreviewCard';
 import ListeningPreviewCard from '@/components/ListeningPreviewCard';
 import { Button } from '@/components/ui/button';
+import { useReadingPreview, useListeningPreview } from '@/api/hooks/usePreview';
 
 export default function HomePage() {
+  const { data: readingList } = useReadingPreview();
+  const { data: listeningList } = useListeningPreview();
   return (
     <div className="max-w-[1440px] mx-auto mt-8 mb-24 flex flex-col gap-12">
       {/* 인기 리스닝 컨텐츠 캐러셀 */}
       <Carousel
-        previewDatas={readingList}
+        previewDatas={readingList?.data || []}
         header={
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-bold">인기 리딩 컨텐츠</h3>
@@ -29,7 +32,7 @@ export default function HomePage() {
       />
       {/* 인기 리딩 컨텐츠 캐러셀 */}
       <Carousel
-        previewDatas={listeningList}
+        previewDatas={listeningList?.data || []}
         header={
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-bold">인기 리스닝 컨텐츠</h3>
