@@ -155,10 +155,8 @@ export default function UserProfile() {
                 readOnly
                 className="flex-1"
                 autoComplete="on"
+                disabled
               />
-              <Button variant="outline" size="sm">
-                변경하기
-              </Button>
             </div>
           </div>
           <div>
