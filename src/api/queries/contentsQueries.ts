@@ -4,11 +4,11 @@ import {
 } from '@/types/Preview';
 import { ContentDetailResponse } from '../../types/ContentDetail';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/contents`;
 
 export const fetchReadingPreview =
   async (): Promise<ReadingPreviewResponse> => {
-    const response = await fetch(`${BASE_URL}/contents/preview/reading`, {
+    const response = await fetch(`${BASE_URL}/preview/reading`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ export const fetchReadingPreview =
 
 export const fetchListeningPreview =
   async (): Promise<ListeningPreviewResponse> => {
-    const response = await fetch(`${BASE_URL}/contents/preview/listening`, {
+    const response = await fetch(`${BASE_URL}/preview/listening`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export const fetchListeningPreview =
 export const fetchContentDetail = async (
   contentId: number,
 ): Promise<ContentDetailResponse> => {
-  const response = await fetch(`${BASE_URL}/contents/details/${contentId}`, {
+  const response = await fetch(`${BASE_URL}/details/${contentId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

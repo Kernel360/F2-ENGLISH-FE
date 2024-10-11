@@ -1,12 +1,12 @@
 import { Bookmark, BookmarkResponse } from '../../types/Bookmark';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark`;
 
 // 북마크 조회 (GET)
 export const fetchBookmarks = async (
   contentId: number,
 ): Promise<BookmarkResponse> => {
-  const response = await fetch(`${BASE_URL}/bookmark/view/${contentId}`, {
+  const response = await fetch(`${BASE_URL}/view/${contentId}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -22,7 +22,7 @@ export const createBookmark = async (
   contentId: number,
   bookmark: { sentenceIndex: number; wordIndex?: number; description?: string },
 ): Promise<Bookmark> => {
-  const response = await fetch(`${BASE_URL}/bookmark/create/${contentId}`, {
+  const response = await fetch(`${BASE_URL}/create/${contentId}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -40,7 +40,7 @@ export const updateBookmark = async (
   bookmarkId: number,
   description: string,
 ): Promise<Bookmark> => {
-  const response = await fetch(`${BASE_URL}/bookmark/update/${contentId}`, {
+  const response = await fetch(`${BASE_URL}/update/${contentId}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -54,7 +54,7 @@ export const updateBookmark = async (
 
 // 북마크 삭제 (DELETE)
 export const deleteBookmark = async (bookmarkId: number): Promise<void> => {
-  const response = await fetch(`${BASE_URL}/bookmark/delete/${bookmarkId}`, {
+  const response = await fetch(`${BASE_URL}/delete/${bookmarkId}`, {
     method: 'DELETE',
     credentials: 'include',
   });
