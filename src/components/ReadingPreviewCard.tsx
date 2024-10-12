@@ -5,15 +5,17 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { ReadingPreview } from '@/types/Preview';
+import { removeFirstChar } from '@/lib/removeFirstChar';
 import { Badge } from './ui/badge';
 
 export default function ReadingPreviewCard({
-  data: { id, thumbnailUrl, title, category, description },
+  // TODO(@smosco):hits 추가
+  data: { contentId, thumbnailUrl, title, category, preScripts },
 }: {
   data: ReadingPreview;
 }) {
   return (
-    <Link href={`/learn/reading/detail/${id}`}>
+    <Link href={`/learn/reading/detail/${contentId}`}>
       <Card className="overflow-hidden shadow-card hover:shadow-card-hover hover:border-border w-80 h-80 mr-3">
         <CardContent className="p-0 h-full">
           <div className="relative w-full h-40 rounded-t-lg overflow-hidden">
@@ -31,7 +33,7 @@ export default function ReadingPreviewCard({
               {title}
             </strong>
             <p className="text-sm text-gray-500 text-muted-foreground line-clamp-2">
-              {description}
+              {removeFirstChar(preScripts)}
             </p>
           </div>
         </CardContent>
