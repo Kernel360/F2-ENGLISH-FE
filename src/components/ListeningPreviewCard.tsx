@@ -14,7 +14,6 @@ export default function ListeningPreviewCard({
 }: {
   data: ListeningPreview;
 }) {
-  console.log(preScripts);
   return (
     <Link href={`/learn/listening/detail/${contentId}`} className="mr-3">
       <Card className="w-80 h-46 max-w-sm overflow-hidden rounded-lg hover:shadow-card-hover">
