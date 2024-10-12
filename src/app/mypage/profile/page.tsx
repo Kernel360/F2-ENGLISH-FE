@@ -4,7 +4,6 @@
 import { Camera, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import Image from 'next/image';
 import { useEffect, useState, useMemo } from 'react';
 import { useUserInfo } from '@/api/hooks/useUserInfo';
 import { updateUserInfo } from '@/api/queries/userQueries';
@@ -70,12 +69,10 @@ export default function UserProfile() {
       <div className="p-4 max-w-xl flex flex-col justify-center items-center mx-auto">
         <div className="flex justify-center mb-6">
           <div className="relative">
-            <Image
+            <img
               src="https://avatar.iran.liara.run/public/girl"
               alt="Profile"
               className="w-20 h-20 rounded-full"
-              width={80}
-              height={80}
             />
             {/* todo : 사진 버튼 눌렀을 때 마이페이지 추가 */}
             {/* <input type="file" /> */}

@@ -39,7 +39,7 @@ export default function HighlighterAndMemo() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">형광펜과 메모</h1>
-      <p className="text-sm text-muted-foreground mb-4">12개의 형광펜</p>
+      <p className="text-sm text-muted-foreground">12개의 형광펜</p>
       {memoItems.map((item) => (
         <MemoItem key={item.id} item={item} />
       ))}
