@@ -9,10 +9,16 @@ import { Button } from '@/components/ui/button';
 import { useReadingPreview, useListeningPreview } from '@/api/hooks/usePreview';
 
 export default function HomePage() {
-  const { data: readingList } = useReadingPreview();
-  const { data: listeningList } = useListeningPreview();
+  const { data: readingList, isLoading: readingLoading } = useReadingPreview();
+  const { data: listeningList, isLoading: listeningLoading } =
+    useListeningPreview();
+
+  if (readingLoading || listeningLoading) {
+    return <div className="max-w-[1080px] mx-auto mt-8">Loading...</div>;
+  }
+
   return (
-    <div className="max-w-[1440px] mx-auto mt-8 mb-24 flex flex-col gap-12">
+    <div className="max-w-[1080px] mx-auto mt-8 mb-24 flex flex-col gap-12">
       {/* 인기 리스닝 컨텐츠 캐러셀 */}
       <Carousel
         previewDatas={readingList?.data || []}

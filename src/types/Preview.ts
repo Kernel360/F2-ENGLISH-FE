@@ -1,16 +1,19 @@
 export interface ListeningPreview {
-  id: number;
-  title: string;
-  category: string;
-  imageUrl: string;
-}
-
-export interface ReadingPreview {
-  id: number;
+  contentId: number;
   title: string;
   category: string;
   thumbnailUrl: string;
-  description: string;
+  preScripts: string;
+  hits: number;
+}
+
+export interface ReadingPreview {
+  contentId: number;
+  title: string;
+  category: string;
+  thumbnailUrl: string;
+  preScripts: string;
+  hits: number;
 }
 
 export type ListeningPreviewResponse = {

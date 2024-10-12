@@ -21,9 +21,11 @@ import {
   useUpdateBookmark,
   useDeleteBookmark,
 } from '@/api/hooks/useBookmarks';
+import { useParams } from 'next/navigation';
 
 export default function DetailReadingPage() {
-  const contentId = 1;
+  const params = useParams();
+  const contentId = Number(params.id);
   const { data, isLoading, isError, error } = useContentDetail(contentId);
 
   // 북마크 데이터 훅

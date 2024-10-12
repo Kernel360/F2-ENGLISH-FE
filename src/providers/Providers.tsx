@@ -1,21 +1,34 @@
 'use client';
 
-import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-type ProvidersProps = {
-  children: React.ReactNode;
+const queryClientOptions = {
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000,
+    },
+  },
 };
 
-// QueryClient 인스턴스 생성
-const queryClient = new QueryClient();
+let browserQueryClient: QueryClient | undefined;
 
-export function Providers({ children }: ProvidersProps) {
+function getQueryClient() {
+  if (typeof window === 'undefined') {
+    // 서버에서는 항상 새로운 QueryClient 생성
+    return new QueryClient(queryClientOptions);
+  }
+
+  // 브라우저에서는 기존 클라이언트를 재사용하거나 새로 생성
+  if (!browserQueryClient) {
+    browserQueryClient = new QueryClient(queryClientOptions);
+  }
+  return browserQueryClient;
+}
+
+export default function Providers({ children }: { children: React.ReactNode }) {
+  const queryClient = getQueryClient();
+
   return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 }

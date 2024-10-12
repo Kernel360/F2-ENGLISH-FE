@@ -33,7 +33,7 @@ export default function ArticlePreview({ articlePreviewContent }: ContentItem) {
             </p>
           </div>
           {thumbnail && (
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0 w-24">
               <img
                 src={thumbnail}
                 alt="scrapThumbnail"
