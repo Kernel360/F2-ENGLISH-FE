@@ -13,6 +13,12 @@ interface SubtitleOptionProps {
   setMode: Dispatch<SetStateAction<Mode>>;
 }
 
+// 화면에 표시되는 언어 이름
+const languageDisplayNames: Record<LanguageCode, string> = {
+  enScript: '영어',
+  koScript: '한국어',
+};
+
 export default function SubtitleOption({
   mode,
   availableLanguages,
@@ -59,7 +65,8 @@ export default function SubtitleOption({
               checked={selectedLanguages.includes(item)}
               onChange={() => handleLanguageChange(item)}
             />
-            {item}
+            {/* 화면에 표시되는 언어 이름을 보여줌 */}
+            {languageDisplayNames[item]}
           </label>
         ))}
       </div>
