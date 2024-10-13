@@ -50,7 +50,7 @@ export default function Carousel<T>({
   }, [currentIndex, itemWidth]);
 
   return (
-    <div className="relative max-w-[1440px] w-full mx-auto px-4">
+    <div className="relative w-full mx-auto">
       {/* Carousel Header */}
       {header && header}
 

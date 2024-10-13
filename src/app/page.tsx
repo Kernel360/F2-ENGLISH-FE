@@ -18,7 +18,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="max-w-[1080px] mx-auto mt-8 mb-24 flex flex-col gap-12">
+    <div className="max-w-[1080px] mx-auto mt-12 px-6 mb-24 flex flex-col gap-12">
       {/* 인기 리스닝 컨텐츠 캐러셀 */}
       <Carousel
         previewDatas={readingList?.data || []}
