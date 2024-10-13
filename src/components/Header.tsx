@@ -12,7 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 
 export const navItems = [
-  { name: '학습', href: '/learn', icon: BookHeadphones },
+  { name: '학습', href: '/learn/listening', icon: BookHeadphones },
   { name: '검색', href: '/search', icon: Search },
   { name: '스크랩', href: '/scrapbook/content', icon: Bookmark },
   { name: '마이페이지', href: '/mypage/profile', icon: CircleUserRound },
