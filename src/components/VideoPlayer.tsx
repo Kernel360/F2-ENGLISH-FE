@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
-import scriptsMockData from '@/mock/subtitleMockData';
+import { Script } from '@/types/ContentDetail';
 import { mockUrl } from '../mock/mockUrl';
 import ControlBar from './ControlBar';
 import SubtitleOption from './SubtitleOption';
@@ -11,11 +11,15 @@ import { LanguageCode } from '../types/Scripts';
 
 type Mode = 'line' | 'block';
 
-function VideoPlayer() {
+interface VideoPlayerProps {
+  scriptsData: Script[] | undefined;
+}
+
+function VideoPlayer({ scriptsData }: VideoPlayerProps) {
   const playerRef = useRef<ReactPlayer | null>(null);
 
   const [mode, setMode] = useState<Mode>('line');
-  const availableLanguages: LanguageCode[] = ['en', 'ko', 'fr'];
+  const availableLanguages: LanguageCode[] = ['enScript', 'koScript'];
   const [selectedLanguages, setSelectedLanguages] =
     useState<LanguageCode[]>(availableLanguages);
   const [currentTime, setCurrentTime] = useState(0);
@@ -103,7 +107,7 @@ function VideoPlayer() {
 
       <ReactScriptPlayer
         mode={mode}
-        subtitles={scriptsMockData}
+        subtitles={scriptsData || []}
         selectedLanguages={selectedLanguages}
         seekTo={seekTo}
         currentTime={currentTime}
