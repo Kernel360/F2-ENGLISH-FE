@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
-import { ReadingPreview } from '@/types/Preview';
+import { Preview } from '@/types/Preview';
 import { removeFirstChar } from '@/lib/removeFirstChar';
 import { Badge } from './ui/badge';
 
@@ -12,7 +12,7 @@ export default function ReadingPreviewCard({
   // TODO(@smosco):hits 추가
   data: { contentId, thumbnailUrl, title, category, preScripts },
 }: {
-  data: ReadingPreview;
+  data: Preview;
 }) {
   return (
     <Link href={`/learn/reading/detail/${contentId}`}>

@@ -1,4 +1,4 @@
-export interface ListeningPreview {
+export interface Preview {
   contentId: number;
   title: string;
   category: string;
@@ -7,23 +7,20 @@ export interface ListeningPreview {
   hits: number;
 }
 
-export interface ReadingPreview {
-  contentId: number;
-  title: string;
-  category: string;
-  thumbnailUrl: string;
-  preScripts: string;
-  hits: number;
+export interface PreviewResponse {
+  code: string;
+  message: string;
+  data: Preview[];
 }
 
-export type ListeningPreviewResponse = {
+export type ContentsResponse = {
   code: string;
   message: string;
-  data: ListeningPreview[];
-};
-
-export type ReadingPreviewResponse = {
-  code: string;
-  message: string;
-  data: ReadingPreview[];
+  data: {
+    pageNumber: number;
+    pageSize: number;
+    totlaPages: number;
+    totlaElements: number;
+    contents: Preview[];
+  };
 };
