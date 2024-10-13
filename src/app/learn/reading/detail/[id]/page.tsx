@@ -16,7 +16,7 @@ import MemoInput from '@/components/MemoInput';
 import Modal from '@/components/Modal';
 import { useContentDetail } from '@/api/hooks/useContentDetail';
 import {
-  useFetchBookmarks,
+  useFetchBookmarksByContendId,
   useCreateBookmark,
   useUpdateBookmark,
   useDeleteBookmark,
@@ -30,7 +30,7 @@ export default function DetailReadingPage() {
 
   // 북마크 데이터 훅
   const { data: bookmarkData, refetch: refetchBookmarks } =
-    useFetchBookmarks(contentId);
+    useFetchBookmarksByContendId(contentId);
   const createBookmarkMutation = useCreateBookmark(contentId);
   const updateBookmarkMutation = useUpdateBookmark(contentId);
   const deleteBookmarkMutation = useDeleteBookmark(contentId);
@@ -75,7 +75,7 @@ export default function DetailReadingPage() {
   // 북마크 추가 및 삭제 모달 표시 처리 함수
   const handleAddBookmark = () => {
     if (selectedSentenceIndex !== null) {
-      const existingBookmark = bookmarkData?.data.some(
+      const existingBookmark = bookmarkData?.data.bookmarkList.some(
         (item) => item.sentenceIndex === selectedSentenceIndex,
       );
 
@@ -104,7 +104,7 @@ export default function DetailReadingPage() {
   // 삭제 확인 시 실행
   const handleDeleteBookmark = () => {
     if (selectedSentenceIndex !== null) {
-      const bookmarkToDelete = bookmarkData?.data.find(
+      const bookmarkToDelete = bookmarkData?.data.bookmarkList.find(
         (item) => item.sentenceIndex === selectedSentenceIndex,
       );
 
@@ -140,7 +140,7 @@ export default function DetailReadingPage() {
     }
 
     // React Query 캐시에서 기존 메모 데이터를 가져옴
-    const existingMemo = bookmarkData?.data.find(
+    const existingMemo = bookmarkData?.data.bookmarkList.find(
       (item) => item.sentenceIndex === selectedSentenceIndex,
     );
 
@@ -184,7 +184,7 @@ export default function DetailReadingPage() {
   const handleSaveMemo = () => {
     if (selectedSentenceIndex === null) return;
 
-    const existingMemo = bookmarkData?.data.find(
+    const existingMemo = bookmarkData?.data.bookmarkList.find(
       (item) => item.sentenceIndex === selectedSentenceIndex,
     );
     const memoTextTrimmed = memoText.trim();
@@ -260,7 +260,7 @@ export default function DetailReadingPage() {
           <div>
             <ul className="flex flex-col gap-4 text-[#313131]">
               {contentData.scriptList.map((script, index) => {
-                const bookmarkMemo = bookmarkData?.data.find(
+                const bookmarkMemo = bookmarkData?.data.bookmarkList.find(
                   (item) => item.sentenceIndex === index,
                 );
                 return (
@@ -304,7 +304,7 @@ export default function DetailReadingPage() {
                 onAddBookmark={handleAddBookmark}
                 onAddMemo={handleMemoClick}
                 onClose={() => setTooltipVisible(false)}
-                isBookmarked={bookmarkData?.data.some(
+                isBookmarked={bookmarkData?.data.bookmarkList.some(
                   (item) => item.sentenceIndex === selectedSentenceIndex, // sentenceIndex로 비교
                 )}
               />

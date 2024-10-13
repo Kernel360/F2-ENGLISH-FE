@@ -1,18 +1,33 @@
-import { Bookmark, BookmarkResponse } from '../../types/Bookmark';
+import {
+  Bookmark,
+  BookmarkListResponse,
+  BookmarkByContentIdResponse,
+} from '../../types/Bookmark';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark`;
 
-// 북마크 조회 (GET)
-export const fetchBookmarks = async (
+export const fetchAllBookmarks = async (): Promise<BookmarkListResponse> => {
+  const response = await fetch(`${BASE_URL}/view`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  });
+  if (!response.ok) {
+    throw new Error('Failed to fetch all bookmarks');
+  }
+  return response.json();
+};
+
+export const fetchBookmarksByContentId = async (
   contentId: number,
-): Promise<BookmarkResponse> => {
+): Promise<BookmarkByContentIdResponse> => {
   const response = await fetch(`${BASE_URL}/view/${contentId}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
   });
   if (!response.ok) {
-    throw new Error('Failed to fetch bookmarks');
+    throw new Error('Failed to fetch bookmarks by content ID');
   }
   return response.json();
 };

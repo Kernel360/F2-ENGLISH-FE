@@ -5,21 +5,26 @@ import {
   fetchReadingContents,
   fetchReadingPreview,
 } from '../queries/contentsQueries';
-import { ContentsResponse, PreviewResponse } from '../../types/Preview';
+import {
+  ContentsResponse,
+  ListeningPreviewResponse,
+  ReadingPreviewResponse,
+} from '../../types/Preview';
 
-export const useReadingPreview = (): UseQueryResult<PreviewResponse> => {
+export const useReadingPreview = (): UseQueryResult<ReadingPreviewResponse> => {
   return useQuery({
     queryKey: ['readingPreviewData'],
     queryFn: () => fetchReadingPreview(),
   });
 };
 
-export const useListeningPreview = (): UseQueryResult<PreviewResponse> => {
-  return useQuery({
-    queryKey: ['listeningPreviewData'],
-    queryFn: () => fetchListeningPreview(),
-  });
-};
+export const useListeningPreview =
+  (): UseQueryResult<ListeningPreviewResponse> => {
+    return useQuery({
+      queryKey: ['listeningPreviewData'],
+      queryFn: () => fetchListeningPreview(),
+    });
+  };
 
 export const useReadingContents = (): UseQueryResult<ContentsResponse> => {
   return useQuery({

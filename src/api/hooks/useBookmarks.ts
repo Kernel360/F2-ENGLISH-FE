@@ -1,18 +1,30 @@
 // src/api/hooks/useBookmarks.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { BookmarkResponse, Bookmark } from '../../types/Bookmark';
 import {
-  fetchBookmarks,
+  BookmarkListResponse,
+  BookmarkByContentIdResponse,
+  Bookmark,
+} from '../../types/Bookmark';
+import {
+  fetchBookmarksByContentId,
+  fetchAllBookmarks,
   createBookmark,
   updateBookmark,
   deleteBookmark,
 } from '../queries/bookmarkQueries';
 
 // 북마크 조회 훅
-export const useFetchBookmarks = (contentId: number) => {
-  return useQuery<BookmarkResponse>({
+export const useFetchBookmarksByContendId = (contentId: number) => {
+  return useQuery<BookmarkByContentIdResponse>({
     queryKey: ['bookmarks', contentId],
-    queryFn: () => fetchBookmarks(contentId),
+    queryFn: () => fetchBookmarksByContentId(contentId),
+  });
+};
+
+export const useFetchAllBookmarks = () => {
+  return useQuery<BookmarkListResponse>({
+    queryKey: ['bookmarks'],
+    queryFn: () => fetchAllBookmarks(),
   });
 };
 

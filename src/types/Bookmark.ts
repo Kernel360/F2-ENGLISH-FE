@@ -1,13 +1,32 @@
-// src/types/Bookmark.ts
-export interface Bookmark {
+export interface BookmarkByContentId {
   bookmarkId: number;
   sentenceIndex: number;
   wordIndex?: number;
   description: string | null;
 }
 
-export interface BookmarkResponse {
+export interface BookmarkByContentIdResponse {
   code: string;
   message: string;
-  data: Bookmark[];
+  data: {
+    bookmarkList: BookmarkByContentId[];
+  };
+}
+
+export interface Bookmark {
+  bookmarkId: number;
+  bookmarkDetail: string | null;
+  description: string | null;
+  contentId: number;
+  contentTitle: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BookmarkListResponse {
+  code: string;
+  message: string;
+  data: {
+    bookmarkMyList: Bookmark[];
+  };
 }
