@@ -7,10 +7,16 @@ export interface Preview {
   hits: number;
 }
 
-export interface PreviewResponse {
+export interface ReadingPreviewResponse {
   code: string;
   message: string;
-  data: Preview[];
+  data: { readingPreview: Preview[] };
+}
+
+export interface ListeningPreviewResponse {
+  code: string;
+  message: string;
+  data: { listeningPreview: Preview[] };
 }
 
 export type ContentsResponse = {

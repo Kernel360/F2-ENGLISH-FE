@@ -21,7 +21,7 @@ export default function HomePage() {
     <div className="max-w-[1080px] mx-auto mt-12 px-6 mb-24 flex flex-col gap-12">
       {/* 인기 리스닝 컨텐츠 캐러셀 */}
       <Carousel
-        previewDatas={readingList?.data || []}
+        previewDatas={readingList?.data.readingPreview || []}
         header={
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-bold">인기 리딩 컨텐츠</h3>
@@ -38,7 +38,7 @@ export default function HomePage() {
       />
       {/* 인기 리딩 컨텐츠 캐러셀 */}
       <Carousel
-        previewDatas={listeningList?.data || []}
+        previewDatas={listeningList?.data.listeningPreview || []}
         header={
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-bold">인기 리스닝 컨텐츠</h3>
