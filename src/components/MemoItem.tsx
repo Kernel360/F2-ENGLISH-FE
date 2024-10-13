@@ -3,29 +3,20 @@
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import { Circle, Share2, Trash2 } from 'lucide-react';
-import { convertTimestampToDate } from '@/lib/convertTimestampToDate';
+import { Bookmark } from '@/types/Bookmark';
 import { Button } from './ui/button';
-
-interface MemoItemProps {
-  contentId: number;
-  contentTitle: string;
-  bookmarkId: number;
-  bookmarkSentence: string;
-  description: string | null;
-  timestamp: number;
-}
 
 export default function MemoItem({
   data: {
     contentId,
     contentTitle,
     bookmarkId,
-    bookmarkSentence,
+    bookmarkDetail,
     description,
-    timestamp,
+    updatedAt,
   },
 }: {
-  data: MemoItemProps;
+  data: Bookmark;
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [memo, setMemo] = useState<string | null>(description);
@@ -54,15 +45,13 @@ export default function MemoItem({
             {contentTitle}
           </h2>
         </Link>
-        <span className="text-xs text-muted-foreground">
-          {convertTimestampToDate(timestamp)}
-        </span>
+        <span className="text-xs text-muted-foreground">{updatedAt}</span>
       </div>
       {/* 북마크된 문장 */}
       <div className="flex items-start space-x-2 mb-2">
         <Circle className="h-3 w-3 mt-1 text-muted-foreground" />
         <p className="text-sm text-muted-foreground flex-grow">
-          {bookmarkSentence}
+          {bookmarkDetail}
         </p>
       </div>
 
@@ -83,7 +72,7 @@ export default function MemoItem({
             <Button variant="outline" onClick={() => {}}>
               취소
             </Button>
-            TODO(@smosco): 북마크 메모 수정 삭제 기능 api 연결
+            {/* TODO(@smosco): 북마크 메모 수정 삭제 기능 api 연결 */}
             <Button onClick={() => {}}>저장</Button>
           </div>
         )}
