@@ -1,47 +1,99 @@
 'use client';
 
 import MemoItem from '@/components/MemoItem';
+import { useFetchBookmarks } from '@/api/hooks/useBookmarks';
+// import { Bookmark } from '@/types/Bookmark';
 
 interface MemoItemProps {
-  id: string;
-  title: string;
-  content: string;
-  timestamp: string;
-  description?: string;
+  contentId: number;
+  contentTitle: string;
+  bookmarkId: number;
+  bookmarkSentence: string;
+  description: string | null;
+  timestamp: number;
 }
 
 const memoItems: MemoItemProps[] = [
   {
-    id: '1',
-    title: "제GPT보다 좋다고? '클로드'로 업무 생산성 높이기",
-    content:
-      '여러 기능을 살펴보고, 더 나아가 ChatGPT와 클로드, 두 강력한 생성형 AI를 어떻게 상황에 맞게 활용하여 업무 생산성을 극대화할 수 있는지 알아보겠습니다',
-    timestamp: '2024.10.09. 오후 18:48 저장',
+    contentId: 1,
+    contentTitle: 'The Future of Artificial Intelligence',
+    bookmarkId: 101,
+    bookmarkSentence:
+      'Artificial intelligence is poised to transform industries in ways we cannot yet imagine.',
     description:
-      '이 글은 AI 도구들의 비교와 활용에 대해 다루고 있어 유용해 보입니다.',
+      'AI가 산업을 어떻게 변화시킬지 상상할 수 없다는 부분이 인상 깊다.',
+    timestamp: 1620304873,
   },
   {
-    id: '2',
-    title: "제GPT보다 좋다고? '클로드'로 업무 생산성 높이기",
-    content: "AI 모델 이름에 예술적 감성을 담아왔습니다. 'Haiku'",
-    timestamp: '2024.10.09. 오후 16:38 저장',
-    description: 'AI 모델 이름의 의미에 대해 더 알아보고 싶습니다.',
+    contentId: 2,
+    contentTitle: 'Exploring Space: The New Frontier',
+    bookmarkId: 102,
+    bookmarkSentence:
+      'Space exploration has always been a symbol of human curiosity and ambition.',
+    description:
+      '우주 탐사가 인간의 호기심과 야망을 상징한다는 문장이 마음에 들었다.',
+    timestamp: 1620354873,
   },
   {
-    id: '3',
-    title: "제GPT보다 좋다고? '클로드'로 업무 생산성 높이기",
-    content: '테스트 포맷팅이',
-    timestamp: '2024.10.09. 오후 16:12 저장',
+    contentId: 3,
+    contentTitle: 'The Impact of Climate Change',
+    bookmarkId: 103,
+    bookmarkSentence:
+      'Climate change is the most significant challenge humanity faces today.',
+    description:
+      '기후 변화가 인류가 직면한 가장 큰 도전이라는 문장이 기억에 남는다.',
+    timestamp: 1620404873,
+  },
+  {
+    contentId: 4,
+    contentTitle: 'Technological Advancements in Medicine',
+    bookmarkId: 104,
+    bookmarkSentence:
+      'Medical technology is advancing at a pace never seen before.',
+    description: '의료 기술이 전에 없던 속도로 발전하고 있다는 점이 흥미롭다.',
+    timestamp: 1620454873,
+  },
+  {
+    contentId: 5,
+    contentTitle: 'Understanding Quantum Computing',
+    bookmarkId: 105,
+    bookmarkSentence:
+      'Quantum computing promises to revolutionize the field of computation.',
+    description: null,
+    timestamp: 1620504873,
   },
 ];
 
 export default function HighlighterAndMemo() {
+  const {
+    data: bookmarkDatas,
+    isLoading,
+    isError,
+    error,
+  } = useFetchBookmarks(1);
+
+  if (isLoading) {
+    return <p className="mt-8">로딩 중...</p>;
+  }
+
+  if (isError) {
+    return (
+      <p className="mt-8 text-red-500">에러가 발생했습니다: {error.message}</p>
+    );
+  }
+
+  if (!bookmarkDatas || bookmarkDatas.data.length === 0) {
+    return <p className="mt-8">북마크가 없습니다.</p>;
+  }
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">형광펜과 메모</h1>
-      <p className="text-sm text-muted-foreground">12개의 형광펜</p>
+      <p className="text-sm text-muted-foreground">
+        {bookmarkDatas.data.length}개의 형광펜
+      </p>
       {memoItems.map((item) => (
-        <MemoItem key={item.id} item={item} />
+        <MemoItem key={item.bookmarkId} data={item} />
       ))}
     </div>
   );
