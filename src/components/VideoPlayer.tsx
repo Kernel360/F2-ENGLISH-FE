@@ -24,6 +24,8 @@ function VideoPlayer({ scriptsData }: VideoPlayerProps) {
     useState<LanguageCode[]>(availableLanguages);
   const [currentTime, setCurrentTime] = useState(0);
   const [mounted, setMounted] = useState(false); // 추가: 마운트 상태 확인
+  const [isVideoReadyButIsNotPlayingYet, setIsVideoReadyButIsNotPlayingYet] =
+    useState(true); //  준비 메세지 상태 관리
 
   useEffect(() => {
     setMounted(true); // 컴포넌트가 클라이언트에서 마운트되었음을 표시
@@ -71,18 +73,26 @@ function VideoPlayer({ scriptsData }: VideoPlayerProps) {
     setPlayBackRate,
   };
 
+  const handleVideoReady = () => {
+    // 처음 비디오가 준비되었을 때만 true로 설정
+    setIsVideoReadyButIsNotPlayingYet(true);
+  };
   // 클라이언트에서만 렌더링되도록 조건부 렌더링
   if (!mounted) return null;
 
   return (
-    <div className="flex flex-col gap-4 w-full h-full max-w-[640px] rounded-[20px] ">
-      <div className="relative overflow-hidden">
+    <div className="flex flex-col gap-4 rounded-[20px] items-center px-10 min">
+      <div className="relative overflow-hidden w-full rounded-[20px]">
         <ReactPlayer
           ref={playerRef}
           url={mockUrl}
           playing={isPlaying}
           width="100%"
-          onPlay={() => setIsPlaying(true)}
+          onReady={handleVideoReady}
+          onPlay={() => {
+            setIsPlaying(true);
+            setIsVideoReadyButIsNotPlayingYet(false);
+          }}
           onStart={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
           onProgress={handleProgress}
@@ -96,28 +106,31 @@ function VideoPlayer({ scriptsData }: VideoPlayerProps) {
           BasicControlBarProps={BasicControlBarProps}
         />
       </div>
-
-      <SubtitleOption
-        mode={mode}
-        selectedLanguages={selectedLanguages}
-        setMode={setMode}
-        setSelectedLanguages={setSelectedLanguages}
-        availableLanguages={availableLanguages}
-      />
-
-      <ReactScriptPlayer
-        mode={mode}
-        subtitles={scriptsData || []}
-        selectedLanguages={selectedLanguages}
-        seekTo={seekTo}
-        currentTime={currentTime}
-        onClickSubtitle={(subtitle, index) => {
-          console.log(subtitle, index);
-        }}
-        onSelectWord={(word, subtitle, index) => {
-          console.log(word, subtitle, index);
-        }}
-      />
+      <div className="w-full">
+        <SubtitleOption
+          mode={mode}
+          selectedLanguages={selectedLanguages}
+          setMode={setMode}
+          setSelectedLanguages={setSelectedLanguages}
+          availableLanguages={availableLanguages}
+        />
+      </div>
+      <div className="w-full">
+        <ReactScriptPlayer
+          mode={mode}
+          subtitles={scriptsData || []}
+          selectedLanguages={selectedLanguages}
+          seekTo={seekTo}
+          currentTime={currentTime}
+          onClickSubtitle={(subtitle, index) => {
+            console.log(subtitle, index);
+          }}
+          onSelectWord={(word, subtitle, index) => {
+            console.log(word, subtitle, index);
+          }}
+          isVideoReadyButIsNotPlayingYet={isVideoReadyButIsNotPlayingYet} // video첫로딩후재생버튼누르기전에는 영상을 재생해주세요 메시지 보여줌
+        />
+      </div>
     </div>
   );
 }
