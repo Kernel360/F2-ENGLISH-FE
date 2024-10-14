@@ -3,14 +3,28 @@ import {
   FetchScrapResponse,
   CreateScrapResponse,
   DeleteScrapResponse,
+  CheckScrapResponse,
 } from '@/types/Scrap';
-import { fetchScrap, deleteScrap, createScrap } from '../queries/scrapQueries';
+import {
+  fetchScrap,
+  deleteScrap,
+  createScrap,
+  checkScrap,
+} from '../queries/scrapQueries';
 
 // 스크랩 조회 훅
 export const useFetchScrap = () => {
   return useQuery<FetchScrapResponse>({
     queryKey: ['scrap'],
     queryFn: () => fetchScrap(),
+  });
+};
+
+// 스크랩 확인 훅
+export const useCheckScrap = (contentId: number) => {
+  return useQuery<CheckScrapResponse>({
+    queryKey: ['scrap', contentId],
+    queryFn: () => checkScrap(contentId),
   });
 };
 

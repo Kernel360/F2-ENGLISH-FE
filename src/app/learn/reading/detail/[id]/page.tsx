@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { ArrowUp, Languages, MessageCircleMoreIcon } from 'lucide-react';
+import { ArrowUp, MessageCircleMoreIcon } from 'lucide-react';
 import quizData from '@/mock/quizData.json';
 import QuizCarousel from '@/components/quiz/QuizCarousel';
 import Tooltip from '@/components/Tooltip';
@@ -22,6 +22,12 @@ import {
   useDeleteBookmark,
 } from '@/api/hooks/useBookmarks';
 import { useParams } from 'next/navigation';
+import FloatingButtons from '@/components/FloatingButtons';
+import {
+  useCreateScrap,
+  useDeleteScrap,
+  useCheckScrap,
+} from '@/api/hooks/useScrap';
 
 export default function DetailReadingPage() {
   const params = useParams();
@@ -35,7 +41,12 @@ export default function DetailReadingPage() {
   const updateBookmarkMutation = useUpdateBookmark(contentId);
   const deleteBookmarkMutation = useDeleteBookmark(contentId);
 
+  const { data: checkScrap } = useCheckScrap(contentId);
+  const createScrapMutation = useCreateScrap(contentId);
+  const deleteScrapMutation = useDeleteScrap(contentId);
+
   const [showTranslate, setShowTranslate] = useState(true);
+
   const [selectedSentenceIndex, setSelectedSentenceIndex] = useState<
     number | null
   >(null);
@@ -47,6 +58,14 @@ export default function DetailReadingPage() {
   const [memoPosition, setMemoPosition] = useState({ top: 0, left: 0 });
 
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false); // 삭제 확인 모달 상태 추가
+
+  const [isScrapped, setIsScrapped] = useState<boolean | undefined>(undefined);
+
+  useEffect(() => {
+    if (checkScrap?.data) {
+      setIsScrapped(checkScrap.data); // 서버에서 스크랩 여부를 받아와 상태 업데이트
+    }
+  }, [checkScrap]);
 
   const toggleTranslation = () => setShowTranslate((prev) => !prev);
 
@@ -86,8 +105,6 @@ export default function DetailReadingPage() {
         createBookmarkMutation.mutate(
           {
             sentenceIndex: selectedSentenceIndex,
-            wordIndex: 0,
-            // description: '',
           },
           {
             onSuccess: () => {
@@ -216,7 +233,6 @@ export default function DetailReadingPage() {
       createBookmarkMutation.mutate(
         {
           sentenceIndex: selectedSentenceIndex,
-          wordIndex: 0,
           description: memoTextTrimmed,
         },
         {
@@ -229,6 +245,24 @@ export default function DetailReadingPage() {
 
     setMemoText(''); // 메모 저장 후 초기화
     setShowMemo(false); // 메모 입력창 닫기
+  };
+
+  const handleScrapToggle = () => {
+    if (isScrapped) {
+      // 스크랩 삭제
+      deleteScrapMutation.mutate(undefined, {
+        onSuccess: () => {
+          setIsScrapped(false);
+        },
+      });
+    } else {
+      // 스크랩 생성
+      createScrapMutation.mutate(undefined, {
+        onSuccess: () => {
+          setIsScrapped(true);
+        },
+      });
+    }
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -345,25 +379,24 @@ export default function DetailReadingPage() {
         </Modal>
       )}
 
-      <div className="fixed right-16 bottom-20 md:bottom-4">
-        <Button
-          onClick={toggleTranslation}
-          variant="default"
-          className={`rounded-full p-3 shadow-lg ${showTranslate ? 'bg-blue-500 hover:bg-blue-500/90' : ''}`}
-        >
-          <Languages className="w-5 h-5" />
-          {`번역${showTranslate ? 'ON' : 'OFF'}`}
-        </Button>
-      </div>
       <div className="fixed right-4 bottom-20 md:bottom-4">
         <Button
           variant="default"
-          className="rounded-full p-3 shadow-lg"
+          size="icon"
+          className="rounded-full w-12 h-12"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           <ArrowUp className="w-5 h-5" />
         </Button>
       </div>
+
+      {/* 번역, 스크랩 버튼 */}
+      <FloatingButtons
+        isScrapped={isScrapped}
+        onScrapToggle={handleScrapToggle}
+        showTranslate={showTranslate}
+        onTranslateToggle={toggleTranslation}
+      />
     </>
   );
 }

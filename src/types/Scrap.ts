@@ -2,6 +2,17 @@
 export interface ScrapListItem {
   scrapId: number;
   contentId: number;
+  title: string;
+  createdAt: string;
+  preScripts: string;
+  thumbnailUrl: string;
+  contentType: 'READING' | 'LISTENING';
+}
+
+export interface CheckScrapResponse {
+  code: string;
+  message: string;
+  data: boolean;
 }
 
 export interface FetchScrapResponse {
