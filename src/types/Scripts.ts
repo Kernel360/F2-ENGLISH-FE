@@ -1,4 +1,4 @@
-type LanguageCode = 'en' | 'ko' | 'ja' | 'de' | 'fr' | 'es';
+type LanguageCode = 'enScript' | 'koScript';
 
 interface Subtitle extends Partial<Record<LanguageCode, string>> {
   startTimeInSecond: number;
