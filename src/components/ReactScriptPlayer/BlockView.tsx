@@ -40,11 +40,11 @@ export function BlockView({
   }, [currentSubtitleIndex]);
 
   return (
-    <div ref={containerRef} className="flex flex-col gap-8">
+    <div ref={containerRef} className="flex flex-col">
       {subtitles.map((subtitle, index) => (
         <div
-          className={`p-4 rounded-lg transition-colors duration-500 ease-in-out ${
-            index === currentSubtitleIndex ? 'bg-gray-300' : ''
+          className={`p-4 rounded-lg transition-colors duration-500 ease-in-outs  ${
+            index === currentSubtitleIndex ? 'bg-violet-50' : ''
           }`}
           // eslint-disable-next-line react/no-array-index-key
           key={index}
@@ -54,7 +54,7 @@ export function BlockView({
             onClickSubtitle(subtitle, index);
           }}
         >
-          <button className="w-20 px-3 py-2 border-none rounded-full bg-[#ececec] cursor-pointer text-sm text-[#5a5a5a]">
+          <button className="w-20 px-3 py-2 mb-2 border-none rounded-full bg-violet-200 cursor-pointer text-sm text-[#5a5a5a]">
             {convertTime(subtitle.startTimeInSecond)}
           </button>
 

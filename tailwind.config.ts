@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
@@ -62,8 +63,18 @@ const config: Config = {
           '5': 'hsl(var(--chart-5))',
         },
       },
+      animation: {
+        fadeIn: 'fadeIn 0.5s forwards', // 0.5초 동안 서서히 나타나는 애니메이션
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],
 };
+
 export default config;
