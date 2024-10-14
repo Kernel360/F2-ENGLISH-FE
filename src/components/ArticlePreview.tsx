@@ -1,12 +1,33 @@
-import { Preview } from '@/types/Preview';
 import Link from 'next/link';
 import { removeFirstChar } from '@/lib/removeFirstChar';
+import { formatDate } from '@/lib/formatDate';
+
+interface ArticelPreviewData {
+  scrapId?: number;
+  contentId: number;
+  title: string;
+  category?: string;
+  thumbnailUrl: string;
+  preScripts?: string;
+  preScript?: string;
+  hits?: number;
+  createdAt?: string;
+}
 
 export default function ArticlePreview({
   // TODO(@smosco): hits, 북마크 아이콘 추가
-  data: { contentId, thumbnailUrl, title, category, preScripts, hits },
+  data: {
+    contentId,
+    thumbnailUrl,
+    title,
+    category,
+    preScripts,
+    preScript,
+    hits,
+    createdAt,
+  },
 }: {
-  data: Preview;
+  data: ArticelPreviewData;
 }) {
   return (
     <Link href={`/learn/reading/detail/${contentId}`}>
@@ -17,9 +38,13 @@ export default function ArticlePreview({
               {title}
             </h2>
             <p className="text-sm mb-3">{category}</p>
+            <p className="text-sm mb-3">
+              {createdAt && formatDate(createdAt)} 저장
+            </p>
             <p className="text-sm text-muted-foreground mb-3">{hits}회</p>
             <p className="text-sm text-muted-foreground line-clamp-2">
-              {removeFirstChar(preScripts)}
+              {preScripts && removeFirstChar(preScripts)}
+              {preScript && removeFirstChar(preScript)}
             </p>
           </div>
           {thumbnailUrl && (

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
+import { formatDate } from '@/lib/formatDate';
 import { Circle, Share2, Trash2 } from 'lucide-react';
 import {
   useDeleteBookmark,
@@ -83,7 +84,9 @@ export default function MemoItem({
             {contentTitle}
           </h2>
         </Link>
-        <span className="text-xs text-muted-foreground">{updatedAt}</span>
+        <span className="text-xs text-muted-foreground">
+          {updatedAt && formatDate(updatedAt)} 저장
+        </span>
       </div>
       {/* 북마크된 문장 */}
       <div className="flex items-start space-x-2 mb-2">
