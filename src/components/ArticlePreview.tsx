@@ -37,11 +37,13 @@ export default function ArticlePreview({
             <h2 className="text-lg font-semibold mb-2 hover:underline underline-offset-2">
               {title}
             </h2>
-            <p className="text-sm mb-3">{category}</p>
+            {category && <p className="text-sm mb-3">{category}</p>}
             <p className="text-sm mb-3">
               {createdAt && formatDate(createdAt)} 저장
             </p>
-            <p className="text-sm text-muted-foreground mb-3">{hits}회</p>
+            {hits && (
+              <p className="text-sm text-muted-foreground mb-3">{hits}회</p>
+            )}
             <p className="text-sm text-muted-foreground line-clamp-2">
               {preScripts && removeFirstChar(preScripts)}
               {preScript && removeFirstChar(preScript)}

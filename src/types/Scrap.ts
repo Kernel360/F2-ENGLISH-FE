@@ -2,6 +2,10 @@
 export interface ScrapListItem {
   scrapId: number;
   contentId: number;
+  title: string;
+  createdAt: string;
+  preScript: string;
+  thumbnailUrl: string;
 }
 
 export interface CheckScrapResponse {
