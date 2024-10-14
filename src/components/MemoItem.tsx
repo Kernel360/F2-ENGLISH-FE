@@ -85,7 +85,7 @@ export default function MemoItem({
           </h2>
         </Link>
         <span className="text-xs text-muted-foreground">
-          {updatedAt && formatDate(updatedAt)} 저장
+          {updatedAt && `${formatDate(updatedAt)} 저장`}
         </span>
       </div>
       {/* 북마크된 문장 */}

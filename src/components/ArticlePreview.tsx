@@ -39,7 +39,7 @@ export default function ArticlePreview({
             </h2>
             {category && <p className="text-sm mb-3">{category}</p>}
             <p className="text-sm mb-3">
-              {createdAt && formatDate(createdAt)} 저장
+              {createdAt && `${formatDate(createdAt)} 저장`}
             </p>
             {hits && (
               <p className="text-sm text-muted-foreground mb-3">{hits}회</p>
