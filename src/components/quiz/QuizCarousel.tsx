@@ -1,30 +1,20 @@
 import React from 'react';
-import Quiz from './Quiz';
+import { QuestionAnswer } from '@/types/Quiz';
 import Carousel from '../Carousel';
-
-// interface Word {
-//   text: string;
-//   index: number;
-// }
-
-interface QuizData {
-  question: string;
-  answer: string;
-  // id: number;
-  // words: Word[];
-}
+import Quiz from './Quiz';
 
 interface QuizCarouselProps {
-  quizListData: QuizData[];
+  quizListData: QuestionAnswer[];
 }
 
 export default function QuizCarousel({ quizListData }: QuizCarouselProps) {
   return (
-    <div className="w-full p-10 border rounded-lg mb-20">
+    <div className="w-full">
+      <h3>퀴즈 풀기</h3>
       <Carousel
         previewDatas={quizListData}
         itemComponent={Quiz}
-        itemWidth={640}
+        itemWidth={744}
         itemsPerPage={1}
       />
     </div>
