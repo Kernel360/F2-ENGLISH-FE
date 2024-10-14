@@ -5,7 +5,7 @@ import {
   CheckScrapResponse,
 } from '@/types/Scrap';
 
-const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/scrap`;
+const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/scrap`;
 
 // 스크랩 조회
 export const fetchScrap = async (): Promise<FetchScrapResponse> => {
