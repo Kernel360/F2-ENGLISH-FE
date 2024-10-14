@@ -62,6 +62,32 @@ export default function ControlBar({
 
   return (
     <div className="absolute w-full bottom-[-5px] bg-gradient-to-b from-transparent to-black">
+      {/* progressBar */}
+      <div
+        className="relative w-full h-2 bg-[rgba(255,255,255,0.3)] cursor-pointer"
+        onMouseDown={(e) => handleMouseEvent(e, 'down')}
+        onMouseMove={(e) => isDragging && handleMouseEvent(e, 'move')}
+        onMouseUp={(e) => handleMouseEvent(e, 'up')}
+        onMouseLeave={() => setIsDragging(false)} // 드래그 상태 해제
+        role="progressbar"
+        aria-label="Progress"
+      >
+        <div
+          className="h-full bg-violet-400 rounded-l transition-all duration-200 ease"
+          style={{
+            width: `${
+              playerRef.current?.getCurrentTime() &&
+              playerRef.current?.getDuration()
+                ? // eslint-disable-next-line no-unsafe-optional-chaining
+                  (playerRef.current?.getCurrentTime() /
+                    playerRef.current.getDuration()) *
+                  100
+                : 0
+            }%`,
+          }}
+        ></div>
+      </div>
+
       <div className="w-full h-[50px] flex justify-between items-center px-[30px] text-white box-border">
         <div className="flex flex-row items-center gap-2 ">
           {/* 볼륨 슬라이더 */}
@@ -120,32 +146,6 @@ export default function ControlBar({
             </div>
           )}
         </div>
-      </div>
-
-      {/* progressBar */}
-      <div
-        className="relative w-full h-[20px] bg-[rgba(255,255,255,0.3)] rounded cursor-pointer"
-        onMouseDown={(e) => handleMouseEvent(e, 'down')}
-        onMouseMove={(e) => isDragging && handleMouseEvent(e, 'move')}
-        onMouseUp={(e) => handleMouseEvent(e, 'up')}
-        onMouseLeave={() => setIsDragging(false)} // 드래그 상태 해제
-        role="progressbar"
-        aria-label="Progress"
-      >
-        <div
-          className="h-full bg-violet-400 rounded-l transition-all duration-200 ease"
-          style={{
-            width: `${
-              playerRef.current?.getCurrentTime() &&
-              playerRef.current?.getDuration()
-                ? // eslint-disable-next-line no-unsafe-optional-chaining
-                  (playerRef.current?.getCurrentTime() /
-                    playerRef.current.getDuration()) *
-                  100
-                : 0
-            }%`,
-          }}
-        ></div>
       </div>
     </div>
   );
