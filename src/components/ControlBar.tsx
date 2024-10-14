@@ -133,7 +133,7 @@ export default function ControlBar({
         aria-label="Progress"
       >
         <div
-          className="h-full bg-[rgb(186,133,186)] rounded-l transition-all duration-200 ease"
+          className="h-full bg-violet-400 rounded-l transition-all duration-200 ease"
           style={{
             width: `${
               playerRef.current?.getCurrentTime() &&
