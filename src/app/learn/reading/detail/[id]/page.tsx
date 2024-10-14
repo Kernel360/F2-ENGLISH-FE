@@ -9,7 +9,6 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { ArrowUp, MessageCircleMoreIcon } from 'lucide-react';
-import quizData from '@/mock/quizData.json';
 import QuizCarousel from '@/components/quiz/QuizCarousel';
 import Tooltip from '@/components/Tooltip';
 import MemoInput from '@/components/MemoInput';
@@ -28,6 +27,7 @@ import {
   useDeleteScrap,
   useCheckScrap,
 } from '@/api/hooks/useScrap';
+import { useFetchQuiz } from '@/api/hooks/useQuiz';
 
 export default function DetailReadingPage() {
   const params = useParams();
@@ -44,6 +44,8 @@ export default function DetailReadingPage() {
   const { data: checkScrap } = useCheckScrap(contentId);
   const createScrapMutation = useCreateScrap(contentId);
   const deleteScrapMutation = useDeleteScrap(contentId);
+
+  const { data: quizData } = useFetchQuiz(contentId);
 
   const [showTranslate, setShowTranslate] = useState(true);
 
@@ -353,7 +355,9 @@ export default function DetailReadingPage() {
               />
             )}
           </div>
-          <QuizCarousel quizListData={quizData} />
+          {quizData && (
+            <QuizCarousel quizListData={quizData.data['question-answer']} />
+          )}
         </div>
       </div>
 
