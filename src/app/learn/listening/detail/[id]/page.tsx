@@ -6,12 +6,16 @@ import { Separator } from '@/components/ui/separator';
 import VideoPlayer from '@/components/VideoPlayer';
 import { useParams } from 'next/navigation';
 import { useContentDetail } from '@/api/hooks/useContentDetail';
+import QuizCarousel from '@/components/quiz/QuizCarousel';
+import { useFetchQuiz } from '@/api/hooks/useQuiz';
 
 export default function DetailListeningPage() {
   const param = useParams();
   const contentId = Number(param.id);
 
   const { data: ListeningDetailData, isLoading } = useContentDetail(contentId);
+
+  const { data: quizData } = useFetchQuiz(contentId);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -30,6 +34,10 @@ export default function DetailListeningPage() {
         <Separator />
 
         <VideoPlayer scriptsData={ListeningDetailData?.data.scriptList} />
+
+        {quizData && (
+          <QuizCarousel quizListData={quizData.data['question-answer']} />
+        )}
       </div>
     </div>
   );
