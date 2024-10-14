@@ -18,6 +18,7 @@ export function TextDisplay({
       {selectedLanguages.map((language) => (
         <p
           key={language}
+          className="animate-fadeIn"
           onMouseUp={() => {
             const selection = window.getSelection();
             if (selection && selection.toString()) {
