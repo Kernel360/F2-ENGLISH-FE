@@ -4,7 +4,7 @@ import {
   DeleteScrapResponse,
 } from '@/types/Scrap';
 
-const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/scrap`;
+const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/scrap/view`;
 
 // 스크랩 조회
 export const fetchScrap = async (): Promise<FetchScrapResponse> => {
