@@ -4,8 +4,9 @@ export interface ScrapListItem {
   contentId: number;
   title: string;
   createdAt: string;
-  preScript: string;
+  preScripts: string;
   thumbnailUrl: string;
+  contentType: 'READING' | 'LISTENING';
 }
 
 export interface CheckScrapResponse {

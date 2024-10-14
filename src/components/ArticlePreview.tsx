@@ -8,8 +8,7 @@ interface ArticelPreviewData {
   title: string;
   category?: string;
   thumbnailUrl: string;
-  preScripts?: string;
-  preScript?: string;
+  preScripts: string;
   hits?: number;
   createdAt?: string;
 }
@@ -22,7 +21,6 @@ export default function ArticlePreview({
     title,
     category,
     preScripts,
-    preScript,
     hits,
     createdAt,
   },
@@ -45,8 +43,7 @@ export default function ArticlePreview({
               <p className="text-sm text-muted-foreground mb-3">{hits}회</p>
             )}
             <p className="text-sm text-muted-foreground line-clamp-2">
-              {preScripts && removeFirstChar(preScripts)}
-              {preScript && removeFirstChar(preScript)}
+              {removeFirstChar(preScripts)}
             </p>
           </div>
           {thumbnailUrl && (

@@ -22,9 +22,13 @@ export default function RecentContent() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">최근 스크랩한 콘텐츠</h1>
-      {allScrapData.data.scrapList.map((item) => (
-        <ArticlePreview key={item.scrapId} data={item} />
-      ))}
+      {allScrapData.data.scrapList.map((item) =>
+        item.contentType === 'READING' ? (
+          <ArticlePreview key={item.scrapId} data={item} />
+        ) : (
+          '리스닝 프리뷰를 리턴합니다.'
+        ),
+      )}
     </div>
   );
 }
