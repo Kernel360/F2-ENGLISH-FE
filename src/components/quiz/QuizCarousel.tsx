@@ -2,16 +2,16 @@ import React from 'react';
 import Quiz from './Quiz';
 import Carousel from '../Carousel';
 
-interface Word {
-  text: string;
-  index: number;
-}
+// interface Word {
+//   text: string;
+//   index: number;
+// }
 
 interface QuizData {
-  id: number;
   question: string;
-  words: Word[];
   answer: string;
+  // id: number;
+  // words: Word[];
 }
 
 interface QuizCarouselProps {

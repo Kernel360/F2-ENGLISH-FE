@@ -4,7 +4,7 @@ import { CircleCheck, CircleX } from 'lucide-react';
 import { shuffleArray } from '@/lib/utils';
 
 interface QuizData {
-  id: number;
+  // id: number;
   question: string;
   answer: string;
 }
