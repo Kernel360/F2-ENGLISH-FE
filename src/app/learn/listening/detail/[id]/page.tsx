@@ -16,6 +16,9 @@ export default function DetailListeningPage() {
   if (isLoading) {
     return <div>Loading...</div>;
   }
+  if (!ListeningDetailData) {
+    return <div>데이터가 없습니다.</div>;
+  }
   return (
     <div className="flex">
       <div className="flex flex-col flex-1 gap-5 mx-auto p-5 pb-16 max-w-[800px]">
