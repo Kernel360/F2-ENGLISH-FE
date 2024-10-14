@@ -12,6 +12,8 @@ export type ContentDetail = {
   category: string;
   title: string;
   thumbnailUrl: string;
+  videoUrl?: string;
+  hits: number;
   scriptList: Script[];
 };
 

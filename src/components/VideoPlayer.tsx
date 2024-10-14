@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import { Script } from '@/types/ContentDetail';
-import { mockUrl } from '../mock/mockUrl';
 import ControlBar from './ControlBar';
 import SubtitleOption from './SubtitleOption';
 import { ReactScriptPlayer } from './ReactScriptPlayer';
@@ -12,10 +11,11 @@ import { LanguageCode } from '../types/Scripts';
 type Mode = 'line' | 'block';
 
 interface VideoPlayerProps {
+  videoUrl: string;
   scriptsData: Script[] | undefined;
 }
 
-function VideoPlayer({ scriptsData }: VideoPlayerProps) {
+function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   const playerRef = useRef<ReactPlayer | null>(null);
 
   const [mode, setMode] = useState<Mode>('line');
@@ -85,7 +85,7 @@ function VideoPlayer({ scriptsData }: VideoPlayerProps) {
       <div className="relative overflow-hidden w-full rounded-[20px]">
         <ReactPlayer
           ref={playerRef}
-          url={mockUrl}
+          url={videoUrl}
           playing={isPlaying}
           width="100%"
           onReady={handleVideoReady}
