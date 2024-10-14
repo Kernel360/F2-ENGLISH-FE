@@ -105,8 +105,6 @@ export default function DetailReadingPage() {
         createBookmarkMutation.mutate(
           {
             sentenceIndex: selectedSentenceIndex,
-            wordIndex: 0,
-            // description: '',
           },
           {
             onSuccess: () => {
@@ -235,7 +233,6 @@ export default function DetailReadingPage() {
       createBookmarkMutation.mutate(
         {
           sentenceIndex: selectedSentenceIndex,
-          wordIndex: 0,
           description: memoTextTrimmed,
         },
         {
