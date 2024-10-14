@@ -8,13 +8,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { BookOpen, Headphones, Loader2 } from 'lucide-react';
-import { useState } from 'react';
+import { BookOpen, Headphones } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 
-export default function loginPage() {
+export default function LoginPage() {
   const router = useRouter();
 
   const handleOAuthLogin = (provider: string) => {
