@@ -2,6 +2,7 @@ import {
   UserResponse,
   UserUpdateResponse,
   UserUpdateRequest,
+  UserTimeResponse,
 } from '@/types/User';
 import {
   useQuery,
@@ -9,7 +10,11 @@ import {
   useQueryClient,
   useMutation,
 } from '@tanstack/react-query';
-import { fetchUserInfo, updateUserInfo } from '@/api/queries/userQueries';
+import {
+  fetchUserInfo,
+  updateUserInfo,
+  fetchUserTime,
+} from '@/api/queries/userQueries';
 
 export const useUserInfo = (): UseQueryResult<UserResponse> => {
   return useQuery({
@@ -26,5 +31,12 @@ export const useUpdateUserInfo = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user'] });
     },
+  });
+};
+
+export const useUserTime = (): UseQueryResult<UserTimeResponse> => {
+  return useQuery({
+    queryKey: ['userTime'],
+    queryFn: () => fetchUserTime(),
   });
 };

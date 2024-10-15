@@ -287,26 +287,37 @@ export default function DetailReadingPage() {
               {contentData.hits} 조회수
             </div>
           </div>
-          <Separator />
-          <div className="flex justify-center">
-            <img
-              src={contentData.thumbnailUrl}
-              alt="이미지"
-              className="rounded-lg"
-            />
-          </div>
-          <div>
-            <ul className="flex flex-col gap-4 text-[#313131]">
-              {contentData.scriptList.map((script, index) => {
-                const bookmarkMemo = bookmarkData?.data.bookmarkList.find(
-                  (item) => item.sentenceIndex === index,
-                );
-                return (
-                  <li
-                    key={index}
-                    data-index={index}
-                    className="rounded relative leading-loose"
+          <div className="text-sm flex justify-end w-full">조회수</div>
+        </div>
+        <Separator />
+        <div className="flex justify-center">
+          <img
+            src={contentData.thumbnailUrl}
+            alt="이미지"
+            className="rounded-lg"
+          />
+        </div>
+        <div>
+          <ul className="flex flex-col gap-4 text-[#313131]">
+            {contentData.scriptList.map((script, index) => {
+              const bookmarkMemo = bookmarkData?.data.bookmarkList.find(
+                (item) => item.sentenceIndex === index,
+              );
+              return (
+                <li
+                  key={index}
+                  data-index={index}
+                  className="rounded relative leading-loose"
+                >
+                  <div
+                    onClick={(e) => handleSentenceClick(e, index)}
+                    role="button"
+                    tabIndex={0}
+                    className={`w-fit cursor-pointer px-2 transition-colors duration-300 ${
+                      bookmarkMemo ? 'bg-yellow-200' : ''
+                    } ${selectedSentenceIndex === index ? 'bg-gray-200' : ''} ${!bookmarkMemo && 'hover:bg-gray-200'}`}
                   >
+
                     <div
                       onClick={(e) => handleSentenceClick(e, index)}
                       role="button"
@@ -363,6 +374,9 @@ export default function DetailReadingPage() {
             <QuizCarousel quizListData={quizData.data['question-answer']} />
           )}
         </div>
+        {quizData && (
+          <QuizCarousel quizListData={quizData.data['question-answer']} />
+        )}
       </div>
 
       {/* 삭제 확인 모달 */}

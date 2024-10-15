@@ -37,27 +37,25 @@ export default function DetailListeningPage() {
   }
 
   return (
-    <div className="flex">
-      <div className="flex flex-col flex-1 gap-5 mx-auto pb-16 max-w-[1080px]">
-        <div>
-          <h1>{ListeningDetailData?.data.title}</h1>
-          <Badge>{ListeningDetailData?.data.category}</Badge>
-          <div className="text-sm flex justify-end w-full">
-            {ListeningDetailData?.data.hits} 회
-          </div>
+    <div className="w-full flex flex-col ">
+      <div>
+        <h1>{ListeningDetailData?.data.title}</h1>
+        <Badge>{ListeningDetailData?.data.category}</Badge>
+        <div className="text-sm flex justify-end w-full">
+          {ListeningDetailData?.data.hits} 회
         </div>
-        <Separator />
-
-        {/* TODO(@smosco): response 타입 나누기 싫어서 타입 단언 */}
-        <VideoPlayer
-          videoUrl={ListeningDetailData?.data.videoUrl as string}
-          scriptsData={ListeningDetailData?.data.scriptList}
-        />
-
-        {quizData && (
-          <QuizCarousel quizListData={quizData.data['question-answer']} />
-        )}
       </div>
+      <Separator />
+
+      {/* TODO(@smosco): response 타입 나누기 싫어서 타입 단언 */}
+      <VideoPlayer
+        videoUrl={ListeningDetailData?.data.videoUrl as string}
+        scriptsData={ListeningDetailData?.data.scriptList}
+      />
+
+      {quizData && (
+        <QuizCarousel quizListData={quizData.data['question-answer']} />
+      )}
     </div>
   );
 }

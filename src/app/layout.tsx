@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import { Header } from '@/components/Header';
-import { MobileNav } from '@/components/MobileNav';
+import { Header } from '@/components/layout/Header';
+import { MobileNav } from '@/components/layout/MobileNav';
+import ContentInner from '@/components/layout/ContentInner';
 import Providers from '@/providers/Providers';
 
 const pretendard = localFont({
@@ -25,7 +26,7 @@ export default function RootLayout({
       <body className={`${pretendard.variable} antialiased`}>
         <Providers>
           <Header />
-          {children}
+          <ContentInner>{children}</ContentInner>
           <MobileNav />
         </Providers>
       </body>

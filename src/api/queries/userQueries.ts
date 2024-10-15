@@ -2,6 +2,7 @@ import {
   UserResponse,
   UserUpdateRequest,
   UserUpdateResponse,
+  UserTimeResponse,
 } from '@/types/User';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api`;
@@ -44,4 +45,19 @@ export const updateUserInfo = async (
     console.error('Failed to update user info:', error);
     throw error;
   }
+};
+
+export const fetchUserTime = async (): Promise<UserTimeResponse> => {
+  const response = await fetch(`${BASE_URL}/user/time`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return response.json();
 };
