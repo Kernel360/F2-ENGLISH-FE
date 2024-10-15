@@ -20,7 +20,7 @@ export default function RecentContent() {
     return <p className="mt-8">북마크가 없습니다.</p>;
   }
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto px-4">
       <h1 className="text-2xl font-bold mb-6">최근 스크랩한 콘텐츠</h1>
       {allScrapData.data.scrapList.map((item) => (
         <ContentPreview key={item.scrapId} data={item} />

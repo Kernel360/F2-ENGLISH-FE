@@ -26,7 +26,7 @@ export default function HighlighterAndMemo() {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container w-full mx-auto px-4">
       <h1 className="text-2xl font-bold mb-6">형광펜과 메모</h1>
       <p className="text-sm text-muted-foreground">
         {allBookmarkData.data.bookmarkMyList.length}개의 형광펜
