@@ -1,21 +1,39 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
+import { useParams } from 'next/navigation';
 import { Script } from '@/types/ContentDetail';
-import { mockUrl } from '../mock/mockUrl';
+import {
+  useCreateBookmark,
+  useFetchBookmarksByContendId,
+} from '@/api/hooks/useBookmarks';
+import { Check, X, BookmarkPlus, MessageSquarePlus } from 'lucide-react';
+import { convertTime } from '@/lib/convertTime';
 import ControlBar from './ControlBar';
 import SubtitleOption from './SubtitleOption';
 import { ReactScriptPlayer } from './ReactScriptPlayer';
 import { LanguageCode } from '../types/Scripts';
+import BookmarkMemoItem from './BookmarkMemoItem';
+import { Button } from './ui/button';
+import { Card, CardHeader, CardContent, CardTitle } from './ui/card';
+import { ScrollArea } from './ui/scroll-area';
+import { Textarea } from './ui/textarea';
 
 type Mode = 'line' | 'block';
 
 interface VideoPlayerProps {
+  videoUrl: string;
   scriptsData: Script[] | undefined;
 }
 
-function VideoPlayer({ scriptsData }: VideoPlayerProps) {
+function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
+  const params = useParams();
+  const contentId = Number(params.id);
+
   const playerRef = useRef<ReactPlayer | null>(null);
 
   const [mode, setMode] = useState<Mode>('line');
@@ -26,6 +44,20 @@ function VideoPlayer({ scriptsData }: VideoPlayerProps) {
   const [mounted, setMounted] = useState(false); // 추가: 마운트 상태 확인
   const [isVideoReadyButIsNotPlayingYet, setIsVideoReadyButIsNotPlayingYet] =
     useState(true); //  준비 메세지 상태 관리
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(0.5);
+  const [playbackRate, setPlayBackRate] = useState(1);
+
+  //  북마크 메모
+  const [selectedSentenceIndex, setSelectedSentenceIndex] = useState<
+    number | null
+  >(null);
+
+  const [isAddingNote, setIsAddingNote] = useState(false);
+  const [newNoteText, setNewNoteText] = useState('');
+
+  const { data: bookmarkData } = useFetchBookmarksByContendId(contentId);
+  const createBookmarkMutation = useCreateBookmark(contentId);
 
   useEffect(() => {
     setMounted(true); // 컴포넌트가 클라이언트에서 마운트되었음을 표시
@@ -35,10 +67,6 @@ function VideoPlayer({ scriptsData }: VideoPlayerProps) {
     setCurrentTime(state.playedSeconds);
   };
 
-  // TODO(@godhyzaang):ControlBar에서만 쓰이는 속성 ControlBar로 내부로 이동
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.5);
-  const [playbackRate, setPlayBackRate] = useState(1);
   const handlePlayPause = () => {
     setIsPlaying((prev) => !prev);
   };
@@ -77,45 +105,91 @@ function VideoPlayer({ scriptsData }: VideoPlayerProps) {
     // 처음 비디오가 준비되었을 때만 true로 설정
     setIsVideoReadyButIsNotPlayingYet(true);
   };
+
+  // Find the current subtitle index based on the current video time
+  const currentSubtitleIndex = scriptsData?.findIndex(
+    (subtitle) =>
+      subtitle.startTimeInSecond <= currentTime &&
+      subtitle.startTimeInSecond + subtitle.durationInSecond >= currentTime,
+  );
+
+  const handleBookmark = () => {
+    if (currentSubtitleIndex !== null && currentSubtitleIndex !== undefined) {
+      createBookmarkMutation.mutate({
+        sentenceIndex: currentSubtitleIndex,
+      });
+    }
+  };
+
+  const handleMemo = () => {
+    if (currentSubtitleIndex !== null && currentSubtitleIndex !== undefined) {
+      setSelectedSentenceIndex(currentSubtitleIndex);
+      setNewNoteText('');
+      setIsAddingNote(true);
+      setIsPlaying(false);
+    }
+  };
+
+  const handleSaveNewNote = () => {
+    if (selectedSentenceIndex !== null) {
+      createBookmarkMutation.mutate({
+        sentenceIndex: selectedSentenceIndex,
+        description: newNoteText,
+      });
+      setIsAddingNote(false); // Close new note input
+      setIsPlaying(true); // Resume video playback
+    }
+  };
+
+  const handleCancelNewNote = () => {
+    setIsAddingNote(false); // Close new note input
+    setIsPlaying(true); // Resume video playback
+  };
+
   // 클라이언트에서만 렌더링되도록 조건부 렌더링
   if (!mounted) return null;
 
   return (
-    <div className="flex flex-col gap-4 rounded-[20px] items-center px-10 min">
-      <div className="relative overflow-hidden w-full rounded-[20px]">
-        <ReactPlayer
-          ref={playerRef}
-          url={mockUrl}
-          playing={isPlaying}
-          width="100%"
-          onReady={handleVideoReady}
-          onPlay={() => {
-            setIsPlaying(true);
-            setIsVideoReadyButIsNotPlayingYet(false);
-          }}
-          onStart={() => setIsPlaying(true)}
-          onPause={() => setIsPlaying(false)}
-          onProgress={handleProgress}
-          volume={volume}
-          controls={false} // 유튜브 자체 컨트롤러 제거
-          playbackRate={playbackRate}
-          progressInterval={100} // 기존 progress 업데이트 1초에서 0.1초로 변경 -> controlBar 클릭반응 느린문제 개선
-        />
-        <ControlBar
-          playerRef={playerRef}
-          BasicControlBarProps={BasicControlBarProps}
-        />
-      </div>
-      <div className="w-full">
+    <div className="container mx-auto p-4 grid grid-cols-3 gap-4">
+      {/* 비디오 플레이어 */}
+      <div className="col-span-2 space-y-4">
+        <Card>
+          <CardContent className="p-0 h-[400px] relative rounded-xl overflow-hidden">
+            <ReactPlayer
+              ref={playerRef}
+              url={videoUrl}
+              playing={isPlaying}
+              width="100%"
+              height="100%"
+              onReady={handleVideoReady}
+              onPlay={() => {
+                setIsPlaying(true);
+                setIsVideoReadyButIsNotPlayingYet(false);
+              }}
+              onStart={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+              onProgress={handleProgress}
+              volume={volume}
+              controls={false}
+              playbackRate={playbackRate}
+              progressInterval={100}
+            />
+            <ControlBar
+              playerRef={playerRef}
+              BasicControlBarProps={BasicControlBarProps}
+            />
+          </CardContent>
+        </Card>
+
+        {/* 보기모드, 언어 옵션 */}
         <SubtitleOption
           mode={mode}
           selectedLanguages={selectedLanguages}
           setMode={setMode}
           setSelectedLanguages={setSelectedLanguages}
-          availableLanguages={availableLanguages}
         />
-      </div>
-      <div className="w-full">
+
+        {/* 자막 컨테이너 */}
         <ReactScriptPlayer
           mode={mode}
           subtitles={scriptsData || []}
@@ -129,7 +203,81 @@ function VideoPlayer({ scriptsData }: VideoPlayerProps) {
             console.log(word, subtitle, index);
           }}
           isVideoReadyButIsNotPlayingYet={isVideoReadyButIsNotPlayingYet} // video첫로딩후재생버튼누르기전에는 영상을 재생해주세요 메시지 보여줌
+          bookmarkedIndices={
+            bookmarkData && bookmarkData?.data.bookmarkList.length > 0
+              ? bookmarkData.data.bookmarkList.map(
+                  (bookmark) => bookmark.sentenceIndex,
+                )
+              : []
+          }
         />
+      </div>
+      {/* 북마크 메모 패널 */}
+      <div className="col-span-1">
+        <Card className="h-full">
+          <CardHeader>
+            <CardTitle className="text-xl">Bookmarks & Notes</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="h-[560px] mb-4">
+              {bookmarkData && bookmarkData.data.bookmarkList.length > 0 ? (
+                bookmarkData.data.bookmarkList.map((bookmark) => {
+                  const subtitle = scriptsData?.[bookmark.sentenceIndex];
+                  return (
+                    <BookmarkMemoItem
+                      key={bookmark.bookmarkId}
+                      bookmark={bookmark}
+                      subtitle={subtitle}
+                      seekTo={seekTo}
+                    />
+                  );
+                })
+              ) : (
+                <p className="mt-8">북마크가 없습니다.</p>
+              )}
+              {/* TODO(@smosco): 메모 컴포넌트랑 거의 동일 분리 해야함 */}
+              {isAddingNote && selectedSentenceIndex !== null && (
+                <div className="mb-4 p-2 bg-muted rounded-md">
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="text-sm text-muted-foreground">
+                      {scriptsData?.[selectedSentenceIndex]?.enScript ||
+                        '문장 없음'}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {scriptsData?.[selectedSentenceIndex]
+                        ?.startTimeInSecond &&
+                        convertTime(
+                          scriptsData[selectedSentenceIndex].startTimeInSecond,
+                        )}
+                    </div>
+                  </div>
+                  <Textarea
+                    value={newNoteText}
+                    onChange={(e) => setNewNoteText(e.target.value)}
+                    className="mb-2"
+                    placeholder="Enter your note here..."
+                  />
+                  <div className="flex justify-end space-x-2">
+                    <Button size="sm" onClick={handleCancelNewNote}>
+                      <X className="h-4 w-4 mr-2" /> Cancel
+                    </Button>
+                    <Button size="sm" onClick={handleSaveNewNote}>
+                      <Check className="h-4 w-4 mr-2" /> Save
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </ScrollArea>
+            <div className="flex justify-between">
+              <Button onClick={handleBookmark}>
+                <BookmarkPlus className="mr-2 h-4 w-4" /> Bookmark
+              </Button>
+              <Button onClick={handleMemo}>
+                <MessageSquarePlus className="mr-2 h-4 w-4" /> Add Note
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

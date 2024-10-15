@@ -15,6 +15,7 @@ interface BlockViewProps {
   seekTo: (timeInSeconds: number) => void;
   onClickSubtitle: (subtitle: Subtitle, index: number) => void;
   onSelectWord: (word: string, subtitle: Subtitle, index: number) => void;
+  bookmarkedIndices: number[];
 }
 
 export function BlockView({
@@ -24,6 +25,7 @@ export function BlockView({
   seekTo,
   onClickSubtitle,
   onSelectWord,
+  bookmarkedIndices,
 }: BlockViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -43,8 +45,13 @@ export function BlockView({
     <div ref={containerRef} className="flex flex-col">
       {subtitles.map((subtitle, index) => (
         <div
-          className={`p-4 rounded-lg transition-colors duration-500 ease-in-outs  ${
-            index === currentSubtitleIndex ? 'bg-violet-50' : ''
+          className={`p-4 rounded-lg transition-colors duration-300 ease-in-out ${
+            // eslint-disable-next-line no-nested-ternary
+            bookmarkedIndices.includes(index)
+              ? 'bg-yellow-200' // 북마크된 자막 하이라이트
+              : index === currentSubtitleIndex
+                ? 'bg-violet-50'
+                : ''
           }`}
           // eslint-disable-next-line react/no-array-index-key
           key={index}

@@ -14,6 +14,7 @@ export interface ReactScriptPlayerProps {
   onClickSubtitle: (subtitle: Subtitle, index: number) => void;
   onSelectWord: (word: string, subtitle: Subtitle, index: number) => void;
   isVideoReadyButIsNotPlayingYet: boolean;
+  bookmarkedIndices: number[];
 }
 
 export function ReactScriptPlayer({
@@ -25,6 +26,7 @@ export function ReactScriptPlayer({
   onClickSubtitle,
   onSelectWord,
   isVideoReadyButIsNotPlayingYet,
+  bookmarkedIndices,
 }: ReactScriptPlayerProps) {
   const reversedSubtitles = useMemo(
     () => [...subtitles].reverse(),
@@ -39,7 +41,9 @@ export function ReactScriptPlayer({
   }, [reversedSubtitles, currentTime]);
 
   return (
-    <div className="flex flex-col gap-8  h-[16rem] p-6 border-2 border-violet-100 rounded-md overflow-y-auto">
+    <div className="flex flex-col h-[16rem] p-6 border-2 border-violet-100 rounded-xl overflow-y-auto">
+      <p className="text-xl font-bold">Transcript</p>
+
       <div>
         {/* TODO(@smosco): line, block 뷰 props가 거의 동일하기 때문에 공통 props로 추출해서 관리 */}
         {mode === 'line' && (
@@ -50,6 +54,7 @@ export function ReactScriptPlayer({
             seekTo={seekTo}
             onSelectWord={onSelectWord}
             isVideoReadyButIsNotPlayingYet={isVideoReadyButIsNotPlayingYet}
+            bookmarkedIndices={bookmarkedIndices}
           />
         )}
         {mode === 'block' && (
@@ -60,6 +65,7 @@ export function ReactScriptPlayer({
             seekTo={seekTo}
             onClickSubtitle={onClickSubtitle}
             onSelectWord={onSelectWord}
+            bookmarkedIndices={bookmarkedIndices}
           />
         )}
       </div>
