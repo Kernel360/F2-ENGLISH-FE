@@ -12,22 +12,24 @@ export default function FloatingButtons({
 }: {
   isScrapped: boolean | undefined;
   onScrapToggle: () => void;
-  showTranslate: boolean;
-  onTranslateToggle: () => void;
+  showTranslate?: boolean;
+  onTranslateToggle?: () => void;
 }) {
   return (
     <div className="fixed left-4 top-1/2 -translate-y-1/2 flex flex-col gap-4">
-      <Button
-        variant="outline"
-        size="icon"
-        className={`rounded-full w-12 h-12 ${showTranslate && 'bg-primary'}`}
-        onClick={onTranslateToggle}
-      >
-        <Languages
-          className="h-6 w-6"
-          color={showTranslate ? 'white' : 'black'}
-        />
-      </Button>
+      {showTranslate && onTranslateToggle && (
+        <Button
+          variant="outline"
+          size="icon"
+          className={`rounded-full w-12 h-12 ${showTranslate && 'bg-primary'}`}
+          onClick={onTranslateToggle}
+        >
+          <Languages
+            className="h-6 w-6"
+            color={showTranslate ? 'white' : 'black'}
+          />
+        </Button>
+      )}
       <Button
         variant="outline"
         size="icon"
