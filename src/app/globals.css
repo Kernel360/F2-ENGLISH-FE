@@ -104,3 +104,7 @@
     --chart-5: var(--gray-9);
   }
 }
+
+body {
+  font-family: var(--font-pretendard);
+}

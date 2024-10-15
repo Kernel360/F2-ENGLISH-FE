@@ -283,7 +283,9 @@ export default function DetailReadingPage() {
             <div className="font-bold text-2xl mt-2 mb-4">
               {contentData.title}
             </div>
-            <div className="text-sm flex justify-end w-full">조회수</div>
+            <div className="text-sm flex justify-end w-full">
+              {contentData.hits} 조회수
+            </div>
           </div>
           <Separator />
           <div className="flex justify-center">
@@ -313,7 +315,7 @@ export default function DetailReadingPage() {
                         bookmarkMemo ? 'bg-yellow-200' : ''
                       } ${selectedSentenceIndex === index ? 'bg-gray-200' : ''} ${!bookmarkMemo && 'hover:bg-gray-200'}`}
                     >
-                      {script.enScript}
+                      <p className="font-semibold">{script.enScript}</p>
                       {bookmarkMemo?.description && (
                         <span
                           className="cursor-pointer ml-2 inline-flex"
@@ -329,7 +331,9 @@ export default function DetailReadingPage() {
                         </span>
                       )}
                     </div>
-                    {showTranslate && <p className="px-2">{script.koScript}</p>}
+                    {showTranslate && (
+                      <p className="px-2 ">{script.koScript}</p>
+                    )}
                   </li>
                 );
               })}

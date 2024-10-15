@@ -1,8 +1,14 @@
 import type { Metadata } from 'next';
+import localFont from 'next/font/local';
 import './globals.css';
 import { Header } from '@/components/Header';
 import { MobileNav } from '@/components/MobileNav';
 import Providers from '@/providers/Providers';
+
+const pretendard = localFont({
+  src: './fonts/PretendardVariable.woff2',
+  variable: '--font-pretendard',
+});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className={`${pretendard.variable} antialiased`}>
         <Providers>
           <Header />
           {children}
