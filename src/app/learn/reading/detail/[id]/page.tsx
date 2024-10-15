@@ -277,7 +277,7 @@ export default function DetailReadingPage() {
   return (
     <>
       <div className="flex">
-        <div className="flex flex-col flex-1 gap-5 mx-auto p-5 pb-16 max-w-[800px] h-auto">
+        <div className="flex flex-col flex-1 gap-5 mx-auto pb-16 max-w-[800px] h-auto">
           <div>
             <Badge>{contentData.category}</Badge>
             <div className="font-bold text-2xl mt-2 mb-4">

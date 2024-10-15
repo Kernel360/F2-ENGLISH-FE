@@ -73,9 +73,11 @@ export default function DetailListeningPage() {
   }
 
   return (
-    <div className="w-full flex flex-col ">
+    <div className="max-w-[830px] flex flex-col ">
       <div>
-        <h1>{ListeningDetailData?.data.title}</h1>
+        <h1 className="text-2xl font-bold">
+          {ListeningDetailData?.data.title}
+        </h1>
         <Badge>{ListeningDetailData?.data.category}</Badge>
         <div className="text-sm flex justify-end w-full">
           {ListeningDetailData?.data.hits} 회
