@@ -4,7 +4,6 @@ import React, { useMemo } from 'react';
 import { LanguageCode, Subtitle } from '../../types/Scripts';
 import { LineView } from './LineView';
 import { BlockView } from './BlockView';
-import { CardTitle, CardHeader } from '../ui/card';
 
 export interface ReactScriptPlayerProps {
   mode: 'line' | 'block';
@@ -42,10 +41,9 @@ export function ReactScriptPlayer({
   }, [reversedSubtitles, currentTime]);
 
   return (
-    <div className="flex flex-col h-[16rem] border-2 border-violet-100 rounded-xl overflow-y-auto">
-      <CardHeader>
-        <CardTitle>Transcript</CardTitle>
-      </CardHeader>
+    <div className="flex flex-col h-[16rem] p-6 border-2 border-violet-100 rounded-xl overflow-y-auto">
+      <p className="text-xl font-bold">Transcript</p>
+
       <div>
         {/* TODO(@smosco): line, block 뷰 props가 거의 동일하기 때문에 공통 props로 추출해서 관리 */}
         {mode === 'line' && (

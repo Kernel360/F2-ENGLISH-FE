@@ -11,7 +11,8 @@ import {
   useCreateBookmark,
   useFetchBookmarksByContendId,
 } from '@/api/hooks/useBookmarks';
-import { BookmarkPlus, MessageSquarePlus } from 'lucide-react';
+import { Check, X, BookmarkPlus, MessageSquarePlus } from 'lucide-react';
+import { convertTime } from '@/lib/convertTime';
 import ControlBar from './ControlBar';
 import SubtitleOption from './SubtitleOption';
 import { ReactScriptPlayer } from './ReactScriptPlayer';
@@ -20,6 +21,7 @@ import BookmarkMemoItem from './BookmarkMemoItem';
 import { Button } from './ui/button';
 import { Card, CardHeader, CardContent, CardTitle } from './ui/card';
 import { ScrollArea } from './ui/scroll-area';
+import { Textarea } from './ui/textarea';
 
 type Mode = 'line' | 'block';
 
@@ -33,7 +35,6 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   const contentId = Number(params.id);
 
   const playerRef = useRef<ReactPlayer | null>(null);
-  console.log(contentId);
 
   const [mode, setMode] = useState<Mode>('line');
   const availableLanguages: LanguageCode[] = ['enScript', 'koScript'];
@@ -51,10 +52,9 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   const [selectedSentenceIndex, setSelectedSentenceIndex] = useState<
     number | null
   >(null);
-  const [isMemoOpen, setIsMemoOpen] = useState(false);
-  const [memoText, setMemoText] = useState('');
 
-  console.log(selectedSentenceIndex, isMemoOpen, memoText, mounted);
+  const [isAddingNote, setIsAddingNote] = useState(false);
+  const [newNoteText, setNewNoteText] = useState('');
 
   const { data: bookmarkData } = useFetchBookmarksByContendId(contentId);
   const createBookmarkMutation = useCreateBookmark(contentId);
@@ -124,27 +124,27 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   const handleMemo = () => {
     if (currentSubtitleIndex !== null && currentSubtitleIndex !== undefined) {
       setSelectedSentenceIndex(currentSubtitleIndex);
-      setMemoText(''); // Reset memo text
-      setIsMemoOpen(true);
-      setIsPlaying(false); // Pause the video when memo is open
+      setNewNoteText('');
+      setIsAddingNote(true);
+      setIsPlaying(false);
     }
   };
 
-  // const handleSaveMemo = () => {
-  //   if (selectedSentenceIndex !== null) {
-  //     createBookmarkMutation.mutate({
-  //       sentenceIndex: selectedSentenceIndex,
-  //       description: memoText,
-  //     });
-  //     setIsMemoOpen(false); // Close memo input
-  //     setIsPlaying(true); // Resume video playback
-  //   }
-  // };
+  const handleSaveNewNote = () => {
+    if (selectedSentenceIndex !== null) {
+      createBookmarkMutation.mutate({
+        sentenceIndex: selectedSentenceIndex,
+        description: newNoteText,
+      });
+      setIsAddingNote(false); // Close new note input
+      setIsPlaying(true); // Resume video playback
+    }
+  };
 
-  // const handleCancelMemo = () => {
-  //   setIsMemoOpen(false); // Close memo input
-  //   setIsPlaying(true); // Resume video playback
-  // };
+  const handleCancelNewNote = () => {
+    setIsAddingNote(false); // Close new note input
+    setIsPlaying(true); // Resume video playback
+  };
 
   // 클라이언트에서만 렌더링되도록 조건부 렌더링
   if (!mounted) return null;
@@ -216,10 +216,10 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
       <div className="col-span-1">
         <Card className="h-full">
           <CardHeader>
-            <CardTitle>Bookmarks & Notes</CardTitle>
+            <CardTitle className="text-xl">Bookmarks & Notes</CardTitle>
           </CardHeader>
           <CardContent>
-            <ScrollArea className="h-[580px] mb-4">
+            <ScrollArea className="h-[560px] mb-4">
               {bookmarkData && bookmarkData.data.bookmarkList.length > 0 ? (
                 bookmarkData.data.bookmarkList.map((bookmark) => {
                   const subtitle = scriptsData?.[bookmark.sentenceIndex];
@@ -234,6 +234,38 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
                 })
               ) : (
                 <p className="mt-8">북마크가 없습니다.</p>
+              )}
+              {/* TODO(@smosco): 메모 컴포넌트랑 거의 동일 분리 해야함 */}
+              {isAddingNote && selectedSentenceIndex !== null && (
+                <div className="mb-4 p-2 bg-muted rounded-md">
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="text-sm text-muted-foreground">
+                      {scriptsData?.[selectedSentenceIndex]?.enScript ||
+                        '문장 없음'}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {scriptsData?.[selectedSentenceIndex]
+                        ?.startTimeInSecond &&
+                        convertTime(
+                          scriptsData[selectedSentenceIndex].startTimeInSecond,
+                        )}
+                    </div>
+                  </div>
+                  <Textarea
+                    value={newNoteText}
+                    onChange={(e) => setNewNoteText(e.target.value)}
+                    className="mb-2"
+                    placeholder="Enter your note here..."
+                  />
+                  <div className="flex justify-end space-x-2">
+                    <Button size="sm" onClick={handleCancelNewNote}>
+                      <X className="h-4 w-4 mr-2" /> Cancel
+                    </Button>
+                    <Button size="sm" onClick={handleSaveNewNote}>
+                      <Check className="h-4 w-4 mr-2" /> Save
+                    </Button>
+                  </div>
+                </div>
               )}
             </ScrollArea>
             <div className="flex justify-between">

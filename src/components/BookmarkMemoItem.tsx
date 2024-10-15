@@ -8,8 +8,8 @@ import {
 import { Edit2, Check, X } from 'lucide-react';
 import { BookmarkByContentId } from '@/types/Bookmark';
 import { Subtitle } from '@/types/Scripts';
-// import { convertTime } from '@/lib/convertTime';
 import { useParams } from 'next/navigation';
+import { convertTime } from '@/lib/convertTime';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 
@@ -64,12 +64,20 @@ export default function BookmarkMemoItem({
     };
   }, [memoRef]);
 
-  console.log(bookmark, subtitle, seekTo);
-
   return (
     <div key={bookmark.bookmarkId} className="mb-4 p-2 bg-muted rounded-md">
       <div className="flex justify-between items-start mb-2">
-        <div className="text-xs text-muted-foreground">북마크된 자막</div>
+        <div className="text-xs text-muted-foreground">
+          <Button
+            variant="secondary"
+            className="rounded-full h-6 px-3"
+            onClick={() => seekTo(subtitle?.startTimeInSecond as number)}
+          >
+            {convertTime(subtitle?.startTimeInSecond as number)}
+          </Button>
+          <p className="mt-2">{subtitle?.enScript}</p>
+        </div>
+        {/* TODO(@smosco): 삭제 버튼 추가 */}
         <Button variant="ghost" size="icon" onClick={() => setIsEditing(true)}>
           <Edit2 className="h-4 w-4" />
         </Button>
@@ -91,7 +99,7 @@ export default function BookmarkMemoItem({
           </div>
         </div>
       ) : (
-        <p className="text-sm">{memo || 'Bookmarked sentence'}</p>
+        <p className="text-sm min-h-10 border-l-purple-400">{memo || ''}</p>
       )}
     </div>
   );
