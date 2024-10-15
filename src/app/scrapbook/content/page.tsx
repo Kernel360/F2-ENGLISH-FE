@@ -1,7 +1,7 @@
 'use client';
 
-import ArticlePreview from '@/components/ArticlePreview';
 import { useFetchScrap } from '@/api/hooks/useScrap';
+import ContentPreview from '@/components/ContentPreview';
 
 export default function RecentContent() {
   const { data: allScrapData, isLoading, isError, error } = useFetchScrap();
@@ -22,13 +22,9 @@ export default function RecentContent() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">최근 스크랩한 콘텐츠</h1>
-      {allScrapData.data.scrapList.map((item) =>
-        item.contentType === 'READING' ? (
-          <ArticlePreview key={item.scrapId} data={item} />
-        ) : (
-          '리스닝 프리뷰를 리턴합니다.'
-        ),
-      )}
+      {allScrapData.data.scrapList.map((item) => (
+        <ContentPreview key={item.scrapId} data={item} />
+      ))}
     </div>
   );
 }
