@@ -57,7 +57,7 @@ export function LineView({
           // TODO: 사용자가 자막이 언제 넘어갈지 알 수 있도록 progressbar 추가
 
           <div
-            className={`p-4 transition-colors duration-300 ${
+            className={`p-6 transition-colors duration-300 ${
               bookmarkedIndices.includes(currentSubtitleIndex)
                 ? 'bg-yellow-200' // 북마크된 자막 하이라이트
                 : ''

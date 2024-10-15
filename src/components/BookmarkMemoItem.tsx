@@ -5,11 +5,13 @@ import {
   useUpdateBookmark,
   useFetchAllBookmarks,
 } from '@/api/hooks/useBookmarks';
+import { Edit2, Check, X } from 'lucide-react';
 import { BookmarkByContentId } from '@/types/Bookmark';
 import { Subtitle } from '@/types/Scripts';
-import { convertTime } from '@/lib/convertTime';
+// import { convertTime } from '@/lib/convertTime';
 import { useParams } from 'next/navigation';
 import { Button } from './ui/button';
+import { Textarea } from './ui/textarea';
 
 interface BookmarkMemoItemProps {
   bookmark: BookmarkByContentId;
@@ -62,42 +64,35 @@ export default function BookmarkMemoItem({
     };
   }, [memoRef]);
 
+  console.log(bookmark, subtitle, seekTo);
+
   return (
-    <div key={bookmark.bookmarkId} className="bg-white p-4 border-b">
-      <div className="flex">
-        <Button
-          variant="secondary"
-          onClick={() => {
-            seekTo(subtitle?.startTimeInSecond as number);
-          }}
-        >
-          {convertTime(subtitle?.startTimeInSecond as number)}
+    <div key={bookmark.bookmarkId} className="mb-4 p-2 bg-muted rounded-md">
+      <div className="flex justify-between items-start mb-2">
+        <div className="text-xs text-muted-foreground">북마크된 자막</div>
+        <Button variant="ghost" size="icon" onClick={() => setIsEditing(true)}>
+          <Edit2 className="h-4 w-4" />
         </Button>
-        <h2 className="text-lg font-semibold mb-1 ml-4">
-          {subtitle ? subtitle.enScript : '자막을 찾을 수 없습니다.'}
-        </h2>
       </div>
-      <div ref={memoRef} onClick={() => setIsEditing(true)}>
-        <textarea
-          value={memo || ''}
-          onChange={(e) => setMemo(e.target.value)}
-          className="w-full p-2 border-b border-gray-300 focus:outline-none focus:border-purple-500 min-h-10 resize-none"
-        />
-        {isEditing && (
+      {isEditing ? (
+        <div>
+          <Textarea
+            value={memo || ''}
+            onChange={(e) => setMemo(e.target.value)}
+            className="mb-2"
+          />
           <div className="flex justify-end space-x-2">
-            <Button
-              variant="outline"
-              onClick={() => {
-                console.log('click');
-                setIsEditing(false);
-              }}
-            >
-              취소
+            <Button size="sm" onClick={() => setIsEditing(false)}>
+              <X className="h-4 w-4 mr-2" /> Cancel
             </Button>
-            <Button onClick={handleSaveMemo}>저장</Button>
+            <Button size="sm" onClick={handleSaveMemo}>
+              <Check className="h-4 w-4 mr-2" /> Save
+            </Button>
           </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <p className="text-sm">{memo || 'Bookmarked sentence'}</p>
+      )}
     </div>
   );
 }

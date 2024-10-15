@@ -11,12 +11,15 @@ import {
   useCreateBookmark,
   useFetchBookmarksByContendId,
 } from '@/api/hooks/useBookmarks';
+import { BookmarkPlus, MessageSquarePlus } from 'lucide-react';
 import ControlBar from './ControlBar';
 import SubtitleOption from './SubtitleOption';
 import { ReactScriptPlayer } from './ReactScriptPlayer';
 import { LanguageCode } from '../types/Scripts';
 import BookmarkMemoItem from './BookmarkMemoItem';
 import { Button } from './ui/button';
+import { Card, CardHeader, CardContent, CardTitle } from './ui/card';
+import { ScrollArea } from './ui/scroll-area';
 
 type Mode = 'line' | 'block';
 
@@ -30,6 +33,7 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   const contentId = Number(params.id);
 
   const playerRef = useRef<ReactPlayer | null>(null);
+  console.log(contentId);
 
   const [mode, setMode] = useState<Mode>('line');
   const availableLanguages: LanguageCode[] = ['enScript', 'koScript'];
@@ -50,8 +54,11 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   const [isMemoOpen, setIsMemoOpen] = useState(false);
   const [memoText, setMemoText] = useState('');
 
+  console.log(selectedSentenceIndex, isMemoOpen, memoText, mounted);
+
   const { data: bookmarkData } = useFetchBookmarksByContendId(contentId);
   const createBookmarkMutation = useCreateBookmark(contentId);
+
   useEffect(() => {
     setMounted(true); // 컴포넌트가 클라이언트에서 마운트되었음을 표시
   }, []);
@@ -123,123 +130,66 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
     }
   };
 
-  const handleSaveMemo = () => {
-    if (selectedSentenceIndex !== null) {
-      createBookmarkMutation.mutate({
-        sentenceIndex: selectedSentenceIndex,
-        description: memoText,
-      });
-      setIsMemoOpen(false); // Close memo input
-      setIsPlaying(true); // Resume video playback
-    }
-  };
+  // const handleSaveMemo = () => {
+  //   if (selectedSentenceIndex !== null) {
+  //     createBookmarkMutation.mutate({
+  //       sentenceIndex: selectedSentenceIndex,
+  //       description: memoText,
+  //     });
+  //     setIsMemoOpen(false); // Close memo input
+  //     setIsPlaying(true); // Resume video playback
+  //   }
+  // };
 
-  const handleCancelMemo = () => {
-    setIsMemoOpen(false); // Close memo input
-    setIsPlaying(true); // Resume video playback
-  };
+  // const handleCancelMemo = () => {
+  //   setIsMemoOpen(false); // Close memo input
+  //   setIsPlaying(true); // Resume video playback
+  // };
 
   // 클라이언트에서만 렌더링되도록 조건부 렌더링
   if (!mounted) return null;
 
-  if (!bookmarkData || bookmarkData.data.bookmarkList.length === 0) {
-    return <p className="mt-8">북마크가 없습니다.</p>;
-  }
-
   return (
-    <div className="flex flex-col gap-4 rounded-[20px]">
-      <div className="flex">
-        {/* 비디오 플레이어 부분 */}
-        <div className="relative overflow-hidden w-2/3 h-[400px] rounded-lg">
-          <ReactPlayer
-            ref={playerRef}
-            url={videoUrl}
-            playing={isPlaying}
-            width="100%"
-            height="100%" // 비디오 플레이어의 높이 설정
-            onReady={handleVideoReady}
-            onPlay={() => {
-              setIsPlaying(true);
-              setIsVideoReadyButIsNotPlayingYet(false);
-            }}
-            onStart={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-            onProgress={handleProgress}
-            volume={volume}
-            controls={false}
-            playbackRate={playbackRate}
-            progressInterval={100}
-          />
-          <ControlBar
-            playerRef={playerRef}
-            BasicControlBarProps={BasicControlBarProps}
-          />
-        </div>
+    <div className="container mx-auto p-4 grid grid-cols-3 gap-4">
+      {/* 비디오 플레이어 */}
+      <div className="col-span-2 space-y-4">
+        <Card>
+          <CardContent className="p-0 h-[400px] relative rounded-xl overflow-hidden">
+            <ReactPlayer
+              ref={playerRef}
+              url={videoUrl}
+              playing={isPlaying}
+              width="100%"
+              height="100%"
+              onReady={handleVideoReady}
+              onPlay={() => {
+                setIsPlaying(true);
+                setIsVideoReadyButIsNotPlayingYet(false);
+              }}
+              onStart={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+              onProgress={handleProgress}
+              volume={volume}
+              controls={false}
+              playbackRate={playbackRate}
+              progressInterval={100}
+            />
+            <ControlBar
+              playerRef={playerRef}
+              BasicControlBarProps={BasicControlBarProps}
+            />
+          </CardContent>
+        </Card>
 
-        {/* 북마크 및 메모 패널 */}
-        <div className="max-w-2xl mx-auto p-4 space-y-6 h-[400px] overflow-y-scroll">
-          {bookmarkData.data.bookmarkList.map((bookmark) => {
-            const subtitle = scriptsData?.[bookmark.sentenceIndex];
-            return (
-              <BookmarkMemoItem
-                key={bookmark.bookmarkId}
-                bookmark={bookmark}
-                subtitle={subtitle}
-                seekTo={seekTo}
-              />
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="w-full flex mt-4 gap-2">
-        <Button type="button" onClick={handleBookmark}>
-          북마크 추가
-        </Button>
-        <Button type="button" onClick={handleMemo}>
-          메모 추가
-        </Button>
-      </div>
-
-      {isMemoOpen && (
-        <div className="mt-4 w-full">
-          <textarea
-            value={memoText}
-            onChange={(e) => setMemoText(e.target.value)}
-            className="w-full h-24 p-2 border"
-            placeholder="메모 입력"
-          />
-          <div className="flex justify-end gap-4 mt-2">
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={handleCancelMemo}
-              className="px-4 py-2"
-            >
-              취소
-            </Button>
-            <Button
-              variant="secondary"
-              type="button"
-              onClick={handleSaveMemo}
-              className="bg-purple-400 px-4 py-2"
-            >
-              저장
-            </Button>
-          </div>
-        </div>
-      )}
-
-      <div className="w-full">
+        {/* 보기모드, 언어 옵션 */}
         <SubtitleOption
           mode={mode}
           selectedLanguages={selectedLanguages}
           setMode={setMode}
           setSelectedLanguages={setSelectedLanguages}
-          availableLanguages={availableLanguages}
         />
-      </div>
-      <div className="w-full">
+
+        {/* 자막 컨테이너 */}
         <ReactScriptPlayer
           mode={mode}
           subtitles={scriptsData || []}
@@ -253,10 +203,49 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
             console.log(word, subtitle, index);
           }}
           isVideoReadyButIsNotPlayingYet={isVideoReadyButIsNotPlayingYet} // video첫로딩후재생버튼누르기전에는 영상을 재생해주세요 메시지 보여줌
-          bookmarkedIndices={bookmarkData.data.bookmarkList.map(
-            (bookmark) => bookmark.sentenceIndex,
-          )}
+          bookmarkedIndices={
+            bookmarkData && bookmarkData?.data.bookmarkList.length > 0
+              ? bookmarkData.data.bookmarkList.map(
+                  (bookmark) => bookmark.sentenceIndex,
+                )
+              : []
+          }
         />
+      </div>
+      {/* 북마크 메모 패널 */}
+      <div className="col-span-1">
+        <Card className="h-full">
+          <CardHeader>
+            <CardTitle>Bookmarks & Notes</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="h-[580px] mb-4">
+              {bookmarkData && bookmarkData.data.bookmarkList.length > 0 ? (
+                bookmarkData.data.bookmarkList.map((bookmark) => {
+                  const subtitle = scriptsData?.[bookmark.sentenceIndex];
+                  return (
+                    <BookmarkMemoItem
+                      key={bookmark.bookmarkId}
+                      bookmark={bookmark}
+                      subtitle={subtitle}
+                      seekTo={seekTo}
+                    />
+                  );
+                })
+              ) : (
+                <p className="mt-8">북마크가 없습니다.</p>
+              )}
+            </ScrollArea>
+            <div className="flex justify-between">
+              <Button onClick={handleBookmark}>
+                <BookmarkPlus className="mr-2 h-4 w-4" /> Bookmark
+              </Button>
+              <Button onClick={handleMemo}>
+                <MessageSquarePlus className="mr-2 h-4 w-4" /> Add Note
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
