@@ -276,11 +276,16 @@ export default function DetailReadingPage() {
 
   return (
     <>
-      <div className="flex flex-col">
-        <div>
-          <Badge>{contentData.category}</Badge>
-          <div className="font-bold text-2xl mt-2 mb-4">
-            {contentData.title}
+      <div className="flex">
+        <div className="flex flex-col flex-1 gap-5 mx-auto p-5 pb-16 max-w-[800px] h-auto">
+          <div>
+            <Badge>{contentData.category}</Badge>
+            <div className="font-bold text-2xl mt-2 mb-4">
+              {contentData.title}
+            </div>
+            <div className="text-sm flex justify-end w-full">
+              {contentData.hits} 조회수
+            </div>
           </div>
           <div className="text-sm flex justify-end w-full">조회수</div>
         </div>
@@ -312,46 +317,61 @@ export default function DetailReadingPage() {
                       bookmarkMemo ? 'bg-yellow-200' : ''
                     } ${selectedSentenceIndex === index ? 'bg-gray-200' : ''} ${!bookmarkMemo && 'hover:bg-gray-200'}`}
                   >
-                    {script.enScript}
-                    {bookmarkMemo?.description && (
-                      <span
-                        className="cursor-pointer ml-2 inline-flex"
-                        onClick={(e) =>
-                          handleMemoIconClick(
-                            index,
-                            bookmarkMemo.description ?? '',
-                            e,
-                          )
-                        }
-                      >
-                        <MessageCircleMoreIcon size="16px" color="purple" />
-                      </span>
+
+                    <div
+                      onClick={(e) => handleSentenceClick(e, index)}
+                      role="button"
+                      tabIndex={0}
+                      className={`w-fit cursor-pointer px-2 transition-colors duration-300 ${
+                        bookmarkMemo ? 'bg-yellow-200' : ''
+                      } ${selectedSentenceIndex === index ? 'bg-gray-200' : ''} ${!bookmarkMemo && 'hover:bg-gray-200'}`}
+                    >
+                      <p className="font-semibold">{script.enScript}</p>
+                      {bookmarkMemo?.description && (
+                        <span
+                          className="cursor-pointer ml-2 inline-flex"
+                          onClick={(e) =>
+                            handleMemoIconClick(
+                              index,
+                              bookmarkMemo.description ?? '',
+                              e,
+                            )
+                          }
+                        >
+                          <MessageCircleMoreIcon size="16px" color="purple" />
+                        </span>
+                      )}
+                    </div>
+                    {showTranslate && (
+                      <p className="px-2 ">{script.koScript}</p>
                     )}
-                  </div>
-                  {showTranslate && <p className="px-2">{script.koScript}</p>}
-                </li>
-              );
-            })}
-          </ul>
-          {tooltipVisible && (
-            <Tooltip
-              position={tooltipPosition}
-              onAddBookmark={handleAddBookmark}
-              onAddMemo={handleMemoClick}
-              onClose={() => setTooltipVisible(false)}
-              isBookmarked={bookmarkData?.data.bookmarkList.some(
-                (item) => item.sentenceIndex === selectedSentenceIndex, // sentenceIndex로 비교
-              )}
-            />
-          )}
-          {showMemo && (
-            <MemoInput
-              position={memoPosition}
-              memoText={memoText}
-              setMemoText={setMemoText}
-              onSaveMemo={handleSaveMemo}
-              onClose={() => setShowMemo(false)}
-            />
+                  </li>
+                );
+              })}
+            </ul>
+            {tooltipVisible && (
+              <Tooltip
+                position={tooltipPosition}
+                onAddBookmark={handleAddBookmark}
+                onAddMemo={handleMemoClick}
+                onClose={() => setTooltipVisible(false)}
+                isBookmarked={bookmarkData?.data.bookmarkList.some(
+                  (item) => item.sentenceIndex === selectedSentenceIndex, // sentenceIndex로 비교
+                )}
+              />
+            )}
+            {showMemo && (
+              <MemoInput
+                position={memoPosition}
+                memoText={memoText}
+                setMemoText={setMemoText}
+                onSaveMemo={handleSaveMemo}
+                onClose={() => setShowMemo(false)}
+              />
+            )}
+          </div>
+          {quizData && (
+            <QuizCarousel quizListData={quizData.data['question-answer']} />
           )}
         </div>
         {quizData && (

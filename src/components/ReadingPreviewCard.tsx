@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Preview } from '@/types/Preview';
-import { removeFirstChar } from '@/lib/removeFirstChar';
 import { Badge } from './ui/badge';
 
 export default function ReadingPreviewCard({
@@ -33,7 +32,7 @@ export default function ReadingPreviewCard({
               {title}
             </strong>
             <p className="text-sm text-gray-500 text-muted-foreground line-clamp-2">
-              {removeFirstChar(preScripts)}
+              {preScripts}
             </p>
           </div>
         </CardContent>
