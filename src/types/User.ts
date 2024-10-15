@@ -28,3 +28,12 @@ export interface UserUpdateResponse {
     userId: number;
   };
 }
+
+export interface UserTimeResponse {
+  code: 'string';
+  message: 'string';
+  data: {
+    createdAt: 'string';
+    updatedAt: 'string';
+  };
+}
