@@ -37,3 +37,14 @@ export interface UserTimeResponse {
     updatedAt: 'string';
   };
 }
+
+export interface UserLoginStatusResponse {
+  code: string;
+  message: string;
+  data: boolean; // 로그인 상태
+}
+
+export interface UserRequestLogoutResponse {
+  code: string;
+  message: string;
+}

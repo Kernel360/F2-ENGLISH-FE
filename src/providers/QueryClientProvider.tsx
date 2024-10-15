@@ -25,7 +25,11 @@ function getQueryClient() {
   return browserQueryClient;
 }
 
-export default function Providers({ children }: { children: React.ReactNode }) {
+export default function TanstackQueryPovider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const queryClient = getQueryClient();
 
   return (
