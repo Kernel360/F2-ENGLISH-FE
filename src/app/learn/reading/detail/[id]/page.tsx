@@ -267,7 +267,7 @@ export default function DetailReadingPage() {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>로딩중...</div>;
   if (isError) return <div>Error: {error?.message}</div>;
 
   const contentData = data?.data;

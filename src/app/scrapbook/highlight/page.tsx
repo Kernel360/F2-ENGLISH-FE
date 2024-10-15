@@ -12,17 +12,15 @@ export default function HighlighterAndMemo() {
   } = useFetchAllBookmarks();
 
   if (isLoading) {
-    return <p className="mt-8">로딩 중...</p>;
+    return <p>로딩 중...</p>;
   }
 
   if (isError) {
-    return (
-      <p className="mt-8 text-red-500">에러가 발생했습니다: {error.message}</p>
-    );
+    return <p className="text-red-500">에러가 발생했습니다: {error.message}</p>;
   }
 
   if (!allBookmarkData || allBookmarkData.data.bookmarkMyList.length === 0) {
-    return <p className="mt-8">북마크가 없습니다.</p>;
+    return <p>북마크가 없습니다.</p>;
   }
 
   return (

@@ -14,7 +14,7 @@ export default function HomePage() {
     useListeningPreview();
 
   if (readingLoading || listeningLoading) {
-    return <div className="max-w-[1080px] mx-auto mt-8">Loading...</div>;
+    return <div className="">로딩중...</div>;
   }
 
   return (
