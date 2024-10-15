@@ -49,7 +49,7 @@ export default function LearningTracker({
   };
 
   return (
-    <Card className="w-full bg-card">
+    <Card className="w-[260px] bg-card">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-bold">
           누적 학습일: {totalLearningDays}일
