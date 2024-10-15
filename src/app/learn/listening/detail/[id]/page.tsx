@@ -38,7 +38,7 @@ export default function DetailListeningPage() {
 
   return (
     <div className="flex">
-      <div className="flex flex-col flex-1 gap-5 mx-auto p-5 pb-16 max-w-[800px]">
+      <div className="flex flex-col flex-1 gap-5 mx-auto pb-16 max-w-[1080px]">
         <div>
           <h1>{ListeningDetailData?.data.title}</h1>
           <Badge>{ListeningDetailData?.data.category}</Badge>

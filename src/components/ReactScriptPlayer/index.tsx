@@ -14,6 +14,7 @@ export interface ReactScriptPlayerProps {
   onClickSubtitle: (subtitle: Subtitle, index: number) => void;
   onSelectWord: (word: string, subtitle: Subtitle, index: number) => void;
   isVideoReadyButIsNotPlayingYet: boolean;
+  bookmarkedIndices: number[];
 }
 
 export function ReactScriptPlayer({
@@ -25,6 +26,7 @@ export function ReactScriptPlayer({
   onClickSubtitle,
   onSelectWord,
   isVideoReadyButIsNotPlayingYet,
+  bookmarkedIndices,
 }: ReactScriptPlayerProps) {
   const reversedSubtitles = useMemo(
     () => [...subtitles].reverse(),
@@ -50,6 +52,7 @@ export function ReactScriptPlayer({
             seekTo={seekTo}
             onSelectWord={onSelectWord}
             isVideoReadyButIsNotPlayingYet={isVideoReadyButIsNotPlayingYet}
+            bookmarkedIndices={bookmarkedIndices}
           />
         )}
         {mode === 'block' && (
@@ -60,6 +63,7 @@ export function ReactScriptPlayer({
             seekTo={seekTo}
             onClickSubtitle={onClickSubtitle}
             onSelectWord={onSelectWord}
+            bookmarkedIndices={bookmarkedIndices}
           />
         )}
       </div>

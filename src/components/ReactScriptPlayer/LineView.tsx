@@ -4,7 +4,6 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { LanguageCode, Subtitle } from '../../types/Scripts';
-// import { useState } from 'react';
 import { TextDisplay } from './TextDisplay';
 
 interface LineViewProps {
@@ -14,6 +13,7 @@ interface LineViewProps {
   seekTo: (timeInSeconds: number) => void;
   onSelectWord: (word: string, subtitle: Subtitle, index: number) => void;
   isVideoReadyButIsNotPlayingYet: boolean;
+  bookmarkedIndices: number[];
 }
 
 export function LineView({
@@ -23,6 +23,7 @@ export function LineView({
   seekTo,
   onSelectWord,
   isVideoReadyButIsNotPlayingYet,
+  bookmarkedIndices,
 }: LineViewProps) {
   const totalSubtitles = subtitles.length;
 
@@ -54,11 +55,20 @@ export function LineView({
       ) : (
         subtitles[currentSubtitleIndex] && (
           // TODO: 사용자가 자막이 언제 넘어갈지 알 수 있도록 progressbar 추가
-          <TextDisplay
-            subtitle={subtitles[currentSubtitleIndex]}
-            selectedLanguages={selectedLanguages}
-            onSelectWord={onSelectWord}
-          />
+
+          <div
+            className={`p-4 transition-colors duration-300 ${
+              bookmarkedIndices.includes(currentSubtitleIndex)
+                ? 'bg-yellow-200' // 북마크된 자막 하이라이트
+                : ''
+            }`}
+          >
+            <TextDisplay
+              subtitle={subtitles[currentSubtitleIndex]}
+              selectedLanguages={selectedLanguages}
+              onSelectWord={onSelectWord}
+            />
+          </div>
         )
       )}
     </div>
