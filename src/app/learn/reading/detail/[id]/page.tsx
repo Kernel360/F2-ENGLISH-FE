@@ -283,7 +283,9 @@ export default function DetailReadingPage() {
             <div className="font-bold text-2xl mt-2 mb-4">
               {contentData.title}
             </div>
-            <div className="text-sm flex justify-end w-full">조회수</div>
+            <div className="text-sm flex justify-end w-full">
+              {contentData.hits} 조회수
+            </div>
           </div>
           <Separator />
           <div className="flex justify-center">
