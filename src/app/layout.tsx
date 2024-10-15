@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Header } from '@/components/Header';
-import { MobileNav } from '@/components/MobileNav';
+import { Header } from '@/components/layout/Header';
+import { MobileNav } from '@/components/layout/MobileNav';
+import ContentInner from '@/components/layout/ContentInner';
 import Providers from '@/providers/Providers';
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <Header />
-          {children}
+          <ContentInner>{children}</ContentInner>
           <MobileNav />
         </Providers>
       </body>

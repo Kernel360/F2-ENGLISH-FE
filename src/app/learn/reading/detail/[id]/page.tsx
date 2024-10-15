@@ -276,89 +276,87 @@ export default function DetailReadingPage() {
 
   return (
     <>
-      <div className="flex">
-        <div className="flex flex-col flex-1 gap-5 mx-auto p-5 pb-16 max-w-[800px] h-auto">
-          <div>
-            <Badge>{contentData.category}</Badge>
-            <div className="font-bold text-2xl mt-2 mb-4">
-              {contentData.title}
-            </div>
-            <div className="text-sm flex justify-end w-full">조회수</div>
+      <div className="flex flex-col">
+        <div>
+          <Badge>{contentData.category}</Badge>
+          <div className="font-bold text-2xl mt-2 mb-4">
+            {contentData.title}
           </div>
-          <Separator />
-          <div className="flex justify-center">
-            <img
-              src={contentData.thumbnailUrl}
-              alt="이미지"
-              className="rounded-lg"
-            />
-          </div>
-          <div>
-            <ul className="flex flex-col gap-4 text-[#313131]">
-              {contentData.scriptList.map((script, index) => {
-                const bookmarkMemo = bookmarkData?.data.bookmarkList.find(
-                  (item) => item.sentenceIndex === index,
-                );
-                return (
-                  <li
-                    key={index}
-                    data-index={index}
-                    className="rounded relative leading-loose"
+          <div className="text-sm flex justify-end w-full">조회수</div>
+        </div>
+        <Separator />
+        <div className="flex justify-center">
+          <img
+            src={contentData.thumbnailUrl}
+            alt="이미지"
+            className="rounded-lg"
+          />
+        </div>
+        <div>
+          <ul className="flex flex-col gap-4 text-[#313131]">
+            {contentData.scriptList.map((script, index) => {
+              const bookmarkMemo = bookmarkData?.data.bookmarkList.find(
+                (item) => item.sentenceIndex === index,
+              );
+              return (
+                <li
+                  key={index}
+                  data-index={index}
+                  className="rounded relative leading-loose"
+                >
+                  <div
+                    onClick={(e) => handleSentenceClick(e, index)}
+                    role="button"
+                    tabIndex={0}
+                    className={`w-fit cursor-pointer px-2 transition-colors duration-300 ${
+                      bookmarkMemo ? 'bg-yellow-200' : ''
+                    } ${selectedSentenceIndex === index ? 'bg-gray-200' : ''} ${!bookmarkMemo && 'hover:bg-gray-200'}`}
                   >
-                    <div
-                      onClick={(e) => handleSentenceClick(e, index)}
-                      role="button"
-                      tabIndex={0}
-                      className={`w-fit cursor-pointer px-2 transition-colors duration-300 ${
-                        bookmarkMemo ? 'bg-yellow-200' : ''
-                      } ${selectedSentenceIndex === index ? 'bg-gray-200' : ''} ${!bookmarkMemo && 'hover:bg-gray-200'}`}
-                    >
-                      {script.enScript}
-                      {bookmarkMemo?.description && (
-                        <span
-                          className="cursor-pointer ml-2 inline-flex"
-                          onClick={(e) =>
-                            handleMemoIconClick(
-                              index,
-                              bookmarkMemo.description ?? '',
-                              e,
-                            )
-                          }
-                        >
-                          <MessageCircleMoreIcon size="16px" color="purple" />
-                        </span>
-                      )}
-                    </div>
-                    {showTranslate && <p className="px-2">{script.koScript}</p>}
-                  </li>
-                );
-              })}
-            </ul>
-            {tooltipVisible && (
-              <Tooltip
-                position={tooltipPosition}
-                onAddBookmark={handleAddBookmark}
-                onAddMemo={handleMemoClick}
-                onClose={() => setTooltipVisible(false)}
-                isBookmarked={bookmarkData?.data.bookmarkList.some(
-                  (item) => item.sentenceIndex === selectedSentenceIndex, // sentenceIndex로 비교
-                )}
-              />
-            )}
-            {showMemo && (
-              <MemoInput
-                position={memoPosition}
-                memoText={memoText}
-                setMemoText={setMemoText}
-                onSaveMemo={handleSaveMemo}
-                onClose={() => setShowMemo(false)}
-              />
-            )}
-          </div>
-          {quizData && (
-            <QuizCarousel quizListData={quizData.data['question-answer']} />
+                    {script.enScript}
+                    {bookmarkMemo?.description && (
+                      <span
+                        className="cursor-pointer ml-2 inline-flex"
+                        onClick={(e) =>
+                          handleMemoIconClick(
+                            index,
+                            bookmarkMemo.description ?? '',
+                            e,
+                          )
+                        }
+                      >
+                        <MessageCircleMoreIcon size="16px" color="purple" />
+                      </span>
+                    )}
+                  </div>
+                  {showTranslate && <p className="px-2">{script.koScript}</p>}
+                </li>
+              );
+            })}
+          </ul>
+          {tooltipVisible && (
+            <Tooltip
+              position={tooltipPosition}
+              onAddBookmark={handleAddBookmark}
+              onAddMemo={handleMemoClick}
+              onClose={() => setTooltipVisible(false)}
+              isBookmarked={bookmarkData?.data.bookmarkList.some(
+                (item) => item.sentenceIndex === selectedSentenceIndex, // sentenceIndex로 비교
+              )}
+            />
+          )}
+          {showMemo && (
+            <MemoInput
+              position={memoPosition}
+              memoText={memoText}
+              setMemoText={setMemoText}
+              onSaveMemo={handleSaveMemo}
+              onClose={() => setShowMemo(false)}
+            />
           )}
         </div>
+        {quizData && (
+          <QuizCarousel quizListData={quizData.data['question-answer']} />
+        )}
       </div>
 
       {/* 삭제 확인 모달 */}

@@ -24,21 +24,19 @@ export default function DetailListeningPage() {
     return <div>데이터가 없습니다.</div>;
   }
   return (
-    <div className="flex">
-      <div className="flex flex-col flex-1 gap-5 mx-auto p-5 pb-16 max-w-[800px]">
-        <div>
-          <h1>타이틀</h1>
-          <Badge>카테고리</Badge>
-          <div className="text-sm flex justify-end w-full">조회수</div>
-        </div>
-        <Separator />
-
-        <VideoPlayer scriptsData={ListeningDetailData?.data.scriptList} />
-
-        {quizData && (
-          <QuizCarousel quizListData={quizData.data['question-answer']} />
-        )}
+    <div className="w-full flex flex-col ">
+      <div>
+        <h1>타이틀</h1>
+        <Badge>카테고리</Badge>
+        <div className="text-sm flex justify-end w-full">조회수</div>
       </div>
+      <Separator />
+
+      <VideoPlayer scriptsData={ListeningDetailData?.data.scriptList} />
+
+      {quizData && (
+        <QuizCarousel quizListData={quizData.data['question-answer']} />
+      )}
     </div>
   );
 }
