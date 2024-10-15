@@ -1,87 +1,83 @@
+/* eslint-disable no-nested-ternary */
+
 'use client';
 
 import React, { Dispatch, SetStateAction } from 'react';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { Button } from '@/components/ui/button'; // Assuming you're using a custom Button component
+import { LayoutList, LayoutGrid, Globe } from 'lucide-react'; // Icons you're using
 import { LanguageCode } from '../types/Scripts';
 
 type Mode = 'line' | 'block';
 
 interface SubtitleOptionProps {
   mode: Mode;
-  availableLanguages: LanguageCode[]; // 전체 가능한 언어 옵션
-  selectedLanguages: LanguageCode[]; // 다중 선택 가능한 언어 배열
+  selectedLanguages: LanguageCode[];
   setSelectedLanguages: Dispatch<SetStateAction<LanguageCode[]>>;
   setMode: Dispatch<SetStateAction<Mode>>;
 }
 
-// 화면에 표시되는 언어 이름
-const languageDisplayNames: Record<LanguageCode, string> = {
-  enScript: '영어 자막',
-  koScript: '한국어 자막',
-};
-
 export default function SubtitleOption({
   mode,
-  availableLanguages,
+
   selectedLanguages,
   setSelectedLanguages,
   setMode,
 }: SubtitleOptionProps) {
-  const handleLanguageChange = (language: LanguageCode) => {
-    if (selectedLanguages.includes(language)) {
-      setSelectedLanguages(
-        selectedLanguages.filter((lang) => lang !== language),
-      );
+  const handleLanguageChange = () => {
+    if (selectedLanguages.length === 0) {
+      // 현재 선택된 언어가 없으면 한글 선택
+      setSelectedLanguages(['koScript']);
+    } else if (
+      selectedLanguages.includes('koScript') &&
+      !selectedLanguages.includes('enScript')
+    ) {
+      // 현재 한글만 선택되어 있으면 영어로 변경
+      setSelectedLanguages(['enScript']);
+    } else if (
+      selectedLanguages.includes('enScript') &&
+      !selectedLanguages.includes('koScript')
+    ) {
+      // 현재 영어만 선택되어 있으면 한글 + 영어로 변경
+      setSelectedLanguages(['koScript', 'enScript']);
     } else {
-      setSelectedLanguages([...selectedLanguages, language]);
+      // 한글 + 영어 선택된 경우 선택을 모두 해제 (없음)
+      setSelectedLanguages([]);
     }
   };
 
-  return (
-    <div className="flex flex-col gap-2">
-      {/* 모드 선택 버튼 */}
-      <div className="flex justify-between">
-        <div className="flex w-48 p-1 bg-violet-500 rounded">
-          {['line', 'block'].map((item) => (
-            <button
-              type="button"
-              key={item}
-              className={`w-1/2 border-none cursor-pointer bg-transparent py-2 text-sm transition-colors duration-300 ease-out ${
-                mode === item ? 'bg-white rounded' : 'text-white'
-              }`}
-              onClick={() => setMode(item as Mode)}
-            >
-              {item === 'line' ? '한 줄씩 보기' : '전체 보기'}
-            </button>
-          ))}
-        </div>
+  const toggleViewMode = () => {
+    setMode((prevMode) => (prevMode === 'line' ? 'block' : 'line'));
+  };
 
-        {/* 언어 선택 */}
-        <div className="flex flex-wrap gap-2">
-          {availableLanguages.map((item) => (
-            // eslint-disable-next-line jsx-a11y/label-has-associated-control
-            <label
-              key={item}
-              className="items-center gap-2 text-sm flex rounded "
-            >
-              <ToggleGroup
-                type="single"
-                value={selectedLanguages.includes(item) ? item : ''}
-                onValueChange={() => handleLanguageChange(item)}
-              >
-                <ToggleGroupItem
-                  value={item}
-                  className={`flex  items-center justify-center bg-gray-200 text-gray-500
-                  last:rounded-r hover:bg-violet-200 hover:text-violet-800   data-[state=on]:bg-violet-500 data-[state=on]:text-white
-                 s${selectedLanguages.includes(item)}`}
-                >
-                  {languageDisplayNames[item]}
-                </ToggleGroupItem>
-              </ToggleGroup>
-            </label>
-          ))}
-        </div>
-      </div>
+  return (
+    <div className="flex justify-between items-center mb-2">
+      <Button variant="outline" size="sm" onClick={toggleViewMode}>
+        {mode === 'line' ? (
+          <>
+            <LayoutList size={18} className="mr-2" /> Single Line
+          </>
+        ) : (
+          <>
+            <LayoutGrid size={18} className="mr-2" /> Full View
+          </>
+        )}
+      </Button>
+
+      {/* 다중 언어 선택 표시 */}
+      <Button variant="outline" size="sm" onClick={handleLanguageChange}>
+        <Globe size={18} className="mr-2" />
+        {selectedLanguages.length === 0
+          ? 'No Subtitles'
+          : selectedLanguages
+              .map((lang) =>
+                lang === 'koScript'
+                  ? '한글'
+                  : lang === 'enScript'
+                    ? 'English'
+                    : '',
+              )
+              .join(' + ')}
+      </Button>
     </div>
   );
 }
