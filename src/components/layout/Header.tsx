@@ -10,6 +10,7 @@ import {
   CircleUserRound,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import LogInOutButton from '@/components/LogInOutButton';
 
 export const navItems = [
   { name: '학습', href: '/learn/listening', icon: BookHeadphones },
@@ -20,7 +21,6 @@ export const navItems = [
 
 export function Header() {
   const pathname = usePathname();
-
   return (
     <div className="sticky top-0 z-50 bg-[rgba(255,255,255,0.95)] border-b">
       <header className="flex items-center max-w-[1440px] h-16 mx-auto px-6">
@@ -46,9 +46,7 @@ export function Header() {
           <Button variant="ghost" size="icon">
             <Bell className="h-5 w-5" />
           </Button>
-          <Button variant="default" className="hidden md:inline-flex ml-4">
-            로그아웃
-          </Button>
+          <LogInOutButton />
         </div>
       </header>
     </div>

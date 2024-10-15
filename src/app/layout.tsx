@@ -4,7 +4,7 @@ import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { MobileNav } from '@/components/layout/MobileNav';
 import ContentInner from '@/components/layout/ContentInner';
-import Providers from '@/providers/Providers';
+import QueryClientProvider from '@/providers/QueryClientProvider';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -24,11 +24,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${pretendard.variable} antialiased`}>
-        <Providers>
+        <QueryClientProvider>
           <Header />
           <ContentInner>{children}</ContentInner>
           <MobileNav />
-        </Providers>
+        </QueryClientProvider>
       </body>
     </html>
   );

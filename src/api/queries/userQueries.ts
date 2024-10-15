@@ -3,6 +3,7 @@ import {
   UserUpdateRequest,
   UserUpdateResponse,
   UserTimeResponse,
+  UserLoginStatusResponse,
 } from '@/types/User';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api`;
@@ -53,6 +54,35 @@ export const fetchUserTime = async (): Promise<UserTimeResponse> => {
     headers: {
       'Content-Type': 'application/json',
     },
+    credentials: 'include',
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return response.json();
+};
+
+export const fetchUserLoginStatus =
+  async (): Promise<UserLoginStatusResponse> => {
+    const response = await fetch(`${BASE_URL}/user/status`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+  };
+
+export const fetchUserLogout = async (): Promise<UserLoginStatusResponse> => {
+  const response = await fetch(`${BASE_URL}/user/logout`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
   });
   if (!response.ok) {
