@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Clock } from 'lucide-react';
 import { Preview } from '@/types/Preview';
-import { removeFirstChar } from '@/lib/removeFirstChar';
 
 export default function ListeningPreviewCard({
   // TODO(@smosco): hits, 북마크 아이콘 추가
@@ -37,7 +36,7 @@ export default function ListeningPreviewCard({
           {title}
         </h3>
         <p className="text-sm text-gray-500 text-muted-foreground line-clamp-2">
-          {removeFirstChar(preScripts)}
+          {preScripts}
         </p>
       </div>
     </Link>

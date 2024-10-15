@@ -313,7 +313,7 @@ export default function DetailReadingPage() {
                         bookmarkMemo ? 'bg-yellow-200' : ''
                       } ${selectedSentenceIndex === index ? 'bg-gray-200' : ''} ${!bookmarkMemo && 'hover:bg-gray-200'}`}
                     >
-                      {script.enScript}
+                      <p className="font-semibold">{script.enScript}</p>
                       {bookmarkMemo?.description && (
                         <span
                           className="cursor-pointer ml-2 inline-flex"
@@ -329,7 +329,9 @@ export default function DetailReadingPage() {
                         </span>
                       )}
                     </div>
-                    {showTranslate && <p className="px-2">{script.koScript}</p>}
+                    {showTranslate && (
+                      <p className="px-2 ">{script.koScript}</p>
+                    )}
                   </li>
                 );
               })}

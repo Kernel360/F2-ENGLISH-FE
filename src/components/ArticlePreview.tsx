@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { removeFirstChar } from '@/lib/removeFirstChar';
 import { formatDate } from '@/lib/formatDate';
 
 interface ArticelPreviewData {
@@ -43,7 +42,7 @@ export default function ArticlePreview({
               <p className="text-sm text-muted-foreground mb-3">{hits}회</p>
             )}
             <p className="text-sm text-muted-foreground line-clamp-2">
-              {removeFirstChar(preScripts)}
+              {preScripts}
             </p>
           </div>
           {thumbnailUrl && (
