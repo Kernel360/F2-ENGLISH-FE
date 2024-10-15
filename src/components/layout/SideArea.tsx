@@ -11,35 +11,35 @@ export default function SideArea() {
     {
       id: 'study',
       icon: <Book className="h-4 w-4" />,
-      label: '10분 공부하기',
+      label: '10분 학습',
       completed: false,
     },
     {
       id: 'memo',
       icon: <Bookmark className="h-4 w-4" />,
-      label: '메모 1개 남기기',
+      label: '메모 1개',
       completed: false,
     },
     {
       id: 'highlight',
       icon: <Highlighter className="h-4 w-4" />,
-      label: '하이라이팅 1개 하기',
+      label: '형광펜 1개',
       completed: false,
     },
     {
       id: 'quiz',
       icon: <HelpCircle className="h-4 w-4" />,
-      label: '퀴즈 1개 풀기',
-      completed: false,
+      label: '퀴즈 1개',
+      completed: true,
     },
   ];
 
   const mockHistory = [
-    { date: '2023-06-15', completedMissions: 3 },
-    { date: '2023-06-14', completedMissions: 2 },
-    { date: '2023-06-13', completedMissions: 4 },
-    { date: '2023-06-12', completedMissions: 0 },
-    { date: '2023-06-11', completedMissions: 1 },
+    { date: '2023.06.15', completedMissions: 3 },
+    { date: '2023.06.14', completedMissions: 2 },
+    { date: '2023.06.13', completedMissions: 4 },
+    { date: '2023.06.12', completedMissions: 0 },
+    { date: '2023.06.11', completedMissions: 1 },
   ];
 
   // TODO(@godhyzzang) : 현재 가입일 데이터 수정 필요

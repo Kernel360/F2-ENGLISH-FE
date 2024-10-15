@@ -296,7 +296,7 @@ export default function DetailReadingPage() {
             />
           </div>
           <div>
-            <ul className="flex flex-col gap-4 text-[#313131]">
+            <ul className="flex flex-col gap-8 text-[#313131]">
               {contentData.scriptList.map((script, index) => {
                 const bookmarkMemo = bookmarkData?.data.bookmarkList.find(
                   (item) => item.sentenceIndex === index,
