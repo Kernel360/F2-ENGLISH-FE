@@ -12,7 +12,6 @@ interface LineViewProps {
   currentSubtitleIndex: number;
   seekTo: (timeInSeconds: number) => void;
   onSelectWord: (word: string, subtitle: Subtitle, index: number) => void;
-  isVideoReadyButIsNotPlayingYet: boolean;
   bookmarkedIndices: number[];
 }
 
@@ -22,7 +21,6 @@ export function LineView({
   currentSubtitleIndex,
   seekTo,
   onSelectWord,
-  isVideoReadyButIsNotPlayingYet,
   bookmarkedIndices,
 }: LineViewProps) {
   const totalSubtitles = subtitles.length;
@@ -50,26 +48,22 @@ export function LineView({
         </button>
       </div>
       {/* 비디오가 첫 로딩 후 재생되지 않았을 때만 준비 메세지 보여줌 */}
-      {isVideoReadyButIsNotPlayingYet ? (
-        <h2>영상을 재생해주세요!</h2>
-      ) : (
-        subtitles[currentSubtitleIndex] && (
-          // TODO: 사용자가 자막이 언제 넘어갈지 알 수 있도록 progressbar 추가
 
-          <div
-            className={`transition-colors duration-300 ${
-              bookmarkedIndices.includes(currentSubtitleIndex)
-                ? 'bg-yellow-200' // 북마크된 자막 하이라이트
-                : ''
-            }`}
-          >
-            <TextDisplay
-              subtitle={subtitles[currentSubtitleIndex]}
-              selectedLanguages={selectedLanguages}
-              onSelectWord={onSelectWord}
-            />
-          </div>
-        )
+      {subtitles[currentSubtitleIndex] && (
+        // TODO: 사용자가 자막이 언제 넘어갈지 알 수 있도록 progressbar 추가
+        <div
+          className={`transition-colors duration-300 ${
+            bookmarkedIndices.includes(currentSubtitleIndex)
+              ? 'bg-yellow-200' // 북마크된 자막 하이라이트
+              : ''
+          }`}
+        >
+          <TextDisplay
+            subtitle={subtitles[currentSubtitleIndex]}
+            selectedLanguages={selectedLanguages}
+            onSelectWord={onSelectWord}
+          />
+        </div>
       )}
     </div>
   );
