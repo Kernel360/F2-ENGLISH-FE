@@ -12,10 +12,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/mypage/:path*',
-    // todo : 추후 아래 코드 추가 필요
-    // match all routes except static files and APIs
-    // '/((?!api|_next/static|_next/image|favicon.ico|favicon.svg|sitemap.xml|robots.txt).*)',
-  ],
+  matcher: ['/mypage/:path*'],
 };
