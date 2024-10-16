@@ -16,6 +16,7 @@ export default function MemoItem({
   data: {
     contentId,
     contentTitle,
+    contentType,
     bookmarkId,
     bookmarkDetail,
     description,
@@ -78,7 +79,7 @@ export default function MemoItem({
     <div className="py-4 border-b border-gray-200">
       {/* 북마크된 문장이 포함된 콘텐츠 제목 */}
       {/* TODO(@smosco): 어쩌면 콘텐츠 타입도 받아와야할지도 */}
-      <Link href={`/learn/reading/detail/${contentId}`}>
+      <Link href={`/learn/${contentType.toLowerCase()}/detail/${contentId}`}>
         <h2 className="text-sm font-medium hover:underline underline-offset-2">
           {contentTitle}
         </h2>
