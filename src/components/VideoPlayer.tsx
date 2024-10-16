@@ -257,7 +257,7 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
                   );
                 })
               ) : (
-                <p className="mt-8">북마크가 없습니다.</p>
+                <p className="mb-4 text-[14px]">북마크가 없습니다.</p>
               )}
               {/* TODO(@smosco): 메모 컴포넌트랑 거의 동일 분리 해야함 */}
               {isAddingNote && selectedSentenceIndex !== null && (

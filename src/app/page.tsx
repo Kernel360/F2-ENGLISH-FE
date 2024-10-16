@@ -18,7 +18,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="w-full flex flex-col gap-12">
+    <div className="w-[830px] flex flex-col gap-12">
       {/* 인기 리스닝 컨텐츠 캐러셀 */}
       <Carousel
         previewDatas={readingList?.data.readingPreview || []}
