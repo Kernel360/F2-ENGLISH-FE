@@ -3,6 +3,7 @@
 import { useRef, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 interface SearchComponentProps {
   isOpen: boolean;
@@ -15,6 +16,17 @@ export default function SearchComponent({
 }: SearchComponentProps) {
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && inputRef.current) {
+      const query = inputRef.current.value;
+      if (query.trim()) {
+        router.push(`/search?q=${encodeURIComponent(query)}`);
+        onClose();
+      }
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -52,6 +64,7 @@ export default function SearchComponent({
             type="text"
             placeholder="콘텐츠 제목 내용 검색하기"
             className="min-h-16 py-5 px-0 outline-none border-none flex-grow"
+            onKeyDown={handleKeyDown}
           />
           <Button
             variant="ghost"
