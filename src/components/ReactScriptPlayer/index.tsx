@@ -1,13 +1,15 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React from 'react';
+import { findCurrentSubtitleIndex } from '@/lib/findCurrentSubtitleIndex';
+import { Script } from '@/types/ContentDetail';
 import { LanguageCode, Subtitle } from '../../types/Scripts';
 import { LineView } from './LineView';
 import { BlockView } from './BlockView';
 
 export interface ReactScriptPlayerProps {
   mode: 'line' | 'block';
-  subtitles: Subtitle[];
+  subtitles: Script[];
   selectedLanguages: LanguageCode[];
   seekTo: (timeInSeconds: number) => void;
   currentTime: number;
@@ -28,17 +30,8 @@ export function ReactScriptPlayer({
   isVideoReadyButIsNotPlayingYet,
   bookmarkedIndices,
 }: ReactScriptPlayerProps) {
-  const reversedSubtitles = useMemo(
-    () => [...subtitles].reverse(),
-    [subtitles],
-  );
-  // TODO(@smosco): 현재 자막 인덱스 찾는 로직 리팩토링
-  const currentSubtitleIndex = useMemo(() => {
-    const index = reversedSubtitles.findIndex(
-      (subtitle) => subtitle.startTimeInSecond < currentTime,
-    );
-    return reversedSubtitles.length - 1 - index;
-  }, [reversedSubtitles, currentTime]);
+  const currentSubtitleIndex =
+    findCurrentSubtitleIndex(subtitles, currentTime) ?? 0;
 
   return (
     <div className="flex flex-col h-[16rem] p-6 border-2 border-violet-100 rounded-xl overflow-y-auto">

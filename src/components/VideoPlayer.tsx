@@ -13,6 +13,7 @@ import {
 } from '@/api/hooks/useBookmarks';
 import { Check, X, BookmarkPlus, MessageSquarePlus } from 'lucide-react';
 import { convertTime } from '@/lib/convertTime';
+import { findCurrentSubtitleIndex } from '@/lib/findCurrentSubtitleIndex';
 import ControlBar from './ControlBar';
 import SubtitleOption from './SubtitleOption';
 import { ReactScriptPlayer } from './ReactScriptPlayer';
@@ -106,12 +107,8 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
     setIsVideoReadyButIsNotPlayingYet(true);
   };
 
-  // Find the current subtitle index based on the current video time
-  const currentSubtitleIndex = scriptsData?.findIndex(
-    (subtitle) =>
-      subtitle.startTimeInSecond <= currentTime &&
-      subtitle.startTimeInSecond + subtitle.durationInSecond >= currentTime,
-  );
+  const currentSubtitleIndex =
+    findCurrentSubtitleIndex(scriptsData, currentTime) ?? 0;
 
   const handleBookmark = () => {
     if (currentSubtitleIndex !== null && currentSubtitleIndex !== undefined) {
@@ -122,7 +119,16 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   };
 
   const handleMemo = () => {
-    if (currentSubtitleIndex !== null && currentSubtitleIndex !== undefined) {
+    if (
+      scriptsData &&
+      currentSubtitleIndex !== null &&
+      currentSubtitleIndex !== undefined
+    ) {
+      console.log(
+        'bookmarkmemoitem',
+        currentSubtitleIndex,
+        scriptsData[currentSubtitleIndex].enScript,
+      );
       setSelectedSentenceIndex(currentSubtitleIndex);
       setNewNoteText('');
       setIsAddingNote(true);
