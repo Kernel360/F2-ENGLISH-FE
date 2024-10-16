@@ -3,9 +3,7 @@
 import { Bookmark, Plus, HighlighterIcon } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { useUserLoginStatus } from '@/api/hooks/useUserInfo';
 import DisabledModal from '@/components/DisabledModal';
 
@@ -87,7 +85,6 @@ export default function ScrapbookLayout({
   const isLogin = isLoginData?.data; // 로그인 상태 확인
   const router = useRouter(); // login페이지로 이동
   // 로그읜 모달
-  const [showLoginModal, setShowLoginModal] = useState(false); //권한 없을때 로그인 모달
   return (
     <>
       <div className="flex w-full mx-auto">
@@ -98,8 +95,8 @@ export default function ScrapbookLayout({
       {/* 로그인 안 되어있으면 로그인 해야만 하는 나갈 수 있는 모달 */}
       {!isLogin && (
         <DisabledModal
-          isOpen={true}
-          //onClose={() => setShowLoginModal(false)}
+          isOpen
+          // onClose={() => setShowLoginModal(false)}
           title="로그인이 필요합니다."
           description="이 기능을 이용하려면 로그인이 필요해요! "
         >

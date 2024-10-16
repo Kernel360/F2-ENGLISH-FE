@@ -40,7 +40,7 @@ export default function DetailReadingPage() {
   const isLogin = isLoginData?.data; // 로그인 상태 확인
   const router = useRouter(); // login페이지로 이동
   // 로그읜 모달
-  const [showLoginModal, setShowLoginModal] = useState(false); //권한 없을때 로그인 모달
+  const [showLoginModal, setShowLoginModal] = useState(false); // 권한 없을때 로그인 모달
 
   // 북마크 데이터 훅
   const { data: bookmarkData, refetch: refetchBookmarks } =
@@ -159,12 +159,12 @@ export default function DetailReadingPage() {
 
     if (selectedSentenceIndex === null) return;
 
-    //선택된 문장의 DOM 엘리먼트를 찾음
+    // 선택된 문장의 DOM 엘리먼트를 찾음
     const sentenceElement = document.querySelector(
       `li[data-index="${selectedSentenceIndex}"] div`,
     );
 
-    //- 선택된 문장의 위치에 따라 메모 input 위치 설정
+    // 선택된 문장의 위치에 따라 메모 input 위치 설정
     if (sentenceElement) {
       const rect = sentenceElement.getBoundingClientRect();
       setMemoPosition({
