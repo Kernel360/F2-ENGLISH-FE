@@ -43,9 +43,9 @@ export default function OrderQuiz({
   }, [selectedWords, answer, onSubmit]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-1 flex-col gap-6">
       <p>{questionKo}</p>
-      {/* Selected words */}
+      {/* 선택된 단어 */}
       <div className="flex flex-wrap gap-2 border-b min-h-8">
         {selectedWords.map((word, index) => (
           <Button
@@ -59,7 +59,7 @@ export default function OrderQuiz({
           </Button>
         ))}
       </div>
-      {/* Remaining words */}
+      {/* 남은 단어 */}
       <div className="flex flex-wrap gap-2">
         {remainingWords.map((word, index) => (
           <Button

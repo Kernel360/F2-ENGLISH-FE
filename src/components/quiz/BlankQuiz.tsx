@@ -25,7 +25,7 @@ export function BlankQuiz({
   }, [userInput, answer, onSubmit]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-1 flex-col gap-6">
       <p>{questionKo}</p>
       <div className="inline whitespace-pre-wrap">
         <span>{questionParts[0]}</span>

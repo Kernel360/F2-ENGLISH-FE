@@ -14,19 +14,19 @@ interface CarouselProps<T> {
     onNext?: () => void;
   }) => JSX.Element;
   previewDatas: T[]; // TODO(@smosco): data 타입 정의
-  itemWidth?: number;
-  itemsPerPage?: number;
+  itemWidth: number;
+  itemsPerPage: number;
 }
 
-const DEFAULT_ITEM_WIDTH = 320;
-const DEFAULT_ITEMS_PER_PAGE = 3;
+// const DEFAULT_ITEM_WIDTH = 300;
+// const DEFAULT_ITEMS_PER_PAGE = 3;
 
 export default function Carousel<T>({
   header,
   itemComponent,
   previewDatas,
-  itemWidth = DEFAULT_ITEM_WIDTH,
-  itemsPerPage = DEFAULT_ITEMS_PER_PAGE,
+  itemWidth,
+  itemsPerPage,
 }: CarouselProps<T>) {
   // 리액트가 컴포넌트로 인지하도록 대문자로 시작하도록 변경
   const ItemComponent = itemComponent;
