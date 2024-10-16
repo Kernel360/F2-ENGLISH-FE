@@ -54,11 +54,11 @@ export default function SubtitleOption({
       <Button variant="outline" size="sm" onClick={toggleViewMode}>
         {mode === 'line' ? (
           <>
-            <LayoutList size={18} className="mr-2" /> Single Line
+            <LayoutList size={18} className="mr-2" /> 한 줄 보기
           </>
         ) : (
           <>
-            <LayoutGrid size={18} className="mr-2" /> Full View
+            <LayoutGrid size={18} className="mr-2" /> 전체 보기
           </>
         )}
       </Button>
@@ -67,13 +67,13 @@ export default function SubtitleOption({
       <Button variant="outline" size="sm" onClick={handleLanguageChange}>
         <Globe size={18} className="mr-2" />
         {selectedLanguages.length === 0
-          ? 'No Subtitles'
+          ? '자막 없이 보기'
           : selectedLanguages
               .map((lang) =>
                 lang === 'koScript'
                   ? '한글'
                   : lang === 'enScript'
-                    ? 'English'
+                    ? '영어'
                     : '',
               )
               .join(' + ')}

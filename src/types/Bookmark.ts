@@ -17,6 +17,7 @@ export interface Bookmark {
   bookmarkId: number;
   bookmarkDetail: string | null;
   description: string | null;
+  contentType: 'LISTENING' | 'READING';
   contentId: number;
   contentTitle: string;
   createdAt: string;
