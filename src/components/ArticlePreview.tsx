@@ -28,7 +28,7 @@ export default function ArticlePreview({
 }) {
   return (
     <Link href={`/learn/reading/detail/${contentId}`}>
-      <div className="py-6 border-b border-gray-200">
+      <div className="pb-6 border-b border-gray-200">
         <div className="flex justify-between items-start">
           <div className="flex-1 pr-4">
             <h2 className="text-lg font-semibold mb-2 hover:underline underline-offset-2">

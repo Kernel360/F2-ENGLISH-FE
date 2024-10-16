@@ -13,7 +13,7 @@ function ListeningPage() {
   } = useListeningContents();
 
   if (isLoading) {
-    return <p className="">로딩 중...</p>;
+    return <p>로딩 중...</p>;
   }
 
   if (isError) {
@@ -21,13 +21,13 @@ function ListeningPage() {
   }
 
   if (!listeningContents || listeningContents.data.contents.length === 0) {
-    return <p className="">콘텐츠가 없습니다.</p>;
+    return <p>콘텐츠가 없습니다.</p>;
   }
 
   return (
-    <main className="">
+    <main>
       <ContentTypeFilter />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-7 mt-8">
         {listeningContents.data.contents.map((content) => (
           <ListeningPreviewCard key={content.contentId} data={content} />
         ))}

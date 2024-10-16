@@ -77,17 +77,15 @@ export default function MemoItem({
   return (
     <div className="py-4 border-b border-gray-200">
       {/* 북마크된 문장이 포함된 콘텐츠 제목 */}
-      <div className="flex items-center justify-between mb-2">
-        {/* TODO(@smosco): 어쩌면 콘텐츠 타입도 받아와야할지도 */}
-        <Link href={`/learn/reading/detail/${contentId}`}>
-          <h2 className="text-sm font-medium hover:underline underline-offset-2">
-            {contentTitle}
-          </h2>
-        </Link>
-        <span className="text-xs text-muted-foreground">
-          {updatedAt && `${formatDate(updatedAt)} 저장`}
-        </span>
-      </div>
+      {/* TODO(@smosco): 어쩌면 콘텐츠 타입도 받아와야할지도 */}
+      <Link href={`/learn/reading/detail/${contentId}`}>
+        <h2 className="text-sm font-medium hover:underline underline-offset-2">
+          {contentTitle}
+        </h2>
+      </Link>
+      <span className="text-xs text-muted-foreground">
+        {updatedAt && `${formatDate(updatedAt)} 저장`}
+      </span>
       {/* 북마크된 문장 */}
       <div className="flex items-start space-x-2 mb-2">
         <Circle className="h-3 w-3 mt-1 text-muted-foreground" />
@@ -99,14 +97,14 @@ export default function MemoItem({
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
       <div
         ref={memoRef}
-        className={`flex ml-5 pl-4 border-l-2 ${isEditing ? 'border-purple-700' : 'border-gray-300'}`}
+        className={`flex ml-5 pl-4 border-l-2 w-[520px] ${isEditing ? 'border-purple-700' : 'border-gray-300'}`}
         onClick={() => setIsEditing(true)}
       >
         <textarea
           value={memo || ''}
           onChange={(e) => setMemo(e.target.value)}
           placeholder={memo || '메모를 입력해주세요.'}
-          className="min-h-6 w-[592px] border-none outline-none p-0 mr-6"
+          className="min-h-6 w-[350px] border-none outline-none p-0 mr-6"
         />
         {isEditing && (
           <div className="flex justify-end space-x-2">

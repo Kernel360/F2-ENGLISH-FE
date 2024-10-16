@@ -3,7 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { MobileNav } from '@/components/layout/MobileNav';
-import ContentInner from '@/components/layout/ContentInner';
+import ContentWrapper from '@/components/layout/ContentWrapper';
 import QueryClientProvider from '@/providers/QueryClientProvider';
 
 const pretendard = localFont({
@@ -26,7 +26,7 @@ export default function RootLayout({
       <body className={`${pretendard.variable} antialiased`}>
         <QueryClientProvider>
           <Header />
-          <ContentInner>{children}</ContentInner>
+          <ContentWrapper>{children}</ContentWrapper>
           <MobileNav />
         </QueryClientProvider>
       </body>
