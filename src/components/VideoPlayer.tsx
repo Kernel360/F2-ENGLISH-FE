@@ -5,14 +5,13 @@
 
 import { useState, useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { Script } from '@/types/ContentDetail';
 import {
   useCreateBookmark,
   useFetchBookmarksByContendId,
 } from '@/api/hooks/useBookmarks';
 import { useUserLoginStatus } from '@/api/hooks/useUserInfo';
-import { useRouter } from 'next/navigation';
 import { Check, X, BookmarkPlus, MessageSquarePlus } from 'lucide-react';
 import { convertTime } from '@/lib/convertTime';
 import { findCurrentSubtitleIndex } from '@/lib/findCurrentSubtitleIndex';
@@ -24,7 +23,6 @@ import BookmarkMemoItem from './BookmarkMemoItem';
 import { Button } from './ui/button';
 import { Card, CardHeader, CardContent, CardTitle } from './ui/card';
 import { ScrollArea } from './ui/scroll-area';
-import { Textarea } from './ui/textarea';
 import Modal from './Modal';
 
 type Mode = 'line' | 'block';
@@ -240,12 +238,12 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
 
       {/* 북마크 메모 패널 */}
       <div className="col-span-1">
-        <Card className="h-full flex flex-col justify-between p-4">
+        <Card className="h-full flex flex-col justify-between p-4 bg-violet-100">
           <CardHeader className="p-0">
             <CardTitle className="text-xl">Bookmarks & Notes</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <ScrollArea className="h-[560px] mb-4">
+            <ScrollArea className="h-[560px] mb-4 rounded-lg">
               {bookmarkData && bookmarkData.data.bookmarkList.length > 0 ? (
                 bookmarkData.data.bookmarkList.map((bookmark) => {
                   const subtitle = scriptsData?.[bookmark.sentenceIndex];
@@ -263,32 +261,41 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
               )}
               {/* TODO(@smosco): 메모 컴포넌트랑 거의 동일 분리 해야함 */}
               {isAddingNote && selectedSentenceIndex !== null && (
-                <div className="mb-4 p-2 bg-muted rounded-md">
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="text-sm text-muted-foreground">
-                      {scriptsData?.[selectedSentenceIndex]?.enScript ||
-                        '문장 없음'}
-                    </div>
-                    <div className="text-xs text-muted-foreground">
+                <div className="mb-4 p-2 bg-white rounded-lg">
+                  <div className="flex flex-col justify-between items-start mb-2">
+                    <Button
+                      variant="secondary"
+                      className="rounded-full h-6 px-3 bg-violet-100 text-violet-700 hover:bg-violet-200"
+                    >
                       {scriptsData?.[selectedSentenceIndex]
                         ?.startTimeInSecond &&
                         convertTime(
                           scriptsData[selectedSentenceIndex].startTimeInSecond,
                         )}
-                    </div>
-                  </div>
-                  <Textarea
-                    value={newNoteText}
-                    onChange={(e) => setNewNoteText(e.target.value)}
-                    className="mb-2"
-                    placeholder="Enter your note here..."
-                  />
-                  <div className="flex justify-end space-x-2">
-                    <Button size="sm" onClick={handleCancelNewNote}>
-                      <X className="h-4 w-4 mr-2" /> Cancel
                     </Button>
-                    <Button size="sm" onClick={handleSaveNewNote}>
-                      <Check className="h-4 w-4 mr-2" /> Save
+                    <p className="text-[14px] text-gray-600 mt-1">
+                      {scriptsData?.[selectedSentenceIndex]?.enScript ||
+                        '문장 없음'}
+                    </p>
+                  </div>
+                  <div className="flex flex-col pl-4 border-l-2 border-purple-700">
+                    <textarea
+                      value={newNoteText}
+                      onChange={(e) => setNewNoteText(e.target.value)}
+                      placeholder="메모를 입력해주세요."
+                      className="min-h-5 w-[180px] border-none outline-none p-0 mr-6 bg-transparent text-[14px] font-[500]"
+                    />
+                  </div>
+                  <div className="flex justify-end space-x-2 mt-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleCancelNewNote}
+                    >
+                      <X className="h-4 w-4 mr-2" /> 취소
+                    </Button>
+                    <Button onClick={handleSaveNewNote} size="sm">
+                      <Check className="h-4 w-4 mr-2" /> 저장
                     </Button>
                   </div>
                 </div>

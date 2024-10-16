@@ -4,14 +4,14 @@ import { useState, useEffect, useRef } from 'react';
 import {
   useUpdateBookmark,
   useFetchAllBookmarks,
+  useDeleteBookmark,
 } from '@/api/hooks/useBookmarks';
-import { Edit2, Check, X } from 'lucide-react';
+import { Trash2, Check, X } from 'lucide-react';
 import { BookmarkByContentId } from '@/types/Bookmark';
 import { Subtitle } from '@/types/Scripts';
 import { useParams } from 'next/navigation';
 import { convertTime } from '@/lib/convertTime';
 import { Button } from './ui/button';
-import { Textarea } from './ui/textarea';
 
 interface BookmarkMemoItemProps {
   bookmark: BookmarkByContentId;
@@ -32,6 +32,7 @@ export default function BookmarkMemoItem({
   const memoRef = useRef<HTMLDivElement>(null);
 
   const updateBookmarkMutation = useUpdateBookmark(contentId);
+  const deleteBookmarkMutation = useDeleteBookmark(contentId);
   const { refetch: refetchAllBookmarks } = useFetchAllBookmarks();
 
   const handleSaveMemo = () => {
@@ -51,6 +52,17 @@ export default function BookmarkMemoItem({
     }
   };
 
+  const handleDeleteBookmark = () => {
+    deleteBookmarkMutation.mutate(bookmark.bookmarkId, {
+      onSuccess: () => {
+        refetchAllBookmarks();
+      },
+      onError: (error) => {
+        console.error('북마크 삭제 실패', error);
+      },
+    });
+  };
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (memoRef.current && !memoRef.current.contains(event.target as Node)) {
@@ -65,45 +77,52 @@ export default function BookmarkMemoItem({
   }, [memoRef]);
 
   return (
-    <div key={bookmark.bookmarkId} className="mb-4 p-2 bg-muted rounded-md">
+    <div
+      key={bookmark.bookmarkId}
+      className="mb-4 p-3 rounded-lg bg-white shadow-sm"
+    >
       <div className="flex justify-between items-start mb-2">
         <div className="text-xs text-muted-foreground">
           <Button
             variant="secondary"
-            className="rounded-full h-6 px-3"
+            className="rounded-full h-6 px-3 bg-violet-100 text-violet-700 hover:bg-violet-200"
             onClick={() =>
-              // TODO(@smosco): 북마크 메모 싱크
-              // 자막 시작시간으로 이동했을 때 이전 자막을 보여주는 문제 해결을 위해 0.1초 보정
               seekTo((subtitle?.startTimeInSecond as number) + 0.1)
             }
           >
             {convertTime(subtitle?.startTimeInSecond as number)}
           </Button>
-          <p className="mt-2">{subtitle?.enScript}</p>
+          <p className="mt-2 text-[14px] text-gray-600">{subtitle?.enScript}</p>
         </div>
-        {/* TODO(@smosco): 삭제 버튼 추가 */}
-        <Button variant="ghost" size="icon" onClick={() => setIsEditing(true)}>
-          <Edit2 className="h-4 w-4" />
+        <Button variant="ghost" size="icon" onClick={handleDeleteBookmark}>
+          <Trash2 className="h-4 w-4" />
         </Button>
       </div>
-      {isEditing ? (
-        <div>
-          <Textarea
-            value={memo || ''}
-            onChange={(e) => setMemo(e.target.value)}
-            className="mb-2"
-          />
-          <div className="flex justify-end space-x-2">
-            <Button size="sm" onClick={() => setIsEditing(false)}>
-              <X className="h-4 w-4 mr-2" /> Cancel
-            </Button>
-            <Button size="sm" onClick={handleSaveMemo}>
-              <Check className="h-4 w-4 mr-2" /> Save
-            </Button>
-          </div>
+      <div
+        ref={memoRef}
+        className={`flex flex-col pl-4 border-l-2 ${isEditing ? 'border-purple-700' : 'border-gray-300'}`}
+        onClick={() => setIsEditing(true)}
+      >
+        <textarea
+          value={memo || ''}
+          onChange={(e) => setMemo(e.target.value)}
+          placeholder={memo || '메모를 입력해주세요.'}
+          className="min-h-5 w-[170px] border-none outline-none p-0 mr-6 bg-transparent text-[14px] font-[500]"
+        />
+      </div>
+      {isEditing && (
+        <div className="flex justify-end space-x-2 mt-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsEditing(false)}
+          >
+            <X className="h-4 w-4 mr-2" /> 취소
+          </Button>
+          <Button onClick={handleSaveMemo} size="sm">
+            <Check className="h-4 w-4 mr-2" /> 저장
+          </Button>
         </div>
-      ) : (
-        <p className="text-sm min-h-10 border-l-purple-400">{memo || ''}</p>
       )}
     </div>
   );
