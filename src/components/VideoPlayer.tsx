@@ -12,10 +12,10 @@ import {
   useFetchBookmarksByContendId,
 } from '@/api/hooks/useBookmarks';
 import { useUserLoginStatus } from '@/api/hooks/useUserInfo';
-import { useRouter } from 'next/navigation';
 import { Check, X, BookmarkPlus, MessageSquarePlus } from 'lucide-react';
 import { convertTime } from '@/lib/convertTime';
 import { findCurrentSubtitleIndex } from '@/lib/findCurrentSubtitleIndex';
+import LogInOutButton from './LogInOutButton';
 import ControlBar from './ControlBar';
 import SubtitleOption from './SubtitleOption';
 import { ReactScriptPlayer } from './ReactScriptPlayer';
@@ -57,7 +57,6 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
 
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data; // 로그인 상태 확인
-  const router = useRouter(); // login페이지로 이동
   const [showLoginModal, setShowLoginModal] = useState(false); // 권한 없을때 로그인 모달
 
   const [isAddingNote, setIsAddingNote] = useState(false);
@@ -227,13 +226,7 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
           description="이 기능을 이용하려면 로그인이 필요해요! "
         >
           <div className="flex justify-center gap-4 mt-4">
-            <Button
-              variant="default"
-              className="hover:bg-violet-900 w-full"
-              onClick={() => router.push('/login')}
-            >
-              로그인 하러 가기
-            </Button>
+            <LogInOutButton />
           </div>
         </Modal>
       )}

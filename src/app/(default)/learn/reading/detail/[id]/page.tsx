@@ -13,6 +13,7 @@ import QuizCarousel from '@/components/quiz/QuizCarousel';
 import Tooltip from '@/components/Tooltip';
 import MemoInput from '@/components/MemoInput';
 import Modal from '@/components/Modal';
+import LogInOutButton from '@/components/LogInOutButton';
 import { useContentDetail } from '@/api/hooks/useContentDetail';
 import {
   useFetchBookmarksByContendId,
@@ -20,7 +21,7 @@ import {
   useUpdateBookmark,
   useDeleteBookmark,
 } from '@/api/hooks/useBookmarks';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import FloatingButtons from '@/components/FloatingButtons';
 import {
   useCreateScrap,
@@ -38,7 +39,6 @@ export default function DetailReadingPage() {
   // 로그인 권한 훅
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data; // 로그인 상태 확인
-  const router = useRouter(); // login페이지로 이동
   // 로그읜 모달
   const [showLoginModal, setShowLoginModal] = useState(false); // 권한 없을때 로그인 모달
 
@@ -420,12 +420,7 @@ export default function DetailReadingPage() {
                 <h2 className="text-3xl font-bold text-center mb-8">
                   퀴즈를 풀려면 로그인을 하세요
                 </h2>
-                <Button
-                  className="bg-white text-purple-600 hover:bg-purple-100 transition-colors duration-200"
-                  onClick={() => router.push('/login')}
-                >
-                  로그인하기
-                </Button>
+                <LogInOutButton />
               </div>
             </div>
           )}
@@ -474,13 +469,7 @@ export default function DetailReadingPage() {
           description="이 기능을 이용하려면 로그인이 필요해요! "
         >
           <div className="flex justify-center gap-4 mt-4">
-            <Button
-              variant="default"
-              className="hover:bg-violet-900 w-full"
-              onClick={() => router.push('/login')}
-            >
-              로그인 하러 가기
-            </Button>
+            <LogInOutButton />
           </div>
         </Modal>
       )}
