@@ -5,7 +5,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Script } from '@/types/ContentDetail';
 import {
   useCreateBookmark,

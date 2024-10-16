@@ -17,6 +17,7 @@ import {
   useCreateScrap,
   useDeleteScrap,
 } from '@/api/hooks/useScrap';
+import { useParams } from 'next/navigation';
 
 export default function DetailListeningPage() {
   const param = useParams();
