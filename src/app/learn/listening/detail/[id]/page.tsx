@@ -1,11 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
+import Modal from '@/components/Modal';
 import VideoPlayer from '@/components/VideoPlayer';
 import { useParams } from 'next/navigation';
 import { useContentDetail } from '@/api/hooks/useContentDetail';
+import { useUserLoginStatus } from '@/api/hooks/useUserInfo';
 import QuizCarousel from '@/components/quiz/QuizCarousel';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
 import FloatingButtons from '@/components/FloatingButtons';
@@ -26,6 +30,11 @@ export default function DetailListeningPage() {
     error,
   } = useContentDetail(contentId);
 
+  const { data: isLoginData } = useUserLoginStatus();
+  const isLogin = isLoginData?.data; // 로그인 상태 확인
+  const router = useRouter(); // login페이지로 이동
+  const [showLoginModal, setShowLoginModal] = useState(false); //권한 없을때 로그인 모달
+
   const { data: checkScrap } = useCheckScrap(contentId);
   const createScrapMutation = useCreateScrap(contentId);
   const deleteScrapMutation = useDeleteScrap(contentId);
@@ -41,6 +50,12 @@ export default function DetailListeningPage() {
   }, [checkScrap]);
 
   const handleScrapToggle = () => {
+    // 로그인 권한 없으면 로그인 모달 띄우기
+    if (!isLogin) {
+      setShowLoginModal(true);
+      return;
+    }
+    // 로그인 권한 있을때만
     if (isScrapped) {
       // 스크랩 삭제
       deleteScrapMutation.mutate(undefined, {
@@ -91,6 +106,26 @@ export default function DetailListeningPage() {
 
       {quizData && (
         <QuizCarousel quizListData={quizData.data['question-answer']} />
+      )}
+
+      {/* 로그인 모달 */}
+      {showLoginModal && (
+        <Modal
+          isOpen={showLoginModal}
+          onClose={() => setShowLoginModal(false)}
+          title="로그인이 필요합니다."
+          description="이 기능을 이용하려면 로그인이 필요해요! "
+        >
+          <div className="flex justify-center gap-4 mt-4">
+            <Button
+              variant="default"
+              className="hover:bg-violet-900 w-full"
+              onClick={() => router.push('/login')}
+            >
+              로그인 하러 가기
+            </Button>
+          </div>
+        </Modal>
       )}
 
       {/* 번역, 스크랩 버튼 */}

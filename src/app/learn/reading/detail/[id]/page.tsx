@@ -35,6 +35,13 @@ export default function DetailReadingPage() {
   const contentId = Number(params.id);
   const { data, isLoading, isError, error } = useContentDetail(contentId);
 
+  // 로그인 권한 훅
+  const { data: isLoginData } = useUserLoginStatus();
+  const isLogin = isLoginData?.data; // 로그인 상태 확인
+  const router = useRouter(); // login페이지로 이동
+  // 로그읜 모달
+  const [showLoginModal, setShowLoginModal] = useState(false); //권한 없을때 로그인 모달
+
   // 북마크 데이터 훅
   const { data: bookmarkData, refetch: refetchBookmarks } =
     useFetchBookmarksByContendId(contentId);
@@ -63,9 +70,6 @@ export default function DetailReadingPage() {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false); // 삭제 확인 모달 상태 추가
 
   const [isScrapped, setIsScrapped] = useState<boolean | undefined>(undefined);
-  const { data: isLoginData } = useUserLoginStatus();
-  const isLogin = isLoginData?.data;
-  const router = useRouter(); // toggleScrap 함수에서 사용하기 위해 router 추가
 
   useEffect(() => {
     if (checkScrap?.data) {
@@ -108,11 +112,6 @@ export default function DetailReadingPage() {
         // 이미 북마크가 있는 경우, 삭제 확인 모달 표시
         setShowDeleteModal(true);
       } else {
-        if (!isLogin) {
-          alert('로그인이 필요한 서비스입니다.');
-          router.push('/login');
-          return;
-        }
         createBookmarkMutation.mutate(
           {
             sentenceIndex: selectedSentenceIndex,
@@ -151,20 +150,21 @@ export default function DetailReadingPage() {
 
   // 메모 버튼 클릭 시 메모 input 위치 조정 및 상태 업데이트
   const handleMemoClick = () => {
+    // - 로그인 권한 없으면 로그인 모달 띄우기
     if (!isLogin) {
-      console.log(isLoginData);
-      router.push('/login');
-      alert('로그인 후 이용해주세요'); // Then show the alert
+      setShowLoginModal(true);
       return;
     }
+    // - 로그인 권한 있을때만 아래 실행
+
     if (selectedSentenceIndex === null) return;
 
-    // 선택된 문장의 DOM 엘리먼트를 찾음
+    //선택된 문장의 DOM 엘리먼트를 찾음
     const sentenceElement = document.querySelector(
       `li[data-index="${selectedSentenceIndex}"] div`,
     );
 
-    // 선택된 문장의 위치에 따라 메모 input 위치 설정
+    //- 선택된 문장의 위치에 따라 메모 input 위치 설정
     if (sentenceElement) {
       const rect = sentenceElement.getBoundingClientRect();
       setMemoPosition({
@@ -265,12 +265,12 @@ export default function DetailReadingPage() {
   };
 
   const handleScrapToggle = () => {
+    // 로그인 권한 없으면 로그인 모달 띄우기
     if (!isLogin) {
-      console.log(isLoginData);
-      router.push('/login');
-      alert('로그인 후 이용해주세요'); // Then show the alert
+      setShowLoginModal(true);
       return;
     }
+    // 로그인 권한 있을때만 아래 실행
     if (isScrapped) {
       // 스크랩 삭제
       deleteScrapMutation.mutate(undefined, {
@@ -418,6 +418,26 @@ export default function DetailReadingPage() {
           <ArrowUp className="w-5 h-5" />
         </Button>
       </div>
+
+      {/* 로그인 모달 */}
+      {showLoginModal && (
+        <Modal
+          isOpen={showLoginModal}
+          onClose={() => setShowLoginModal(false)}
+          title="로그인이 필요합니다."
+          description="이 기능을 이용하려면 로그인이 필요해요! "
+        >
+          <div className="flex justify-center gap-4 mt-4">
+            <Button
+              variant="default"
+              className="hover:bg-violet-900 w-full"
+              onClick={() => router.push('/login')}
+            >
+              로그인 하러 가기
+            </Button>
+          </div>
+        </Modal>
+      )}
 
       {/* 번역, 스크랩 버튼 */}
       <FloatingButtons

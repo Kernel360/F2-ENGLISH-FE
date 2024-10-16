@@ -24,6 +24,7 @@ import { Button } from './ui/button';
 import { Card, CardHeader, CardContent, CardTitle } from './ui/card';
 import { ScrollArea } from './ui/scroll-area';
 import { Textarea } from './ui/textarea';
+import Modal from './Modal';
 
 type Mode = 'line' | 'block';
 
@@ -58,6 +59,8 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data; // 로그인 상태 확인
   const router = useRouter(); // login페이지로 이동
+  const [showLoginModal, setShowLoginModal] = useState(false); //권한 없을때 로그인 모달
+
   const [isAddingNote, setIsAddingNote] = useState(false);
   const [newNoteText, setNewNoteText] = useState('');
 
@@ -119,11 +122,12 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   );
 
   const handleBookmark = () => {
+    // 로그인 권한 없으면 로그인 모달 띄우기
     if (!isLogin) {
-      alert('로그인이 필요한 서비스입니다.');
-      router.push('/login');
+      setShowLoginModal(true);
       return;
     }
+    // 로그인 권한 있을때만 아래 실행
     if (currentSubtitleIndex !== null && currentSubtitleIndex !== undefined) {
       createBookmarkMutation.mutate({
         sentenceIndex: currentSubtitleIndex,
@@ -132,11 +136,12 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   };
 
   const handleMemo = () => {
+    // 로그인 권한 없으면 로그인 모달 띄우기
     if (!isLogin) {
-      alert('로그인이 필요한 서비스입니다.');
-      router.push('/login');
+      setShowLoginModal(true);
       return;
     }
+    // 로그인 권한 있을때만 아래 실행
     if (currentSubtitleIndex !== null && currentSubtitleIndex !== undefined) {
       setSelectedSentenceIndex(currentSubtitleIndex);
       setNewNoteText('');
@@ -227,6 +232,27 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
           }
         />
       </div>
+
+      {/* 로그인 모달 */}
+      {showLoginModal && (
+        <Modal
+          isOpen={showLoginModal}
+          onClose={() => setShowLoginModal(false)}
+          title="로그인이 필요합니다."
+          description="이 기능을 이용하려면 로그인이 필요해요! "
+        >
+          <div className="flex justify-center gap-4 mt-4">
+            <Button
+              variant="default"
+              className="hover:bg-violet-900 w-full"
+              onClick={() => router.push('/login')}
+            >
+              로그인 하러 가기
+            </Button>
+          </div>
+        </Modal>
+      )}
+
       {/* 북마크 메모 패널 */}
       <div className="col-span-1">
         <Card className="h-full flex flex-col justify-between p-4">
