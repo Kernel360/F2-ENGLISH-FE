@@ -14,10 +14,13 @@ export default function ReadingPreviewCard({
   data: Preview;
 }) {
   return (
-    <Link href={`/learn/reading/detail/${contentId}`}>
-      <Card className="overflow-hidden shadow-card hover:shadow-card-hover hover:border-border w-80 h-80 mr-3">
+    <Link
+      href={`/learn/reading/detail/${contentId}`}
+      className="w-full h-fit mr-3"
+    >
+      <Card className="overflow-hidden shadow-card hover:shadow-card-hover hover:border-border">
         <CardContent className="p-0 h-full">
-          <div className="relative w-full h-40 rounded-t-lg overflow-hidden">
+          <div className="relative w-full h-40 overflow-hidden">
             <Image
               src={thumbnailUrl}
               alt={title}

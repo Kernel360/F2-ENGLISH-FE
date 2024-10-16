@@ -14,10 +14,13 @@ export default function ListeningPreviewCard({
   data: Preview;
 }) {
   return (
-    <Link href={`/learn/listening/detail/${contentId}`} className="mr-3">
-      <Card className="w-full max-w-xs overflow-hidden rounded-lg hover:shadow-card-hover">
+    <Link
+      href={`/learn/listening/detail/${contentId}`}
+      className="w-full h-fit mr-3"
+    >
+      <Card className="max-w-xs overflow-hidden rounded-lg hover:shadow-card-hover">
         <CardContent className="p-0">
-          <div className="relative w-full h-44">
+          <div className="relative w-full h-40">
             <img
               src={thumbnailUrl}
               alt={title}
@@ -30,7 +33,7 @@ export default function ListeningPreviewCard({
           </div>
         </CardContent>
       </Card>
-      <div className="mt-2">
+      <div className="mt-2 space-y-2">
         <Badge>{category}</Badge>
         <h3 className="font-bold line-clamp-2 break-words hover:underline underline-offset-2">
           {title}

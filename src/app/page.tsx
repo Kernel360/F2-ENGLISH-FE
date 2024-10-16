@@ -34,7 +34,7 @@ export default function HomePage() {
           </div>
         }
         itemComponent={ReadingPreviewCard}
-        itemWidth={320}
+        itemWidth={280}
         itemsPerPage={3}
       />
       {/* 인기 리딩 컨텐츠 캐러셀 */}
@@ -52,7 +52,7 @@ export default function HomePage() {
           </div>
         }
         itemComponent={ListeningPreviewCard}
-        itemWidth={320}
+        itemWidth={280}
         itemsPerPage={3}
       />
     </div>
