@@ -3,7 +3,9 @@
 import { Bookmark, Plus, HighlighterIcon } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useUserLoginStatus } from '@/api/hooks/useUserInfo';
+import DisabledModal from '@/components/DisabledModal';
 
 interface NavItemProps {
   title: string;
@@ -78,10 +80,37 @@ export default function ScrapbookLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // 로그인 권한 훅
+  const { data: isLoginData } = useUserLoginStatus();
+  const isLogin = isLoginData?.data; // 로그인 상태 확인
+  const router = useRouter(); // login페이지로 이동
+  // 로그읜 모달
   return (
-    <div className="flex w-full mx-auto">
-      <SideNav />
-      <main className="flex-1">{children}</main>
-    </div>
+    <>
+      <div className="flex w-full mx-auto">
+        <SideNav />
+        <main className="flex-1">{children}</main>
+      </div>
+
+      {/* 로그인 안 되어있으면 로그인 해야만 하는 나갈 수 있는 모달 */}
+      {!isLogin && (
+        <DisabledModal
+          isOpen
+          // onClose={() => setShowLoginModal(false)}
+          title="로그인이 필요합니다."
+          description="이 기능을 이용하려면 로그인이 필요해요! "
+        >
+          <div className="flex justify-center gap-4 mt-4">
+            <Button
+              variant="default"
+              className="hover:bg-violet-900 w-full"
+              onClick={() => router.push('/login')}
+            >
+              로그인 하러 가기
+            </Button>
+          </div>
+        </DisabledModal>
+      )}
+    </>
   );
 }
