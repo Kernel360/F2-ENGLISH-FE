@@ -10,7 +10,6 @@ interface QuizCarouselProps {
 export default function QuizCarousel({ quizListData }: QuizCarouselProps) {
   return (
     <div className="w-full">
-      <h3>퀴즈 풀기</h3>
       <Carousel
         previewDatas={quizListData}
         itemComponent={Quiz}

@@ -38,6 +38,7 @@ export default function DetailListeningPage() {
   const createScrapMutation = useCreateScrap(contentId);
   const deleteScrapMutation = useDeleteScrap(contentId);
 
+  const [showQuiz, setShowQuiz] = useState(false); // 퀴즈 풀기 버튼 누를 때 보여줌
   const { data: quizData } = useFetchQuiz(contentId);
 
   const [isScrapped, setIsScrapped] = useState<boolean | undefined>(undefined);
@@ -103,8 +104,50 @@ export default function DetailListeningPage() {
         scriptsData={ListeningDetailData?.data.scriptList}
       />
 
-      {quizData && (
-        <QuizCarousel quizListData={quizData.data['question-answer']} />
+      {/* 퀴즈 */}
+      {isLogin ? (
+        // 로그인 했을 때 퀴즈커버
+        <div className="relative w-full h-[400px] overflow-hidden rounded-lg shadow-lg ">
+          {!showQuiz && (
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 flex flex-col items-center justify-center text-white p-8 transition-opacity duration-500 opacity-100 z-10">
+              <h2 className="text-3xl font-bold text-center mb-8">
+                방금 학습한 내용, 확실히 기억하고 있나요?
+                <br />
+                퀴즈로 점검해보세요!
+              </h2>
+              <Button
+                onClick={() => setShowQuiz(true)}
+                className="bg-white text-blue-600 hover:bg-blue-100 transition-colors duration-200"
+              >
+                퀴즈 풀기
+              </Button>
+            </div>
+          )}
+
+          {showQuiz && (
+            <div className="absolute inset-0 bg-white flex">
+              {/* 퀴즈 */}
+              {quizData && (
+                <QuizCarousel quizListData={quizData.data['question-answer']} />
+              )}
+            </div>
+          )}
+        </div>
+      ) : (
+        // 로그인안했을때 퀴즈 커버
+        <div className="relative w-full h-[400px] overflow-hidden rounded-lg shadow-lg">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-700 flex flex-col items-center justify-center text-white p-8 transition-opacity duration-500 opacity-100">
+            <h2 className="text-3xl font-bold text-center mb-8">
+              퀴즈를 풀려면 로그인을 하세요
+            </h2>
+            <Button
+              className="bg-white text-purple-600 hover:bg-purple-100 transition-colors duration-200"
+              onClick={() => router.push('/login')}
+            >
+              로그인하기
+            </Button>
+          </div>
+        </div>
       )}
 
       {/* 로그인 모달 */}
