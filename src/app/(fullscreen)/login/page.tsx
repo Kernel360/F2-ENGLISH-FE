@@ -16,9 +16,12 @@ const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 export default function LoginPage() {
   const router = useRouter();
 
+  // middleware 수정에 따라 동기화 필요
   const handleOAuthLogin = (provider: string) => {
     console.log(`Redirecting to ${provider} OAuth login...`);
-    router.push(`${BASE_URL}/oauth2/authorization/${provider}`);
+    router.push(
+      `${BASE_URL}/oauth2/authorization/${provider}?returnUrl=${encodeURIComponent('/learn/listening')}`,
+    );
   };
 
   return (
