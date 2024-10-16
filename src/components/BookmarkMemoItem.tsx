@@ -71,7 +71,11 @@ export default function BookmarkMemoItem({
           <Button
             variant="secondary"
             className="rounded-full h-6 px-3"
-            onClick={() => seekTo(subtitle?.startTimeInSecond as number)}
+            onClick={() =>
+              // TODO(@smosco): 북마크 메모 싱크
+              // 자막 시작시간으로 이동했을 때 이전 자막을 보여주는 문제 해결을 위해 0.1초 보정
+              seekTo((subtitle?.startTimeInSecond as number) + 0.1)
+            }
           >
             {convertTime(subtitle?.startTimeInSecond as number)}
           </Button>
