@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -35,36 +35,38 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Search Page</h1>
-      <form onSubmit={handleSubmit} className="mb-4">
-        <div className="flex gap-2">
-          <Input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="검색어를 입력하세요"
-            className="flex-grow"
-          />
-          <Button type="submit">검색</Button>
-        </div>
-      </form>
-      {query && (
-        <div>
-          <h2 className="text-xl font-semibold mb-2">검색 결과: {query}</h2>
-          {results.length > 0 ? (
-            <ul className="space-y-2">
-              {results.map((result) => (
-                <li key={result.id} className="p-2 bg-gray-100 rounded">
-                  {result.title}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>검색 결과가 없습니다.</p>
-          )}
-        </div>
-      )}
-    </div>
+    <Suspense fallback={<div>Loading search results...</div>}>
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4">Search Page</h1>
+        <form onSubmit={handleSubmit} className="mb-4">
+          <div className="flex gap-2">
+            <Input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="검색어를 입력하세요"
+              className="flex-grow"
+            />
+            <Button type="submit">검색</Button>
+          </div>
+        </form>
+        {query && (
+          <div>
+            <h2 className="text-xl font-semibold mb-2">검색 결과: {query}</h2>
+            {results.length > 0 ? (
+              <ul className="space-y-2">
+                {results.map((result) => (
+                  <li key={result.id} className="p-2 bg-gray-100 rounded">
+                    {result.title}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>검색 결과가 없습니다.</p>
+            )}
+          </div>
+        )}
+      </div>
+    </Suspense>
   );
 }
