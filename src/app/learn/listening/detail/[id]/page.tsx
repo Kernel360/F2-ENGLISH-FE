@@ -55,7 +55,7 @@ export default function DetailListeningPage() {
       setShowLoginModal(true);
       return;
     }
-    // 로그인 권한 있을때만
+    // 로그인 권한 있을때만 아래 실행
     if (isScrapped) {
       // 스크랩 삭제
       deleteScrapMutation.mutate(undefined, {
