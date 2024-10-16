@@ -14,11 +14,11 @@ export function TextDisplay({
   onSelectWord: (word: string, subtitle: Subtitle, index: number) => void;
 }) {
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       {selectedLanguages.map((language) => (
         <p
           key={language}
-          className="animate-fadeIn"
+          className={`animate-fadeIn ${language === 'enScript' ? 'font-[600]' : ''}`}
           onMouseUp={() => {
             const selection = window.getSelection();
             if (selection && selection.toString()) {

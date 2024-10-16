@@ -6,7 +6,6 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import Modal from '@/components/Modal';
 import VideoPlayer from '@/components/VideoPlayer';
-import { useParams } from 'next/navigation';
 import { useContentDetail } from '@/api/hooks/useContentDetail';
 import { useUserLoginStatus } from '@/api/hooks/useUserInfo';
 import QuizCarousel from '@/components/quiz/QuizCarousel';

@@ -8,7 +8,6 @@ import { Clock } from 'lucide-react';
 import { Preview } from '@/types/Preview';
 
 export default function ListeningPreviewCard({
-  // TODO(@smosco): hits, 북마크 아이콘 추가
   data: { contentId, thumbnailUrl, title, category, preScripts },
 }: {
   data: Preview;
@@ -16,9 +15,9 @@ export default function ListeningPreviewCard({
   return (
     <Link
       href={`/learn/listening/detail/${contentId}`}
-      className="w-full h-fit mr-3"
+      className="block w-full max-w-xs"
     >
-      <Card className="max-w-xs overflow-hidden rounded-lg hover:shadow-card-hover">
+      <Card className="overflow-hidden rounded-lg hover:shadow-card-hover">
         <CardContent className="p-0">
           <div className="relative w-full h-40">
             <img
@@ -33,7 +32,7 @@ export default function ListeningPreviewCard({
           </div>
         </CardContent>
       </Card>
-      <div className="mt-2 space-y-2">
+      <div className="mt-2 space-y-2 px-1">
         <Badge>{category}</Badge>
         <h3 className="font-bold line-clamp-2 break-words hover:underline underline-offset-2">
           {title}
