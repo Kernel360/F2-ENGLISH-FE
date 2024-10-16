@@ -3,6 +3,7 @@ export interface Preview {
   title: string;
   category: string;
   thumbnailUrl: string;
+  contentType: 'READING' | 'LISTENING';
   preScripts: string;
   hits: number;
 }
