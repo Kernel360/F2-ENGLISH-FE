@@ -43,8 +43,6 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
     useState<LanguageCode[]>(availableLanguages);
   const [currentTime, setCurrentTime] = useState(0);
   const [mounted, setMounted] = useState(false); // 추가: 마운트 상태 확인
-  const [isVideoReadyButIsNotPlayingYet, setIsVideoReadyButIsNotPlayingYet] =
-    useState(true); //  준비 메세지 상태 관리
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const [playbackRate, setPlayBackRate] = useState(1);
@@ -100,11 +98,6 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
     isPlaying,
     volume,
     setPlayBackRate,
-  };
-
-  const handleVideoReady = () => {
-    // 처음 비디오가 준비되었을 때만 true로 설정
-    setIsVideoReadyButIsNotPlayingYet(true);
   };
 
   const currentSubtitleIndex =
@@ -167,11 +160,7 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
               playing={isPlaying}
               width="100%"
               height="100%"
-              onReady={handleVideoReady}
-              onPlay={() => {
-                setIsPlaying(true);
-                setIsVideoReadyButIsNotPlayingYet(false);
-              }}
+              onPlay={() => setIsPlaying(true)}
               onStart={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
               onProgress={handleProgress}
@@ -208,7 +197,6 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
           onSelectWord={(word, subtitle, index) => {
             console.log(word, subtitle, index);
           }}
-          isVideoReadyButIsNotPlayingYet={isVideoReadyButIsNotPlayingYet} // video첫로딩후재생버튼누르기전에는 영상을 재생해주세요 메시지 보여줌
           bookmarkedIndices={
             bookmarkData && bookmarkData?.data.bookmarkList.length > 0
               ? bookmarkData.data.bookmarkList.map(

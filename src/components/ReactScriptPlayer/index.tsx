@@ -15,7 +15,6 @@ export interface ReactScriptPlayerProps {
   currentTime: number;
   onClickSubtitle: (subtitle: Subtitle, index: number) => void;
   onSelectWord: (word: string, subtitle: Subtitle, index: number) => void;
-  isVideoReadyButIsNotPlayingYet: boolean;
   bookmarkedIndices: number[];
 }
 
@@ -27,7 +26,6 @@ export function ReactScriptPlayer({
   currentTime,
   onClickSubtitle,
   onSelectWord,
-  isVideoReadyButIsNotPlayingYet,
   bookmarkedIndices,
 }: ReactScriptPlayerProps) {
   const currentSubtitleIndex =
@@ -46,7 +44,6 @@ export function ReactScriptPlayer({
             selectedLanguages={selectedLanguages}
             seekTo={seekTo}
             onSelectWord={onSelectWord}
-            isVideoReadyButIsNotPlayingYet={isVideoReadyButIsNotPlayingYet}
             bookmarkedIndices={bookmarkedIndices}
           />
         )}
