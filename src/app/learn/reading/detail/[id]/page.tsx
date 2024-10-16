@@ -20,19 +20,27 @@ import {
   useUpdateBookmark,
   useDeleteBookmark,
 } from '@/api/hooks/useBookmarks';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import FloatingButtons from '@/components/FloatingButtons';
 import {
   useCreateScrap,
   useDeleteScrap,
   useCheckScrap,
 } from '@/api/hooks/useScrap';
+import { useUserLoginStatus } from '@/api/hooks/useUserInfo';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
 
 export default function DetailReadingPage() {
   const params = useParams();
   const contentId = Number(params.id);
   const { data, isLoading, isError, error } = useContentDetail(contentId);
+
+  // 로그인 권한 훅
+  const { data: isLoginData } = useUserLoginStatus();
+  const isLogin = isLoginData?.data; // 로그인 상태 확인
+  const router = useRouter(); // login페이지로 이동
+  // 로그읜 모달
+  const [showLoginModal, setShowLoginModal] = useState(false); // 권한 없을때 로그인 모달
 
   // 북마크 데이터 훅
   const { data: bookmarkData, refetch: refetchBookmarks } =
@@ -142,6 +150,13 @@ export default function DetailReadingPage() {
 
   // 메모 버튼 클릭 시 메모 input 위치 조정 및 상태 업데이트
   const handleMemoClick = () => {
+    // - 로그인 권한 없으면 로그인 모달 띄우기
+    if (!isLogin) {
+      setShowLoginModal(true);
+      return;
+    }
+    // - 로그인 권한 있을때만 아래 실행
+
     if (selectedSentenceIndex === null) return;
 
     // 선택된 문장의 DOM 엘리먼트를 찾음
@@ -250,6 +265,12 @@ export default function DetailReadingPage() {
   };
 
   const handleScrapToggle = () => {
+    // 로그인 권한 없으면 로그인 모달 띄우기
+    if (!isLogin) {
+      setShowLoginModal(true);
+      return;
+    }
+    // 로그인 권한 있을때만 아래 실행
     if (isScrapped) {
       // 스크랩 삭제
       deleteScrapMutation.mutate(undefined, {
@@ -397,6 +418,26 @@ export default function DetailReadingPage() {
           <ArrowUp className="w-5 h-5" />
         </Button>
       </div>
+
+      {/* 로그인 모달 */}
+      {showLoginModal && (
+        <Modal
+          isOpen={showLoginModal}
+          onClose={() => setShowLoginModal(false)}
+          title="로그인이 필요합니다."
+          description="이 기능을 이용하려면 로그인이 필요해요! "
+        >
+          <div className="flex justify-center gap-4 mt-4">
+            <Button
+              variant="default"
+              className="hover:bg-violet-900 w-full"
+              onClick={() => router.push('/login')}
+            >
+              로그인 하러 가기
+            </Button>
+          </div>
+        </Modal>
+      )}
 
       {/* 번역, 스크랩 버튼 */}
       <FloatingButtons
