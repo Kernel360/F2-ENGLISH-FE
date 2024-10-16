@@ -9,18 +9,21 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { BookOpen, Headphones } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  // middleware 수정에 따라 동기화 필요
+  // todo : 추후 백엔드 oauth로직과 연결 필요!
   const handleOAuthLogin = (provider: string) => {
     console.log(`Redirecting to ${provider} OAuth login...`);
+    const returnUrl = searchParams.get('returnUrl');
+
     router.push(
-      `${BASE_URL}/oauth2/authorization/${provider}?returnUrl=${encodeURIComponent('/learn/listening')}`,
+      `${BASE_URL}/oauth2/authorization/${provider}${returnUrl ? `?returnUrl=${encodeURIComponent(returnUrl)}` : ''}`,
     );
   };
 

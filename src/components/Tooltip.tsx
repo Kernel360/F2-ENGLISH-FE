@@ -5,7 +5,7 @@
 import React, { useEffect, useRef } from 'react';
 import { HighlighterIcon, MessageCircleMoreIcon, Trash2 } from 'lucide-react';
 import { useUserLoginStatus } from '@/api/hooks/useUserInfo';
-import { useRouter } from 'next/navigation';
+import LogInOutButton from '@/components/LogInOutButton';
 
 type TooltipProps = {
   position: { top: number; left: number };
@@ -25,7 +25,6 @@ export default function Tooltip({
   const tooltipRef = useRef<HTMLDivElement>(null);
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data; // 로그인 상태 확인
-  const router = useRouter(); // 로그인권한 없을 때 북마크, 메모 누르면 login페이지로 이동
 
   // 외부 클릭 감지 및 툴팁 닫기
   useEffect(() => {
@@ -60,16 +59,7 @@ export default function Tooltip({
       {/* 버튼 아이템 */}
       {!isLogin ? (
         <span className="flex items-center px-1">
-          <button
-            type="button"
-            className="p-2 text-gray-600 hover:bg-gray-100 rounded cursor-pointer bg-primary text-white inline-flex items-center"
-            onClick={(e) => {
-              e.stopPropagation();
-              router.push('/login');
-            }}
-          >
-            로그인
-          </button>
+          <LogInOutButton />
           <span className="ml-2 ">
             을 하면 형광펜과 메모를 사용할 수 있어요.
           </span>
