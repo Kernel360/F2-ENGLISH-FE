@@ -7,6 +7,7 @@ export function middleware(request: NextRequest) {
   if (!token) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
+  return NextResponse.next();
 }
 
 export const config = {

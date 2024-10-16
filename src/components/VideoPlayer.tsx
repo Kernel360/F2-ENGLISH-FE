@@ -59,7 +59,7 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data; // 로그인 상태 확인
   const router = useRouter(); // login페이지로 이동
-  const [showLoginModal, setShowLoginModal] = useState(false); //권한 없을때 로그인 모달
+  const [showLoginModal, setShowLoginModal] = useState(false); // 권한 없을때 로그인 모달
 
   const [isAddingNote, setIsAddingNote] = useState(false);
   const [newNoteText, setNewNoteText] = useState('');
