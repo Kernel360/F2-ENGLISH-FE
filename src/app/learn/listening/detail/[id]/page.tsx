@@ -33,7 +33,7 @@ export default function DetailListeningPage() {
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data; // 로그인 상태 확인
   const router = useRouter(); // login페이지로 이동
-  const [showLoginModal, setShowLoginModal] = useState(false); //권한 없을때 로그인 모달
+  const [showLoginModal, setShowLoginModal] = useState(false); // 권한 없을때 로그인 모달
 
   const { data: checkScrap } = useCheckScrap(contentId);
   const createScrapMutation = useCreateScrap(contentId);
