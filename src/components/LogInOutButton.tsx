@@ -6,7 +6,11 @@ import { useUserLoginStatus } from '@/api/hooks/useUserInfo'; // custom hook imp
 import { useRequestLogout } from '@/api/hooks/useUserInfo'; // custom hook import
 import { usePathname } from 'next/navigation';
 
-export default function LogInOutButton() {
+interface LogInOutButtonProps {
+  color?: string;
+}
+
+export default function LogInOutButton({ color }: LogInOutButtonProps) {
   const { data: isLogin } = useUserLoginStatus();
   const { mutate: fetchUserLogout } = useRequestLogout();
   const currentPathname = usePathname();
@@ -15,7 +19,7 @@ export default function LogInOutButton() {
     <Button onClick={() => fetchUserLogout()}>로그아웃</Button>
   ) : (
     <Link href={`/login?returnUrl=${currentPathname}`}>
-      <Button>로그인</Button>
+      <Button className={color || ''}>로그인</Button>
     </Link>
   );
 }
