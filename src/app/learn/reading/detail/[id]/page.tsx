@@ -20,13 +20,14 @@ import {
   useUpdateBookmark,
   useDeleteBookmark,
 } from '@/api/hooks/useBookmarks';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import FloatingButtons from '@/components/FloatingButtons';
 import {
   useCreateScrap,
   useDeleteScrap,
   useCheckScrap,
 } from '@/api/hooks/useScrap';
+import { useUserLoginStatus } from '@/api/hooks/useUserInfo';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
 
 export default function DetailReadingPage() {
@@ -62,6 +63,9 @@ export default function DetailReadingPage() {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false); // 삭제 확인 모달 상태 추가
 
   const [isScrapped, setIsScrapped] = useState<boolean | undefined>(undefined);
+  const { data: isLoginData } = useUserLoginStatus();
+  const isLogin = isLoginData?.data;
+  const router = useRouter(); // toggleScrap 함수에서 사용하기 위해 router 추가
 
   useEffect(() => {
     if (checkScrap?.data) {
@@ -104,6 +108,11 @@ export default function DetailReadingPage() {
         // 이미 북마크가 있는 경우, 삭제 확인 모달 표시
         setShowDeleteModal(true);
       } else {
+        if (!isLogin) {
+          alert('로그인이 필요한 서비스입니다.');
+          router.push('/login');
+          return;
+        }
         createBookmarkMutation.mutate(
           {
             sentenceIndex: selectedSentenceIndex,
@@ -142,6 +151,12 @@ export default function DetailReadingPage() {
 
   // 메모 버튼 클릭 시 메모 input 위치 조정 및 상태 업데이트
   const handleMemoClick = () => {
+    if (!isLogin) {
+      console.log(isLoginData);
+      router.push('/login');
+      alert('로그인 후 이용해주세요'); // Then show the alert
+      return;
+    }
     if (selectedSentenceIndex === null) return;
 
     // 선택된 문장의 DOM 엘리먼트를 찾음
@@ -250,6 +265,12 @@ export default function DetailReadingPage() {
   };
 
   const handleScrapToggle = () => {
+    if (!isLogin) {
+      console.log(isLoginData);
+      router.push('/login');
+      alert('로그인 후 이용해주세요'); // Then show the alert
+      return;
+    }
     if (isScrapped) {
       // 스크랩 삭제
       deleteScrapMutation.mutate(undefined, {

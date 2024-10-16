@@ -11,6 +11,8 @@ import {
   useCreateBookmark,
   useFetchBookmarksByContendId,
 } from '@/api/hooks/useBookmarks';
+import { useUserLoginStatus } from '@/api/hooks/useUserInfo';
+import { useRouter } from 'next/navigation';
 import { Check, X, BookmarkPlus, MessageSquarePlus } from 'lucide-react';
 import { convertTime } from '@/lib/convertTime';
 import ControlBar from './ControlBar';
@@ -53,6 +55,9 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
     number | null
   >(null);
 
+  const { data: isLoginData } = useUserLoginStatus();
+  const isLogin = isLoginData?.data; // 로그인 상태 확인
+  const router = useRouter(); // login페이지로 이동
   const [isAddingNote, setIsAddingNote] = useState(false);
   const [newNoteText, setNewNoteText] = useState('');
 
@@ -114,6 +119,11 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   );
 
   const handleBookmark = () => {
+    if (!isLogin) {
+      alert('로그인이 필요한 서비스입니다.');
+      router.push('/login');
+      return;
+    }
     if (currentSubtitleIndex !== null && currentSubtitleIndex !== undefined) {
       createBookmarkMutation.mutate({
         sentenceIndex: currentSubtitleIndex,
@@ -122,6 +132,11 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   };
 
   const handleMemo = () => {
+    if (!isLogin) {
+      alert('로그인이 필요한 서비스입니다.');
+      router.push('/login');
+      return;
+    }
     if (currentSubtitleIndex !== null && currentSubtitleIndex !== undefined) {
       setSelectedSentenceIndex(currentSubtitleIndex);
       setNewNoteText('');
