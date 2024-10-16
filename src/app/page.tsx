@@ -14,7 +14,7 @@ export default function HomePage() {
     useListeningPreview();
 
   if (readingLoading || listeningLoading) {
-    return <div className="max-w-[1080px] mx-auto mt-8">Loading...</div>;
+    return <div className="">로딩중...</div>;
   }
 
   return (
@@ -23,10 +23,11 @@ export default function HomePage() {
       <Carousel
         previewDatas={readingList?.data.readingPreview || []}
         header={
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-bold">인기 리딩 컨텐츠</h3>
+          <div className="flex justify-between items-center mb-5">
+            <h3 className="text-2xl font-bold">인기 리딩 컨텐츠</h3>
             <Link href="/learn/reading">
               <Button variant="ghost">
+                더보기
                 <ChevronRight size={24} color="#6B6B6B" />
               </Button>
             </Link>
@@ -40,10 +41,11 @@ export default function HomePage() {
       <Carousel
         previewDatas={listeningList?.data.listeningPreview || []}
         header={
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-bold">인기 리스닝 컨텐츠</h3>
+          <div className="flex justify-between items-center mb-5">
+            <h3 className="text-2xl font-bold">인기 리스닝 컨텐츠</h3>
             <Link href="/learn/listening">
               <Button variant="ghost">
+                더보기
                 <ChevronRight size={24} color="#6B6B6B" />
               </Button>
             </Link>

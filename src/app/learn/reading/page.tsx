@@ -13,7 +13,7 @@ export default function ReadingPage() {
   } = useReadingContents();
 
   if (isLoading) {
-    return <p className="">로딩 중...</p>;
+    return <p>로딩 중...</p>;
   }
 
   if (isError) {
@@ -21,13 +21,13 @@ export default function ReadingPage() {
   }
 
   if (!readingContents || readingContents.data.contents.length === 0) {
-    return <p className="">콘텐츠가 없습니다.</p>;
+    return <p>콘텐츠가 없습니다.</p>;
   }
 
   return (
-    <div className="">
+    <div>
       <ContentTypeFilter />
-      <ul className="flex flex-col gap-4 mt-8">
+      <ul className="flex flex-col gap-6 mt-8">
         {readingContents.data.contents.map((content) => (
           <ArticlePreview key={content.contentId} data={content} />
         ))}

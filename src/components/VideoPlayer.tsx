@@ -165,7 +165,7 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   if (!mounted) return null;
 
   return (
-    <div className="container mx-auto p-4 grid grid-cols-3 gap-4">
+    <div className="container mx-auto py-5 grid grid-cols-3 gap-4">
       {/* 비디오 플레이어 */}
       <div className="col-span-2 space-y-4">
         <Card>
@@ -229,11 +229,11 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
       </div>
       {/* 북마크 메모 패널 */}
       <div className="col-span-1">
-        <Card className="h-full">
-          <CardHeader>
+        <Card className="h-full flex flex-col justify-between p-4">
+          <CardHeader className="p-0">
             <CardTitle className="text-xl">Bookmarks & Notes</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-0">
             <ScrollArea className="h-[560px] mb-4">
               {bookmarkData && bookmarkData.data.bookmarkList.length > 0 ? (
                 bookmarkData.data.bookmarkList.map((bookmark) => {
@@ -283,15 +283,17 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
                 </div>
               )}
             </ScrollArea>
-            <div className="flex justify-between">
-              <Button onClick={handleBookmark}>
-                <BookmarkPlus className="mr-2 h-4 w-4" /> Bookmark
-              </Button>
-              <Button onClick={handleMemo}>
-                <MessageSquarePlus className="mr-2 h-4 w-4" /> Add Note
-              </Button>
-            </div>
           </CardContent>
+          <div className="flex gap-2 justify-between">
+            <Button onClick={handleBookmark} className="w-28">
+              <BookmarkPlus size={20} className="mr-2" />
+              북마크
+            </Button>
+            <Button onClick={handleMemo} className="w-28">
+              <MessageSquarePlus size={20} className="mr-2" />
+              메모 추가
+            </Button>
+          </div>
         </Card>
       </div>
     </div>

@@ -288,7 +288,7 @@ export default function DetailReadingPage() {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>로딩중...</div>;
   if (isError) return <div>Error: {error?.message}</div>;
 
   const contentData = data?.data;
@@ -298,7 +298,7 @@ export default function DetailReadingPage() {
   return (
     <>
       <div className="flex">
-        <div className="flex flex-col flex-1 gap-5 mx-auto p-5 pb-16 max-w-[800px] h-auto">
+        <div className="flex flex-col flex-1 gap-5 mx-auto pb-16 max-w-[800px] h-auto">
           <div>
             <Badge>{contentData.category}</Badge>
             <div className="font-bold text-2xl mt-2 mb-4">
@@ -317,7 +317,7 @@ export default function DetailReadingPage() {
             />
           </div>
           <div>
-            <ul className="flex flex-col gap-4 text-[#313131]">
+            <ul className="flex flex-col gap-8 text-[#313131]">
               {contentData.scriptList.map((script, index) => {
                 const bookmarkMemo = bookmarkData?.data.bookmarkList.find(
                   (item) => item.sentenceIndex === index,

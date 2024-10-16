@@ -29,7 +29,7 @@ function NavItem({ item, active }: { item: NavItemProps; active: boolean }) {
     <Link href={item.href} className="w-full">
       <Button
         variant="ghost"
-        className={`w-full justify-start px-2
+        className={`w-full justify-start px-2 mb-2
           ${active && 'bg-purple-100 text-purple-700'}`}
       >
         <span className="flex items-center">
@@ -51,7 +51,7 @@ function SideNav() {
 
   return (
     <nav className="w-64 bg-background h-screen">
-      <div className="p-4">
+      <div className="px-4 pb-4">
         <h2 className="text-lg font-semibold mb-4">Navigation</h2>
         <div className="space-y-1">
           {navItems.map((item) => (
@@ -66,7 +66,7 @@ function SideNav() {
       <div className="p-4 border-t">
         <Button variant="outline" className="w-full justify-start">
           <Plus className="mr-2 h-4 w-4" />
-          Add New
+          콜렉션 추가
         </Button>
       </div>
     </nav>
@@ -79,7 +79,7 @@ export default function ScrapbookLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex max-w-[1080px] mx-auto pt-12">
+    <div className="flex w-full mx-auto">
       <SideNav />
       <main className="flex-1">{children}</main>
     </div>
