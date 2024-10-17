@@ -11,7 +11,7 @@ import {
   useCreateBookmark,
   useFetchBookmarksByContendId,
 } from '@/api/hooks/useBookmarks';
-import { useUserLoginStatus } from '@/api/hooks/useUserInfo';
+import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import { Check, X, BookmarkPlus, MessageSquarePlus } from 'lucide-react';
 import { convertTime } from '@/lib/convertTime';
 import { findCurrentSubtitleIndex } from '@/lib/findCurrentSubtitleIndex';
@@ -150,8 +150,8 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   };
 
   const handleCancelNewNote = () => {
-    setIsAddingNote(false); // Close new note input
-    setIsPlaying(true); // Resume video playback
+    setIsAddingNote(false);
+    setIsPlaying(true);
   };
 
   // 클라이언트에서만 렌더링되도록 조건부 렌더링

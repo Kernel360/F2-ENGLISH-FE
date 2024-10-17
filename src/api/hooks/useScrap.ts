@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   FetchScrapResponse,
   CreateScrapResponse,
@@ -11,10 +11,11 @@ import {
   createScrap,
   checkScrap,
 } from '../queries/scrapQueries';
+import { useQueryLoginOnly } from './common';
 
 // 스크랩 조회 훅
 export const useFetchScrap = () => {
-  return useQuery<FetchScrapResponse>({
+  return useQueryLoginOnly<FetchScrapResponse>({
     queryKey: ['scrap'],
     queryFn: () => fetchScrap(),
   });
@@ -22,7 +23,7 @@ export const useFetchScrap = () => {
 
 // 스크랩 확인 훅
 export const useCheckScrap = (contentId: number) => {
-  return useQuery<CheckScrapResponse>({
+  return useQueryLoginOnly<CheckScrapResponse>({
     queryKey: ['scrap', contentId],
     queryFn: () => checkScrap(contentId),
   });

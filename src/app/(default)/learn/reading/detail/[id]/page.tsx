@@ -28,7 +28,7 @@ import {
   useDeleteScrap,
   useCheckScrap,
 } from '@/api/hooks/useScrap';
-import { useUserLoginStatus } from '@/api/hooks/useUserInfo';
+import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
 
 export default function DetailReadingPage() {

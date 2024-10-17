@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { useUserLoginStatus } from '@/api/hooks/useUserInfo'; // custom hook import
+import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import { useRequestLogout } from '@/api/hooks/useUserInfo'; // custom hook import
 import { usePathname } from 'next/navigation';
 

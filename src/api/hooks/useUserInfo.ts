@@ -3,7 +3,6 @@ import {
   UserUpdateResponse,
   UserUpdateRequest,
   UserTimeResponse,
-  UserLoginStatusResponse,
   UserRequestLogoutResponse,
 } from '@/types/User';
 import {
@@ -16,9 +15,9 @@ import {
   fetchUserInfo,
   updateUserInfo,
   fetchUserTime,
-  fetchUserLoginStatus,
   fetchUserLogout,
 } from '@/api/queries/userQueries';
+import { useQueryLoginOnly } from './common';
 
 export const useUserInfo = (): UseQueryResult<UserResponse> => {
   return useQuery({
@@ -39,20 +38,11 @@ export const useUpdateUserInfo = () => {
 };
 
 export const useUserTime = (): UseQueryResult<UserTimeResponse> => {
-  return useQuery({
+  return useQueryLoginOnly({
     queryKey: ['userTime'],
     queryFn: () => fetchUserTime(),
   });
 };
-
-// 로그인 상태 확인하는 tanstack query훅.
-export const useUserLoginStatus =
-  (): UseQueryResult<UserLoginStatusResponse> => {
-    return useQuery<UserLoginStatusResponse>({
-      queryKey: ['loginStatus'],
-      queryFn: fetchUserLoginStatus,
-    });
-  };
 
 export const useRequestLogout = () => {
   const queryClient = useQueryClient();

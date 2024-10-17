@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import Modal from '@/components/Modal';
 import VideoPlayer from '@/components/VideoPlayer';
 import { useContentDetail } from '@/api/hooks/useContentDetail';
-import { useUserLoginStatus } from '@/api/hooks/useUserInfo';
+import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import QuizCarousel from '@/components/quiz/QuizCarousel';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
 import LogInOutButton from '@/components/LogInOutButton';
