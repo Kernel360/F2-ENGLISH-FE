@@ -23,7 +23,7 @@ export default function Quiz({ data, onNext }: QuizProps) {
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full p-10 border h-90">
+    <div className="flex flex-col gap-4 w-full p-10 h-fit">
       {data.type === 'BLANK' ? (
         <BlankQuiz
           questionKo={data.questionKo}
