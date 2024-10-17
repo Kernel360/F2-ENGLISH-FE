@@ -12,19 +12,27 @@ import {
   updateBookmark,
   deleteBookmark,
 } from '../queries/bookmarkQueries';
+import { useUserLoginStatus } from './useUserInfo';
 
 // 북마크 조회 훅
 export const useFetchBookmarksByContendId = (contentId: number) => {
+  const { data: isLoginData } = useUserLoginStatus();
+  const isLogin = !!isLoginData?.data;
+
   return useQuery<BookmarkByContentIdResponse>({
     queryKey: ['bookmarks', contentId],
     queryFn: () => fetchBookmarksByContentId(contentId),
+    enabled: isLogin,
   });
 };
 
 export const useFetchAllBookmarks = () => {
+  const { data: isLoginData } = useUserLoginStatus();
+  const isLogin = !!isLoginData?.data;
   return useQuery<BookmarkListResponse>({
     queryKey: ['bookmarks'],
     queryFn: () => fetchAllBookmarks(),
+    enabled: isLogin,
   });
 };
 

@@ -38,13 +38,6 @@ export const useUpdateUserInfo = () => {
   });
 };
 
-export const useUserTime = (): UseQueryResult<UserTimeResponse> => {
-  return useQuery({
-    queryKey: ['userTime'],
-    queryFn: () => fetchUserTime(),
-  });
-};
-
 // 로그인 상태 확인하는 tanstack query훅.
 export const useUserLoginStatus =
   (): UseQueryResult<UserLoginStatusResponse> => {
@@ -53,6 +46,16 @@ export const useUserLoginStatus =
       queryFn: fetchUserLoginStatus,
     });
   };
+
+export const useUserTime = (): UseQueryResult<UserTimeResponse> => {
+  const { data: isLoginData } = useUserLoginStatus();
+  const isLogin = !!isLoginData?.data;
+  return useQuery({
+    queryKey: ['userTime'],
+    queryFn: () => fetchUserTime(),
+    enabled: isLogin,
+  });
+};
 
 export const useRequestLogout = () => {
   const queryClient = useQueryClient();
