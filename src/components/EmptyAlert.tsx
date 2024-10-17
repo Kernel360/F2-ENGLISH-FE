@@ -1,5 +1,4 @@
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { InfoCircledIcon } from '@radix-ui/react-icons';
 import { AlertCircleIcon } from 'lucide-react';
 
 interface EmptyAlertProps {
@@ -13,7 +12,6 @@ export default function EmptyAlert({
 }: EmptyAlertProps) {
   return (
     <Alert>
-      {/* <InfoCircledIcon className="h-4 w-4" /> */}
       <div className="flex  space-x-1 items-center ">
         <AlertCircleIcon className="h-4 w-4" />
         <AlertTitle>{alertTitle}</AlertTitle>
