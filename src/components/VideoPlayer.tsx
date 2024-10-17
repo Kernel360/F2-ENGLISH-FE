@@ -25,6 +25,7 @@ import { Button } from './ui/button';
 import { Card, CardHeader, CardContent, CardTitle } from './ui/card';
 import { ScrollArea } from './ui/scroll-area';
 import Modal from './Modal';
+import EmptyAlert from './EmptyAlert';
 
 type Mode = 'line' | 'block';
 
@@ -238,21 +239,21 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
           </CardHeader>
           <CardContent className="p-0">
             <ScrollArea className="h-[560px] mb-4 rounded-lg">
-              {bookmarkData && bookmarkData.data.bookmarkList.length > 0 ? (
-                bookmarkData.data.bookmarkList.map((bookmark) => {
-                  const subtitle = scriptsData?.[bookmark.sentenceIndex];
-                  return (
-                    <BookmarkMemoItem
-                      key={bookmark.bookmarkId}
-                      bookmark={bookmark}
-                      subtitle={subtitle}
-                      seekTo={seekTo}
-                    />
-                  );
-                })
-              ) : (
-                <p className="mb-4 text-[14px]">북마크가 없습니다.</p>
-              )}
+              {bookmarkData && bookmarkData.data.bookmarkList.length > 0
+                ? bookmarkData.data.bookmarkList.map((bookmark) => {
+                    const subtitle = scriptsData?.[bookmark.sentenceIndex];
+                    return (
+                      <BookmarkMemoItem
+                        key={bookmark.bookmarkId}
+                        bookmark={bookmark}
+                        subtitle={subtitle}
+                        seekTo={seekTo}
+                      />
+                    );
+                  })
+                : !selectedSentenceIndex && ( // 메모 저장이 안 되었어도 '메모추가' 버튼 누르는 순간부터 북마크가 없다는 메세지는 안 보여야함
+                    <EmptyAlert alertDescription="북마크가 없습니다." />
+                  )}
               {/* TODO(@smosco): 메모 컴포넌트랑 거의 동일 분리 해야함 */}
               {isAddingNote && selectedSentenceIndex !== null && (
                 <div className="mb-4 p-2 bg-white rounded-lg">
@@ -296,12 +297,12 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
               )}
             </ScrollArea>
           </CardContent>
-          <div className="flex gap-2 justify-between">
-            <Button onClick={handleBookmark} className="w-28">
+          <div className="flex flex-col gap-2 justify-between items-center lg:flex-row">
+            <Button onClick={handleBookmark} className="w-full ">
               <BookmarkPlus size={20} className="mr-2" />
               북마크
             </Button>
-            <Button onClick={handleMemo} className="w-28">
+            <Button onClick={handleMemo} className="w-full">
               <MessageSquarePlus size={20} className="mr-2" />
               메모 추가
             </Button>
