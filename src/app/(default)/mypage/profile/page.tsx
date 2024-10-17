@@ -77,7 +77,7 @@ export default function UserProfile() {
         <div className="flex justify-center mb-6">
           <div className="relative">
             <img
-              src={`https://catalystcci.com/wp-content/uploads/gray-image-placeholder.png`}
+              src="https://catalystcci.com/wp-content/uploads/gray-image-placeholder.png"
               alt="Profile"
               className="w-20 h-20 rounded-full"
             />
