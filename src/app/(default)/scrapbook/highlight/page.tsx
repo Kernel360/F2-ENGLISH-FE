@@ -1,5 +1,7 @@
 'use client';
 
+import LoadingSpinner from '@/components/LoadingSpinner';
+import EmptyAlert from '@/components/EmptyAlert';
 import MemoItem from '@/components/MemoItem';
 import { useFetchAllBookmarks } from '@/api/hooks/useBookmarks';
 
@@ -12,7 +14,7 @@ export default function HighlighterAndMemo() {
   } = useFetchAllBookmarks();
 
   if (isLoading) {
-    return <p>로딩 중...</p>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {
@@ -20,7 +22,7 @@ export default function HighlighterAndMemo() {
   }
 
   if (!allBookmarkData || allBookmarkData.data.bookmarkMyList.length === 0) {
-    return <p>북마크가 없습니다.</p>;
+    return <EmptyAlert alertDescription="저장된 북마크가 없어요" />;
   }
 
   return (

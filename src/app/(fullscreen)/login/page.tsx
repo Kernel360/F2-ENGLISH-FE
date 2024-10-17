@@ -1,6 +1,7 @@
 'use client';
 
 import { Suspense } from 'react';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -13,10 +14,6 @@ import { BookOpen, Headphones } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
-
-function LoadingSpinner() {
-  return <div>로딩 중</div>;
-}
 
 function Login() {
   const router = useRouter();

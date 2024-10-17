@@ -1,5 +1,6 @@
 'use client';
 
+import LoadingSpinner from '@/components/LoadingSpinner';
 import Carousel from '@/components/Carousel';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
@@ -14,7 +15,7 @@ export default function HomePage() {
     useListeningPreview();
 
   if (readingLoading || listeningLoading) {
-    return <div className="">로딩중...</div>;
+    return <LoadingSpinner />;
   }
 
   return (

@@ -1,5 +1,7 @@
 'use client';
 
+import LoadingSpinner from '@/components/LoadingSpinner';
+import EmptyAlert from '@/components/EmptyAlert';
 import { useFetchScrap } from '@/api/hooks/useScrap';
 import ContentPreview from '@/components/ContentPreview';
 
@@ -7,7 +9,7 @@ export default function RecentContent() {
   const { data: allScrapData, isLoading, isError, error } = useFetchScrap();
 
   if (isLoading) {
-    return <p>로딩 중...</p>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {
@@ -15,7 +17,7 @@ export default function RecentContent() {
   }
 
   if (!allScrapData || allScrapData.data.scrapList.length === 0) {
-    return <p>스크랩한 콘텐츠가 없습니다.</p>;
+    return <EmptyAlert alertDescription="스크랩 콘텐츠가 없어요" />;
   }
   return (
     <div className="container mx-auto px-4">

@@ -1,14 +1,12 @@
 'use client';
 
+import LoadingSpinner from '@/components/LoadingSpinner';
+import EmptyAlert from '@/components/EmptyAlert';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import { useFetchSearchResults } from '@/api/hooks/useSearch';
 import ListeningPreviewCard from '@/components/ListeningPreviewCard';
 import ReadingPreviewCard from '@/components/ReadingPreviewCard';
-
-function LoadingSpinner() {
-  return <div>로딩 중</div>;
-}
 
 function SearchResultsList() {
   const searchParams = useSearchParams();
@@ -25,7 +23,9 @@ function SearchResultsList() {
   }
 
   if (!searchResultData || searchResultData.data.contents.length === 0) {
-    return <p>{query}에 대한 검색 결과가 없습니다.</p>;
+    return (
+      <EmptyAlert alertDescription={`${query}에 대한 검색 결과가 없습니다.`} />
+    );
   }
 
   return (

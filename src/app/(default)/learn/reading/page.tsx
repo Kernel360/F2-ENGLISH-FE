@@ -1,5 +1,6 @@
 'use client';
 
+import LoadingSpinner from '@/components/LoadingSpinner';
 import ArticlePreview from '@/components/ArticlePreview';
 import { useReadingContents } from '@/api/hooks/usePreview';
 import ContentTypeFilter from '@/components/ContentTypeFilter';
@@ -13,7 +14,7 @@ export default function ReadingPage() {
   } = useReadingContents();
 
   if (isLoading) {
-    return <p>로딩 중...</p>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {

@@ -70,7 +70,7 @@ export default function UserProfile() {
 
   return (
     <div className="  bg-white min-h-screen">
-      <header className="flex items-center p-4 border-b ">
+      <header className="flex items-center p-3 border-b ">
         <h1 className="flex-1 text-center font-semibold">개인정보수정</h1>
       </header>
       <div className="p-4 max-w-xl flex flex-col justify-center items-center mx-auto">
