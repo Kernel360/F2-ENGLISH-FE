@@ -14,8 +14,14 @@ export default function ContentWrapper({
 
   return (
     <div className="flex justify-center max-w-[1140px] mx-auto">
-      <div className="flex-1 py-[60px]">{children}</div>
-      {!pathname?.includes('/mypage') && <SideArea />}
+      {pathname?.includes('/mypage') ? (
+        <div>{children}</div>
+      ) : (
+        <>
+          <div className="flex-1 py-[60px]">{children}</div>
+          <SideArea />
+        </>
+      )}
     </div>
   );
 }
