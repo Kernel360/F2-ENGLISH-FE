@@ -12,8 +12,8 @@ export default function SearchComponent() {
 
   const handleSearch = () => {
     if (inputRef.current) {
-      const query = inputRef.current.value;
-      if (query.trim()) {
+      const query = inputRef.current.value.replace(/\n/g, '').trim(); // 개행문자 제거 및 공백 제거
+      if (query) {
         router.push(`/search?q=${encodeURIComponent(query)}`);
       }
     }
