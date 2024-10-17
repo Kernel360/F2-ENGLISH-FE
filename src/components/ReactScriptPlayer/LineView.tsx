@@ -3,9 +3,10 @@
 /* eslint-disable react/button-has-type */
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import useThrottling from '@/lib/useThrottling';
 import { LanguageCode, Subtitle } from '../../types/Scripts';
 import { TextDisplay } from './TextDisplay';
-import useThrottling from '@/lib/useThrottling';
+
 interface LineViewProps {
   subtitles: Subtitle[];
   selectedLanguages: LanguageCode[];

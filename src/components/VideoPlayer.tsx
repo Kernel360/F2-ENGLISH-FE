@@ -15,6 +15,8 @@ import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import { Check, X, BookmarkPlus, MessageSquarePlus } from 'lucide-react';
 import { convertTime } from '@/lib/convertTime';
 import { findCurrentSubtitleIndex } from '@/lib/findCurrentSubtitleIndex';
+import { useToast } from '@/hooks/use-toast';
+import useThrottling from '@/lib/useThrottling';
 import LogInOutButton from './LogInOutButton';
 import ControlBar from './ControlBar';
 import SubtitleOption from './SubtitleOption';
@@ -26,8 +28,6 @@ import { Card, CardHeader, CardContent, CardTitle } from './ui/card';
 import { ScrollArea } from './ui/scroll-area';
 import Modal from './Modal';
 import EmptyAlert from './EmptyAlert';
-import { useToast } from '@/hooks/use-toast';
-import useThrottling from '@/lib/useThrottling';
 
 type Mode = 'line' | 'block';
 
@@ -181,7 +181,7 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   };
   // thorottle 적용
   const throttledHandleBookmark = useThrottling({
-    buttonClicked: handleMemo,
+    buttonClicked: handleBookmark,
   });
   const throttledHandleMemo = useThrottling({
     buttonClicked: handleMemo,
