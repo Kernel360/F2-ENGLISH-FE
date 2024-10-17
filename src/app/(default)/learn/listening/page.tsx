@@ -3,6 +3,8 @@
 import ListeningPreviewCard from '@/components/ListeningPreviewCard';
 import { useListeningContents } from '@/api/hooks/usePreview';
 import ContentTypeFilter from '@/components/ContentTypeFilter';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import EmptyAlert from '@/components/EmptyAlert';
 
 function ListeningPage() {
   const {
@@ -13,7 +15,7 @@ function ListeningPage() {
   } = useListeningContents();
 
   if (isLoading) {
-    return <p>로딩 중...</p>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {
@@ -21,7 +23,7 @@ function ListeningPage() {
   }
 
   if (!listeningContents || listeningContents.data.contents.length === 0) {
-    return <p>콘텐츠가 없습니다.</p>;
+    return <EmptyAlert alertDescription="북마크가 없습니다." />;
   }
 
   return (
