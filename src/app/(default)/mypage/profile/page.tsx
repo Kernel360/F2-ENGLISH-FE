@@ -5,8 +5,7 @@ import { Camera, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useEffect, useState, useMemo } from 'react';
-import { useUserInfo } from '@/api/hooks/useUserInfo';
-import { updateUserInfo } from '@/api/queries/userQueries';
+import { useUserInfo, useUpdateUserInfo } from '@/api/hooks/useUserInfo';
 
 const categories = [
   'IT',
@@ -29,18 +28,19 @@ const categories = [
 
 export default function UserProfile() {
   const [nickname, setNickname] = useState('');
-  const [phone, setPhone] = useState('');
+  // const [phone, setPhone] = useState(''); // todo : 나중에 핸드폰 로직 추가
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const { data: userData, refetch: refetchUserInfo } = useUserInfo();
 
-  const { data: userData } = useUserInfo();
-  // const { mutate: updateUserInfo } = useUpdateUserInfo();
+  const { mutate: updateUserInfoMutation } = useUpdateUserInfo();
 
   useEffect(() => {
     if (userData) {
       setNickname(userData.data.nickname || '');
-      if (userData.data.phoneNumber) {
-        setPhone(userData.data.phoneNumber || '');
-      }
+      // todo : 나중에 핸드폰 로직 추가
+      // if (userData.data.phoneNumber) {
+      //   setPhone(userData.data.phoneNumber || '');
+      // }
     }
   }, [userData]);
 
@@ -50,7 +50,14 @@ export default function UserProfile() {
 
   const handleNicknameChange = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    updateUserInfo({ nickname });
+    updateUserInfoMutation(
+      { nickname },
+      {
+        onSuccess: () => {
+          refetchUserInfo();
+        },
+      },
+    );
   };
 
   const toggleCategory = (category: string) => {
@@ -70,7 +77,7 @@ export default function UserProfile() {
         <div className="flex justify-center mb-6">
           <div className="relative">
             <img
-              src="https://avatar.iran.liara.run/public/girl"
+              src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
               alt="Profile"
               className="w-20 h-20 rounded-full"
             />
@@ -157,7 +164,8 @@ export default function UserProfile() {
             </div>
           </div>
           <div>
-            <label
+            {/* todo : 나중에 연결하기 */}
+            {/* <label
               htmlFor="phone"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
@@ -176,7 +184,7 @@ export default function UserProfile() {
               <Button variant="outline" size="sm">
                 변경하기
               </Button>
-            </div>
+            </div> */}
           </div>
         </form>
         <div className="mt-8 w-full">
