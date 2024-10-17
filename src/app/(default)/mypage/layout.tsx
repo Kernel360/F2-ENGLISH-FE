@@ -1,15 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useUserLoginStatus } from '@/api/hooks/useUserInfo';
 
 type Tab = 'profile' | 'learn' | 'challenges';
 
 const tabs: { key: Tab; label: string; href: string }[] = [
   { key: 'profile', label: '프로필', href: '/mypage/profile' },
-  { key: 'learn', label: '나의 학습', href: '/mypage/learn' },
-  { key: 'challenges', label: '나의 챌린지', href: '/mypage/challenges' },
+  // Todo : 나중에 추가
+  // { key: 'learn', label: '나의 학습', href: '/mypage/learn' },
+  // { key: 'challenges', label: '나의 챌린지', href: '/mypage/challenges' },
 ];
 
 export default function MyPageLayout({
@@ -26,6 +28,13 @@ export default function MyPageLayout({
       setActiveTab('challenges');
     else setActiveTab('profile');
   }, [pathname]);
+
+  const { data: isLoginData } = useUserLoginStatus();
+  const isLogin = isLoginData?.data;
+  const router = useRouter();
+  if (!isLogin) {
+    router.push('/login');
+  }
 
   return (
     <>
