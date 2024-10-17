@@ -25,9 +25,9 @@ export default function ListeningPreviewCard({
               alt={title}
               className="w-full h-full object-cover"
             />
-            <Badge className="absolute bottom-2 right-2 flex items-center gap-1">
-              <Clock className="w-3 h-3" />
-              <span>24:00</span>
+            <Badge className="absolute bottom-2 right-2 flex items-center gap-1 bg-gray-200 bg-opacity-70">
+              <Clock className="w-3 h-3" color="purple" />
+              <span className="text-violet-800">24:00</span>
             </Badge>
           </div>
         </CardContent>
