@@ -3,6 +3,7 @@ export interface Preview {
   title: string;
   category: string;
   thumbnailUrl: string;
+  contentType: 'READING' | 'LISTENING';
   preScripts: string;
   hits: number;
 }
@@ -25,8 +26,8 @@ export type ContentsResponse = {
   data: {
     pageNumber: number;
     pageSize: number;
-    totlaPages: number;
-    totlaElements: number;
+    totalPages: number;
+    totalElements: number;
     contents: Preview[];
   };
 };

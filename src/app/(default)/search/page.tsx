@@ -1,72 +1,57 @@
-// app/search/page.tsx
-
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
+import { useFetchSearchResults } from '@/api/hooks/useSearch';
+import ListeningPreviewCard from '@/components/ListeningPreviewCard';
+import ReadingPreviewCard from '@/components/ReadingPreviewCard';
 
-export default function SearchPage() {
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState<{ id: number; title: string }[]>([]);
+function LoadingSpinner() {
+  return <div>로딩 중</div>;
+}
+
+function SearchResultsList() {
   const searchParams = useSearchParams();
-  const router = useRouter();
+  const query = searchParams.get('q') || '';
 
-  useEffect(() => {
-    const queryParam = searchParams.get('q') || '';
-    setQuery(queryParam);
+  const { data: searchResultData, isLoading } = useFetchSearchResults(query);
 
-    // Fetch 검색 결과
-    async function fetchResults() {
-      if (queryParam) {
-        const res = await fetch(`/api/search?q=${queryParam}`);
-        const data = await res.json();
-        setResults(data);
-      }
-    }
+  if (!query) {
+    return <p>검색어를 입력해주세요</p>;
+  }
 
-    fetchResults();
-  }, [searchParams]);
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    router.push(`/search?q=${query}`);
-  };
+  if (!searchResultData || searchResultData.data.contents.length === 0) {
+    return <p>{query}에 대한 검색 결과가 없습니다.</p>;
+  }
 
   return (
-    <Suspense fallback={<div>Loading search results...</div>}>
-      <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Search Page</h1>
-        <form onSubmit={handleSubmit} className="mb-4">
-          <div className="flex gap-2">
-            <Input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="검색어를 입력하세요"
-              className="flex-grow"
-            />
-            <Button type="submit">검색</Button>
-          </div>
-        </form>
-        {query && (
-          <div>
-            <h2 className="text-xl font-semibold mb-2">검색 결과: {query}</h2>
-            {results.length > 0 ? (
-              <ul className="space-y-2">
-                {results.map((result) => (
-                  <li key={result.id} className="p-2 bg-gray-100 rounded">
-                    {result.title}
-                  </li>
-                ))}
-              </ul>
+    <div>
+      <h1 className="text-2xl font-[600] mb-8">
+        &apos;{query}&apos; 에 대한 검색 결과
+      </h1>
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {searchResultData.data.contents.map((result) => (
+          <li key={result.contentId}>
+            {result.contentType === 'READING' ? (
+              <ReadingPreviewCard data={result} />
             ) : (
-              <p>검색 결과가 없습니다.</p>
+              <ListeningPreviewCard data={result} />
             )}
-          </div>
-        )}
-      </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <SearchResultsList />
     </Suspense>
   );
 }
