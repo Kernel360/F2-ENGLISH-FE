@@ -7,7 +7,7 @@ interface ThrottlingProps {
 
 export default function useThrottling({
   buttonClicked,
-  delay = 500,
+  delay = 300,
 }: ThrottlingProps) {
   const [isThrottled, setIsThrottled] = useState(false);
 
