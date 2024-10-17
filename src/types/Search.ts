@@ -6,8 +6,8 @@ export type SearchResponse = {
   data: {
     pageNumber: number;
     pageSize: number;
-    totlaPages: number;
-    totlaElements: number;
+    totalPages: number;
+    totalElements: number;
     contents: Preview[];
   };
 };
