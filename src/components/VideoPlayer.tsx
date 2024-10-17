@@ -26,6 +26,8 @@ import { Card, CardHeader, CardContent, CardTitle } from './ui/card';
 import { ScrollArea } from './ui/scroll-area';
 import Modal from './Modal';
 import EmptyAlert from './EmptyAlert';
+import { useToast } from '@/hooks/use-toast';
+import useThrottling from '@/lib/useThrottling';
 
 type Mode = 'line' | 'block';
 
@@ -62,8 +64,12 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   const [isAddingNote, setIsAddingNote] = useState(false);
   const [newNoteText, setNewNoteText] = useState('');
 
+
+  const { toast } = useToast(); // 토스트 알림에 사용할 훅
   const { data: bookmarkData } = useFetchBookmarksByContendId(contentId);
   const createBookmarkMutation = useCreateBookmark(contentId);
+
+  const { toast } = useToast(); // 토스트 알림에 사용할 훅
 
   useEffect(() => {
     setMounted(true); // 컴포넌트가 클라이언트에서 마운트되었음을 표시
@@ -118,6 +124,16 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
     }
     // 로그인 권한 있을때만 아래 실행
     if (currentSubtitleIndex !== null && currentSubtitleIndex !== undefined) {
+      if (
+        bookmarkData?.data.bookmarkList.some(
+          (bookmark) => bookmark.sentenceIndex === currentSubtitleIndex,
+        )
+      ) {
+        toast({
+          title: '이미 해당 시간에 북마크가 존재합니다.',
+          duration: 1000,
+        });
+      }
       createBookmarkMutation.mutate({
         sentenceIndex: currentSubtitleIndex,
       });
@@ -131,6 +147,17 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
       return;
     }
     // 로그인 권한 있을때만 아래 실행
+    if (
+      bookmarkData?.data.bookmarkList.some(
+        (bookmark) => bookmark.sentenceIndex === currentSubtitleIndex,
+      )
+    ) {
+      toast({
+        title: '이미 해당 시간에 북마크가 존재합니다.',
+        description: '북마크 아래 메모영역에 메모를 추가해주세요.',
+        duration: 1000,
+      });
+    }
     if (currentSubtitleIndex !== null && currentSubtitleIndex !== undefined) {
       setSelectedSentenceIndex(currentSubtitleIndex);
       setNewNoteText('');
