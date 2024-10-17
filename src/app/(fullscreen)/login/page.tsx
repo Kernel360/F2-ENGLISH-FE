@@ -62,7 +62,7 @@ function Login() {
         <Card className="w-full">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold text-center">
-              Bi -Engual 로그인
+              Bi-Engual 로그인
             </CardTitle>
             <CardDescription className="text-center">
               소셜 계정으로 간편하게 시작하세요
