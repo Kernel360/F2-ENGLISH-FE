@@ -64,8 +64,6 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
   const [isAddingNote, setIsAddingNote] = useState(false);
   const [newNoteText, setNewNoteText] = useState('');
 
-
-  const { toast } = useToast(); // 토스트 알림에 사용할 훅
   const { data: bookmarkData } = useFetchBookmarksByContendId(contentId);
   const createBookmarkMutation = useCreateBookmark(contentId);
 
@@ -181,6 +179,13 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
     setIsAddingNote(false);
     setIsPlaying(true);
   };
+  // thorottle 적용
+  const throttledHandleBookmark = useThrottling({
+    buttonClicked: handleMemo,
+  });
+  const throttledHandleMemo = useThrottling({
+    buttonClicked: handleMemo,
+  });
 
   // 클라이언트에서만 렌더링되도록 조건부 렌더링
   if (!mounted) return null;
@@ -266,21 +271,6 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
           </CardHeader>
           <CardContent className="p-0">
             <ScrollArea className="h-[560px] mb-4 rounded-lg">
-              {bookmarkData && bookmarkData.data.bookmarkList.length > 0
-                ? bookmarkData.data.bookmarkList.map((bookmark) => {
-                    const subtitle = scriptsData?.[bookmark.sentenceIndex];
-                    return (
-                      <BookmarkMemoItem
-                        key={bookmark.bookmarkId}
-                        bookmark={bookmark}
-                        subtitle={subtitle}
-                        seekTo={seekTo}
-                      />
-                    );
-                  })
-                : !selectedSentenceIndex && ( // 메모 저장이 안 되었어도 '메모추가' 버튼 누르는 순간부터 북마크가 없다는 메세지는 안 보여야함
-                    <EmptyAlert alertDescription="북마크가 없습니다." />
-                  )}
               {/* TODO(@smosco): 메모 컴포넌트랑 거의 동일 분리 해야함 */}
               {isAddingNote && selectedSentenceIndex !== null && (
                 <div className="mb-4 p-2 bg-white rounded-lg">
@@ -322,14 +312,29 @@ function VideoPlayer({ videoUrl, scriptsData }: VideoPlayerProps) {
                   </div>
                 </div>
               )}
+              {bookmarkData && bookmarkData.data.bookmarkList.length > 0
+                ? bookmarkData.data.bookmarkList.map((bookmark) => {
+                    const subtitle = scriptsData?.[bookmark.sentenceIndex];
+                    return (
+                      <BookmarkMemoItem
+                        key={bookmark.bookmarkId}
+                        bookmark={bookmark}
+                        subtitle={subtitle}
+                        seekTo={seekTo}
+                      />
+                    );
+                  })
+                : !selectedSentenceIndex && ( // 메모 저장이 안 되었어도 '메모추가' 버튼 누르는 순간부터 북마크가 없다는 메세지는 안 보여야함
+                    <EmptyAlert alertDescription="북마크가 없습니다." />
+                  )}
             </ScrollArea>
           </CardContent>
           <div className="flex flex-col gap-2 justify-between items-center lg:flex-row">
-            <Button onClick={handleBookmark} className="w-full ">
+            <Button onClick={throttledHandleBookmark} className="w-full ">
               <BookmarkPlus size={20} className="mr-2" />
               북마크
             </Button>
-            <Button onClick={handleMemo} className="w-full">
+            <Button onClick={throttledHandleMemo} className="w-full">
               <MessageSquarePlus size={20} className="mr-2" />
               메모 추가
             </Button>

@@ -5,7 +5,7 @@ import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { LanguageCode, Subtitle } from '../../types/Scripts';
 import { TextDisplay } from './TextDisplay';
-
+import useThrottling from '@/lib/useThrottling';
 interface LineViewProps {
   subtitles: Subtitle[];
   selectedLanguages: LanguageCode[];
@@ -36,14 +36,20 @@ export function LineView({
       seekTo(subtitles[currentSubtitleIndex + 1].startTimeInSecond);
     }
   };
+  const throttledHandlePrevious = useThrottling({
+    buttonClicked: handlePrevious,
+  });
+  const throttledHandleNext = useThrottling({
+    buttonClicked: handleNext,
+  });
 
   return (
     <div className="flex flex-col">
       <div className="self-end">
-        <button onClick={handlePrevious} className="cursor-pointer">
+        <button onClick={throttledHandlePrevious} className="cursor-pointer">
           <ChevronLeft className="stroke-violet-400" />
         </button>
-        <button onClick={handleNext} className="cursor-pointer">
+        <button onClick={throttledHandleNext} className="cursor-pointer">
           <ChevronRight className="stroke-violet-400" />
         </button>
       </div>
