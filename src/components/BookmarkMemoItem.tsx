@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import {
   useUpdateBookmark,
   useFetchAllBookmarks,
@@ -36,11 +36,14 @@ export default function BookmarkMemoItem({
   const { refetch: refetchAllBookmarks } = useFetchAllBookmarks();
 
   const handleSaveMemo = () => {
+    console.log('handleSaveMemo 호출됨');
     if (memo !== null && memo.trim() !== '') {
+      console.log('메모 저장 시도:', memo);
       updateBookmarkMutation.mutate(
         { bookmarkId: bookmark.bookmarkId, description: memo },
         {
           onSuccess: () => {
+            console.log('북마크 업데이트 성공');
             refetchAllBookmarks();
             setIsEditing(false);
           },
@@ -51,6 +54,11 @@ export default function BookmarkMemoItem({
       );
     }
   };
+
+  const handleCancelEdit = useCallback(() => {
+    setMemo(bookmark.description);
+    setIsEditing(false);
+  }, [bookmark.description]);
 
   const handleDeleteBookmark = () => {
     deleteBookmarkMutation.mutate(bookmark.bookmarkId, {
@@ -66,7 +74,7 @@ export default function BookmarkMemoItem({
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (memoRef.current && !memoRef.current.contains(event.target as Node)) {
-        setIsEditing(false);
+        handleCancelEdit();
       }
     }
 
@@ -74,7 +82,7 @@ export default function BookmarkMemoItem({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [memoRef]);
+  }, [handleCancelEdit]);
 
   return (
     <div
@@ -109,21 +117,30 @@ export default function BookmarkMemoItem({
           placeholder={memo || '메모를 입력해주세요.'}
           className="min-h-5 w-[170px] border-none outline-none p-0 mr-6 bg-transparent text-[14px] font-[500]"
         />
+        {isEditing && (
+          <div className="flex justify-end space-x-2 mt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={(e) => {
+                handleCancelEdit();
+                e.stopPropagation();
+              }}
+            >
+              <X className="h-4 w-4 mr-2" /> 취소
+            </Button>
+            <Button
+              onClick={() => {
+                console.log('click');
+                handleSaveMemo();
+              }}
+              size="sm"
+            >
+              <Check className="h-4 w-4 mr-2" /> 저장
+            </Button>
+          </div>
+        )}
       </div>
-      {isEditing && (
-        <div className="flex justify-end space-x-2 mt-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsEditing(false)}
-          >
-            <X className="h-4 w-4 mr-2" /> 취소
-          </Button>
-          <Button onClick={handleSaveMemo} size="sm">
-            <Check className="h-4 w-4 mr-2" /> 저장
-          </Button>
-        </div>
-      )}
     </div>
   );
 }

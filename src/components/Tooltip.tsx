@@ -4,7 +4,7 @@
 // components/Tooltip.tsx
 import React, { useEffect, useRef } from 'react';
 import { HighlighterIcon, MessageCircleMoreIcon, Trash2 } from 'lucide-react';
-import { useUserLoginStatus } from '@/api/hooks/useUserInfo';
+import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import LogInOutButton from '@/components/LogInOutButton';
 
 type TooltipProps = {

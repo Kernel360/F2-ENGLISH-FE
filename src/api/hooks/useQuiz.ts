@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { FetchQuizResponse } from '@/types/Quiz';
+import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import { fetchQuiz } from '../queries/quizQueries';
-import { useUserLoginStatus } from './useUserInfo';
 
 export const useFetchQuiz = (contentId: number) => {
   const { data: isLoginData } = useUserLoginStatus();
