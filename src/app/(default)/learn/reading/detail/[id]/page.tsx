@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { ArrowUp, MessageCircleMoreIcon } from 'lucide-react';
+import QuizCover from '@/components/quiz/QuizCover';
 import QuizCarousel from '@/components/quiz/QuizCarousel';
 import Tooltip from '@/components/Tooltip';
 import MemoInput from '@/components/MemoInput';
@@ -388,27 +389,35 @@ export default function DetailReadingPage() {
             // 로그인 했을 때 퀴즈커버
             <div className="relative w-full h-[400px] overflow-hidden rounded-lg shadow-lg ">
               {!showQuiz && (
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 flex flex-col items-center justify-center text-white p-8 transition-opacity duration-500 opacity-100 z-10">
-                  <h2 className="text-3xl font-bold text-center mb-8">
-                    방금 학습한 내용, 확실히 기억하고 있나요?
-                    <br />
-                    퀴즈로 점검해보세요!
-                  </h2>
-                  <Button
-                    onClick={() => setShowQuiz(true)}
-                    className="bg-white text-blue-600 hover:bg-blue-100 transition-colors duration-200"
-                  >
-                    퀴즈 풀기
-                  </Button>
-                </div>
+                <QuizCover
+                  startColor="from-blue-400"
+                  endColor="to-purple-600"
+                  text={`방금 학습한 내용, 확실히 기억하고 있나요?\n퀴즈로 점검해보세요!`}
+                  textColor="text-white"
+                  button={
+                    <Button
+                      onClick={() => setShowQuiz(true)}
+                      className="bg-white text-blue-600 hover:bg-blue-100 transition-colors duration-200"
+                    >
+                      퀴즈 풀기
+                    </Button>
+                  }
+                />
               )}
 
               {showQuiz && (
                 <div className="absolute inset-0 bg-white flex">
                   {/* 퀴즈 */}
-                  {quizData && (
+                  {quizData && quizData.data['question-answer'].length > 0 ? (
                     <QuizCarousel
                       quizListData={quizData.data['question-answer']}
+                    />
+                  ) : (
+                    <QuizCover
+                      startColor="white"
+                      endColor="to-purple-200"
+                      text={`이런! 퀴즈 데이터가 없어요..\n관리자에게 문의해주세요`}
+                      textColor="text-gray-700 shadow-lg"
                     />
                   )}
                 </div>
@@ -416,14 +425,18 @@ export default function DetailReadingPage() {
             </div>
           ) : (
             // 로그인안했을때 퀴즈 커버
-            <div className="relative w-full h-[400px] overflow-hidden rounded-lg shadow-lg">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-700 flex flex-col items-center justify-center text-white p-8 transition-opacity duration-500 opacity-100">
-                <h2 className="text-3xl font-bold text-center mb-8">
-                  퀴즈를 풀려면 로그인을 하세요
-                </h2>
-                <LogInOutButton />
-              </div>
-            </div>
+            <QuizCover
+              startColor="from-gray-300"
+              endColor="to-purple-500"
+              text="퀴즈를 풀려면 로그인이 필요해요!"
+              textColor="text-white"
+              button={
+                <LogInOutButton
+                  bgColor="bg-white"
+                  textColor="text-violet-700"
+                />
+              }
+            />
           )}
         </div>
       </div>
