@@ -1,16 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import {
-  BookHeadphones,
-  Search,
-  Bookmark,
-  Bell,
-  CircleUserRound,
-} from 'lucide-react';
+import { BookHeadphones, Bookmark, Bell, CircleUserRound } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import LogInOutButton from '@/components/LogInOutButton';
 import SearchComponent from '../SearchComponent';
 
@@ -22,11 +16,6 @@ export const navItems = [
 
 export function Header() {
   const pathname = usePathname();
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-
-  const toggleSearch = () => {
-    setIsSearchOpen((prev) => !prev);
-  };
 
   return (
     <div className="sticky top-0 z-50 bg-[rgba(255,255,255,0.95)] border-b">
@@ -49,20 +38,18 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <Button variant="ghost" size="icon" onClick={toggleSearch}>
-          <Search className="h-5 w-5" />
-        </Button>
-        <div className="flex items-center ml-auto">
+
+        <div className="flex  ml-auto h-5 items-center space-x-2  text-sm">
+          <SearchComponent />
+          <Separator orientation="vertical" />
           <Button variant="ghost" size="icon">
             <Bell className="h-5 w-5" />
           </Button>
+          <Separator orientation="vertical" />
+
           <LogInOutButton />
         </div>
       </header>
-      <SearchComponent
-        isOpen={isSearchOpen}
-        onClose={() => setIsSearchOpen(false)}
-      />
     </div>
   );
 }
