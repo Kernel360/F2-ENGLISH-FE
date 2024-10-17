@@ -32,6 +32,7 @@ import {
 } from '@/api/hooks/useScrap';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
+import ScrollProgressBar from '@/components/ScrollProgressBar';
 
 export default function DetailReadingPage() {
   const params = useParams();
@@ -495,6 +496,7 @@ export default function DetailReadingPage() {
         showTranslate={showTranslate}
         onTranslateToggle={toggleTranslation}
       />
+      <ScrollProgressBar />
     </>
   );
 }
